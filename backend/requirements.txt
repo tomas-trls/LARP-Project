@@ -1,0 +1,26 @@
+# Web framework and the server that runs it
+fastapi
+uvicorn[standard]
+
+# Database tables as Python classes (on top of SQLite)
+sqlmodel
+
+# Security: password hashing and login tokens
+bcrypt
+pyjwt
+
+# Reads settings from the .env file
+python-dotenv
+
+# Event scraping (Step 6)
+requests
+beautifulsoup4
+# London time zone data (Windows has none built in)
+tzdata
+
+# Claude API for event search and tagging (Step 6)
+anthropic
+
+# Testing
+pytest
+httpx

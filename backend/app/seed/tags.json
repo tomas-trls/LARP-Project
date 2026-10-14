@@ -1,0 +1,34 @@
+[
+  {
+    "category": "Academic and professional",
+    "subgroups": [
+      {"name": "Business and quant", "tags": ["finance", "consulting", "entrepreneurship", "economics", "data analytics"]},
+      {"name": "Tech", "tags": ["software development", "AI and machine learning", "product and design"]},
+      {"name": "Law and society", "tags": ["law", "politics and policy", "sustainability"]},
+      {"name": "Health and science", "tags": ["healthcare", "biomedical science", "engineering", "psychology"]}
+    ]
+  },
+  {
+    "category": "Sport",
+    "subgroups": [
+      {"name": "Racquet sports", "tags": ["padel", "tennis"]},
+      {"name": "Team sports", "tags": ["football", "basketball"]},
+      {"name": "Fitness", "tags": ["gym", "running", "boxing"]}
+    ]
+  },
+  {
+    "category": "Hobbies",
+    "subgroups": [
+      {"name": "Games and strategy", "tags": ["chess", "board games", "video games"]},
+      {"name": "Creative", "tags": ["photography", "music", "film and theatre", "writing"]}
+    ]
+  },
+  {
+    "category": "Just here for fun",
+    "subgroups": [
+      {"name": "Food and drink", "tags": ["food and cafes", "bars and pubs"]},
+      {"name": "Nightlife and music", "tags": ["clubs", "live music"]},
+      {"name": "Activities", "tags": ["bowling and arcades", "parks and outdoors", "museums and culture", "comedy"]}
+    ]
+  }
+]

@@ -1,0 +1,540 @@
+[
+ {
+  "name": "The Penny Drop",
+  "category": "cafe",
+  "area": "main",
+  "address": null,
+  "url": "https://thetab.com/uk/london/2024/02/23/five-coffee-places-in-and-around-bloomsbury-for-when-youre-sick-of-studying-on-campus-52515",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Store Street Espresso",
+  "category": "cafe",
+  "area": "main",
+  "address": "Store Street, Bloomsbury",
+  "url": "https://thetab.com/uk/london/2024/02/23/five-coffee-places-in-and-around-bloomsbury-for-when-youre-sick-of-studying-on-campus-52515",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Dillons cafe (Waterstones, Gower Street)",
+  "category": "cafe",
+  "area": "main",
+  "address": "Gower Street, Bloomsbury",
+  "url": "https://thetab.com/uk/london/2024/02/23/five-coffee-places-in-and-around-bloomsbury-for-when-youre-sick-of-studying-on-campus-52515",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "The Gentleman Baristas",
+  "category": "cafe",
+  "area": "main",
+  "address": "South Crescent, off Store Street",
+  "url": "https://www.mgmt.ucl.ac.uk/node/3877",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named in an older guide page (the link). It may have closed or changed since: check before relying on it."
+ },
+ {
+  "name": "Fleet Kitchen",
+  "category": "cafe",
+  "area": "main",
+  "address": "Upper Woburn Place",
+  "url": "https://www.mgmt.ucl.ac.uk/node/3877",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named in an older guide page (the link). It may have closed or changed since: check before relying on it."
+ },
+ {
+  "name": "Print Room Cafe (UCL campus)",
+  "category": "cafe",
+  "area": "main",
+  "address": "UCL Bloomsbury campus",
+  "url": "https://www.ucl.ac.uk/study/news/2020/dec/ultimate-bloomsbury-guide",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Phineas Bar (Students' Union UCL)",
+  "category": "bar",
+  "area": "main",
+  "address": "25 Gordon Street",
+  "url": "https://unifresher.co.uk/cities/london/best-student-bars-in-london/",
+  "alcohol_role": "optional",
+  "tags": [
+   "bars and pubs",
+   "live music"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked. Student ID needed."
+ },
+ {
+  "name": "Institute Bar (Students' Union UCL)",
+  "category": "bar",
+  "area": "main",
+  "address": "Next to the Institute of Education, Bedford Way",
+  "url": "https://studentsunionucl.org/whats-on/bars/live-music-institute-bar-2",
+  "alcohol_role": "optional",
+  "tags": [
+   "bars and pubs",
+   "live music"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Appears as the venue of Students' Union UCL events (2026-10-14)."
+ },
+ {
+  "name": "Huntley Bar (Students' Union UCL)",
+  "category": "bar",
+  "area": "main",
+  "address": "Students' Union UCL, Gordon Street",
+  "url": "https://studentsunionucl.org/whats-on/bars/ucl200-parent-workshop-1-upstairs-huntley-bar",
+  "alcohol_role": "optional",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Appears as the venue of Students' Union UCL events (2026-10-14)."
+ },
+ {
+  "name": "Jeremy Bentham (pub)",
+  "category": "pub",
+  "area": "main",
+  "address": "31 University Street",
+  "url": "https://www.hep.ucl.ac.uk/dis2008/pubs.php",
+  "alcohol_role": "central",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named in an older guide page (the link). It may have closed or changed since: check before relying on it."
+ },
+ {
+  "name": "The Lamb (pub)",
+  "category": "pub",
+  "area": "main",
+  "address": "94 Lamb's Conduit Street",
+  "url": "https://www.hep.ucl.ac.uk/dis2008/pubs.php",
+  "alcohol_role": "central",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named in an older guide page (the link). It may have closed or changed since: check before relying on it."
+ },
+ {
+  "name": "Euston Tap (craft beer pub)",
+  "category": "pub",
+  "area": "main",
+  "address": "190 Euston Road",
+  "url": "https://www.hep.ucl.ac.uk/dis2008/pubs.php",
+  "alcohol_role": "central",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named in an older guide page (the link). It may have closed or changed since: check before relying on it."
+ },
+ {
+  "name": "Fitzroy Tavern (pub)",
+  "category": "pub",
+  "area": "main",
+  "address": "16 Charlotte Street, Fitzrovia",
+  "url": "https://enjoyfitzrovia.co.uk/drink/drink_type-pub/drink_filter-catering-or-late-night/",
+  "alcohol_role": "central",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Bloomsbury Lanes (bowling, karaoke, arcade games)",
+  "category": "bowling",
+  "area": "main",
+  "address": "Bloomsbury (check the venue's site for the exact address)",
+  "url": "https://studentsunionucl.org/whats-on/clubs-societies/aisoc-bowling-social",
+  "alcohol_role": "optional",
+  "tags": [
+   "bowling and arcades",
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Appears as the venue of Students' Union UCL events (2026-10-14)."
+ },
+ {
+  "name": "British Museum",
+  "category": "museum",
+  "area": "main",
+  "address": "Great Russell Street, Bloomsbury",
+  "url": "https://www.thegoodenough.co.uk/news/free-museums-and-galleries-in-bloomsbury",
+  "alcohol_role": "none",
+  "tags": [
+   "museums and culture"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Petrie Museum of Egyptian and Sudanese Archaeology (UCL)",
+  "category": "museum",
+  "area": "main",
+  "address": "UCL Bloomsbury campus",
+  "url": "https://bloomsburyfestival.org.uk/whats-on/ucl-museums",
+  "alcohol_role": "none",
+  "tags": [
+   "museums and culture"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked. Free; Tue-Fri 1-5pm, Sat 11-5pm per the 2026 Bloomsbury Festival guide."
+ },
+ {
+  "name": "Grant Museum of Zoology (UCL)",
+  "category": "museum",
+  "area": "main",
+  "address": "UCL Bloomsbury campus",
+  "url": "https://www.thegoodenough.co.uk/news/free-museums-and-galleries-in-bloomsbury",
+  "alcohol_role": "none",
+  "tags": [
+   "museums and culture"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked. Free; Tue-Fri 1-5pm, Sat 11-5pm per the guide."
+ },
+ {
+  "name": "UCL Art Museum",
+  "category": "museum",
+  "area": "main",
+  "address": "UCL Bloomsbury campus",
+  "url": "https://www.thegoodenough.co.uk/news/free-museums-and-galleries-in-bloomsbury",
+  "alcohol_role": "none",
+  "tags": [
+   "museums and culture"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Wellcome Collection",
+  "category": "museum",
+  "area": "main",
+  "address": "Euston Road, Bloomsbury",
+  "url": "https://www.thegoodenough.co.uk/news/free-museums-and-galleries-in-bloomsbury",
+  "alcohol_role": "none",
+  "tags": [
+   "museums and culture"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Russell Square (gardens)",
+  "category": "park",
+  "area": "main",
+  "address": "Russell Square, Bloomsbury",
+  "url": "https://www.thegoodenough.co.uk/news/free-museums-and-galleries-in-bloomsbury",
+  "alcohol_role": "none",
+  "tags": [
+   "parks and outdoors"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Bloomsbury Square (gardens)",
+  "category": "park",
+  "area": "main",
+  "address": "Bloomsbury Square",
+  "url": "https://www.thegoodenough.co.uk/news/free-museums-and-galleries-in-bloomsbury",
+  "alcohol_role": "none",
+  "tags": [
+   "parks and outdoors"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Ronnie Scott's (jazz club)",
+  "category": "live music",
+  "area": "other",
+  "address": "Frith Street, Soho",
+  "url": "https://www.timeout.com/london/things-to-do/5-late-night-live-music-venues-on-the-night-tube",
+  "alcohol_role": "optional",
+  "tags": [
+   "live music",
+   "music"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "The Jazz Cafe",
+  "category": "live music",
+  "area": "other",
+  "address": "Parkway, Camden",
+  "url": "https://timeout.com/london/music/live-music-in-camden",
+  "alcohol_role": "optional",
+  "tags": [
+   "live music",
+   "music"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Draughts (board game cafe, Waterloo)",
+  "category": "board game cafe",
+  "area": "other",
+  "address": "Waterloo",
+  "url": "https://draughtslondon.com/?p=453",
+  "alcohol_role": "optional",
+  "tags": [
+   "board games",
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Notes Coffee Roasters & Bar",
+  "category": "cafe",
+  "area": "canary",
+  "address": "Canada Place, Canary Wharf",
+  "url": "https://londontheinside.com/neighbourhoods/canary-wharf/",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "640East (container cafe)",
+  "category": "cafe",
+  "area": "canary",
+  "address": "Montgomery Square, Canary Wharf",
+  "url": "https://thisisvertus.com/journal/our-guide-to-the-best-coffee-shops-and-cafes-in-canary-wharf/",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Black Sheep Coffee",
+  "category": "cafe",
+  "area": "canary",
+  "address": "Cabot Square, Canary Wharf",
+  "url": "https://thisisvertus.com/journal/our-guide-to-the-best-coffee-shops-and-cafes-in-canary-wharf/",
+  "alcohol_role": "none",
+  "tags": [
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "The Henry Addington (pub)",
+  "category": "pub",
+  "area": "canary",
+  "address": "Canary Wharf",
+  "url": "https://londontheinside.com/neighbourhoods/canary-wharf/",
+  "alcohol_role": "central",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "The Cat & The Canary (pub)",
+  "category": "pub",
+  "area": "canary",
+  "address": "Canary Wharf",
+  "url": "https://londontheinside.com/neighbourhoods/canary-wharf/",
+  "alcohol_role": "central",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Big Easy (bar and grill)",
+  "category": "bar",
+  "area": "canary",
+  "address": "Crossrail Place, Canary Wharf",
+  "url": "https://londontheinside.com/neighbourhoods/canary-wharf/",
+  "alcohol_role": "central",
+  "tags": [
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Boisdale of Canary Wharf (live jazz and blues)",
+  "category": "live music",
+  "area": "canary",
+  "address": "Cabot Place, Canary Wharf, E14 4QT",
+  "url": "https://checkout.timeout.com/london/live-jazz-blues-nights-with-two-course-dinner-42736",
+  "alcohol_role": "optional",
+  "tags": [
+   "live music",
+   "music",
+   "food and cafes"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Amazing Grace (live music bar)",
+  "category": "live music",
+  "area": "canary",
+  "address": "12 Bank Street, Canary Wharf, E14 4DD",
+  "url": "https://www.designmynight.com/london/bars/central-london/amazing-grace-canary-wharf/out-of-office",
+  "alcohol_role": "central",
+  "tags": [
+   "live music",
+   "bars and pubs",
+   "clubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Opened the DesignMyNight listing (2026-10-14)."
+ },
+ {
+  "name": "Electric Shuffle Canary Wharf (shuffleboard bar)",
+  "category": "games bar",
+  "area": "canary",
+  "address": "10 Cabot Square, North Colonnade, E14 4EY",
+  "url": "https://www.designmynight.com/london/bars/canary-wharf/electric-shuffle/halloween-brunch-electric-shuffle-canary-wharf",
+  "alcohol_role": "optional",
+  "tags": [
+   "bowling and arcades",
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Opened the DesignMyNight listing (2026-10-14)."
+ },
+ {
+  "name": "Padium (padel club)",
+  "category": "padel",
+  "area": "canary",
+  "address": "10 Bank Street, Canary Wharf",
+  "url": "https://scc.org.uk/events/list/young-professionals-padel-at-padium",
+  "alcohol_role": "optional",
+  "tags": [
+   "padel",
+   "tennis",
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Mercato Metropolitano Wood Wharf (food market)",
+  "category": "food market",
+  "area": "canary",
+  "address": "6 George Street, Wood Wharf, E14 9QG",
+  "url": "https://running.life/en/event/run-connect-womens-5k-canary-wharf/2026-10-24",
+  "alcohol_role": "optional",
+  "tags": [
+   "food and cafes",
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Address from the event page for the Women's 5K meeting point (2026-10-14)."
+ },
+ {
+  "name": "Hawksmoor Wood Wharf (restaurant and bar)",
+  "category": "restaurant",
+  "area": "canary",
+  "address": "Wood Wharf, Canary Wharf",
+  "url": "https://www.venuescanner.com/canary-wharf/hawksmoor-wood-wharf/hawksmoor-restaurant-hire",
+  "alcohol_role": "optional",
+  "tags": [
+   "food and cafes",
+   "bars and pubs"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Virgin Active Canary Riverside (gym, tennis, boxing)",
+  "category": "gym",
+  "area": "canary",
+  "address": "Canary Riverside, Canary Wharf",
+  "url": "https://www.virginactive.co.uk/forms/canary-riverside",
+  "alcohol_role": "none",
+  "tags": [
+   "gym",
+   "boxing",
+   "tennis"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Third Space Canary Wharf (gym)",
+  "category": "gym",
+  "area": "canary",
+  "address": "Canary Wharf",
+  "url": "https://londontheinside.com/neighbourhoods/canary-wharf/",
+  "alcohol_role": "none",
+  "tags": [
+   "gym"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Barry's Canary Wharf (fitness classes)",
+  "category": "gym",
+  "area": "canary",
+  "address": "Crossrail Place, Canary Wharf",
+  "url": "https://londontheinside.com/neighbourhoods/canary-wharf/",
+  "alcohol_role": "none",
+  "tags": [
+   "gym",
+   "running"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ },
+ {
+  "name": "Everyman Cinema Canary Wharf",
+  "category": "cinema",
+  "area": "canary",
+  "address": "Crossrail Place, Canary Wharf",
+  "url": "https://londontheinside.com/neighbourhoods/canary-wharf/",
+  "alcohol_role": "none",
+  "tags": [
+   "film and theatre"
+  ],
+  "verified_on": "2026-10-14",
+  "verification": "Named on the guide page given as the link (2026-10-14). Address and opening hours were not independently checked."
+ }
+]

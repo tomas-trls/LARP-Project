@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/*
+  Light / dark switch: dark styles apply when the page has the class "dark"
+  (the toggle button adds and removes it). Use them in components like:  bg-paper dark:bg-ink
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  The LARP palette and fonts, from the team's design hand-over.
+  Change a colour here once and every page updates.
+  Tailwind turns each name into classes, e.g. --color-brand gives bg-brand, text-brand, border-brand.
+*/
+@theme {
+  --color-ink: #361a54;          /* dark purple: lead colour, text, dark-mode background */
+  --color-brand: #993bff;        /* bright purple: hero blocks (pair with white only) */
+  --color-brand-mid: #ba82ff;    /* mid purple: use instead of bright purple on dark purple */
+  --color-brand-light: #ddbdff;  /* light purple: supporting colour */
+  --color-brand-pale: #eedeff;   /* pale purple: supporting / card backgrounds */
+  --color-paper: #fafafa;        /* off-white: light-mode page background */
+  --color-heritage: #30d6ff;     /* heritage blue: accent, ONLY on dark purple */
+  --color-muted: #7a6796;        /* quiet purple-grey for small text on light backgrounds */
+
+  --font-display: "EB Garamond", Georgia, serif;           /* headlines (one italic word) */
+  --font-sans: "DM Sans", system-ui, sans-serif;           /* everything else */
+}
+
+@layer base {
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+  }
+  html.dark body {
+    @apply bg-ink text-white;
+  }
+  /* A clear outline when someone uses the keyboard. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+  html.dark :focus-visible {
+    @apply outline-heritage;
+  }
+}

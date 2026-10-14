@@ -1,0 +1,13 @@
+[
+  {"name": "The Test Arms", "category": "pub", "area": "main", "address": "1 Test Street (invented)", "url": "https://example.com/test-venue-01", "alcohol_role": "central", "tags": ["bars and pubs"]},
+  {"name": "Test Bean Cafe", "category": "cafe", "area": "main", "address": "2 Test Street (invented)", "url": "https://example.com/test-venue-02", "alcohol_role": "none", "tags": ["food and cafes"]},
+  {"name": "Pixel Arcade (test)", "category": "arcade", "area": "main", "address": "3 Test Street (invented)", "url": "https://example.com/test-venue-03", "alcohol_role": "none", "tags": ["bowling and arcades", "video games"]},
+  {"name": "Test Jazz Cellar", "category": "bar", "area": "main", "address": "4 Test Street (invented)", "url": "https://example.com/test-venue-04", "alcohol_role": "optional", "tags": ["live music", "music", "bars and pubs"]},
+  {"name": "Test Park Gardens", "category": "park", "area": "main", "address": "5 Test Street (invented)", "url": "https://example.com/test-venue-05", "alcohol_role": "none", "tags": ["parks and outdoors"]},
+  {"name": "Test Museum Cafe", "category": "museum", "area": "main", "address": "6 Test Street (invented)", "url": "https://example.com/test-venue-06", "alcohol_role": "none", "tags": ["museums and culture", "food and cafes"]},
+  {"name": "Meeple Board Game Cafe (test)", "category": "cafe", "area": "main", "address": "7 Test Street (invented)", "url": "https://example.com/test-venue-07", "alcohol_role": "none", "tags": ["board games", "food and cafes"]},
+  {"name": "Wharf Test Bar", "category": "bar", "area": "canary", "address": "8 Test Wharf (invented)", "url": "https://example.com/test-venue-08", "alcohol_role": "central", "tags": ["bars and pubs", "clubs"]},
+  {"name": "Wharf Test Coffee", "category": "cafe", "area": "canary", "address": "9 Test Wharf (invented)", "url": "https://example.com/test-venue-09", "alcohol_role": "none", "tags": ["food and cafes"]},
+  {"name": "Test Comedy Club", "category": "comedy", "area": "main", "address": "10 Test Street (invented)", "url": "https://example.com/test-venue-10", "alcohol_role": "optional", "tags": ["comedy", "bars and pubs"]},
+  {"name": "Wharf Test Bowl", "category": "bowling", "area": "canary", "address": "11 Test Wharf (invented)", "url": "https://example.com/test-venue-11", "alcohol_role": "optional", "tags": ["bowling and arcades"]}
+]

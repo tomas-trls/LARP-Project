@@ -1,0 +1,31 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Database files (recreated from seed files)
+*.db
+*.sqlite
+
+# Secrets
+.env
+
+# Node / Vite
+node_modules/
+dist/
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Written by python -m app.pipeline (a trail of what the search did)
+backend/last_search_notes.txt
+
+# Design hand-over zips and other big archives (keep them out of git)
+*.zip
+
+# Local Claude Code settings (personal, not for sharing)
+.claude/settings.local.json
