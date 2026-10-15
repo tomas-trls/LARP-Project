@@ -1,8 +1,11 @@
 // The one place the front end talks to the back end.
 //
 // Every screen uses:  api.get('/tags')  or  api.post('/login', {...})
-// The dev server forwards anything starting with /api to the FastAPI back end (see vite.config.js),
-// so we never write the back end's address anywhere else.
+// Locally, the dev server forwards anything starting with /api to the FastAPI back end (see vite.config.js).
+// When hosted (e.g. on Render), set VITE_API_URL to the back end's address, such as
+// https://larp-backend.onrender.com (no trailing slash). Vite bakes it in at build time.
+// Left empty, requests stay relative ("/api/...") and the dev proxy handles them.
+const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
 
 async function request(path, options = {}) {
   // After login (Step 9) the token is kept in localStorage and sent on every request.
@@ -10,7 +13,7 @@ async function request(path, options = {}) {
   const headers = { 'Content-Type': 'application/json', ...options.headers }
   if (token) headers.Authorization = `Bearer ${token}`
 
-  const response = await fetch(`/api${path}`, { ...options, headers })
+  const response = await fetch(`${API_URL}/api${path}`, { ...options, headers })
   const data = await response.json().catch(() => null)
 
   if (!response.ok) {

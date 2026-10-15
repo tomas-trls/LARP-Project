@@ -26,6 +26,15 @@ DEMO_MODE = os.getenv("DEMO_MODE", "true").lower() == "true"
 # Set REQUIRE_UCL_EMAIL=false in .env for the demo, where students can't make UCL addresses.
 REQUIRE_UCL_EMAIL = os.getenv("REQUIRE_UCL_EMAIL", "true").lower() == "true"
 
+# Which websites may call this API from a browser (CORS). Comma-separated, no trailing slash.
+# Locally the Vite proxy means this isn't needed; on Render, add your front end's address,
+# for example: FRONTEND_ORIGINS=https://larp-frontend.onrender.com
+FRONTEND_ORIGINS = [
+    origin.strip().rstrip("/")
+    for origin in os.getenv("FRONTEND_ORIGINS", "http://localhost:5173").split(",")
+    if origin.strip()
+]
+
 # How long a login token stays valid.
 TOKEN_HOURS = 24
 
