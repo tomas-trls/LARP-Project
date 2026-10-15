@@ -142,6 +142,12 @@ class DetailsIn(BaseModel):
         return value
 
 
+class AddSkillsIn(BaseModel):
+    """Skills to add to the profile (for example after an event). Existing skills are kept."""
+
+    skills: List[Annotated[str, Field(min_length=1, max_length=60)]] = Field(min_length=1, max_length=20)
+
+
 class HobbiesIn(BaseModel):
     tag_ids: List[int] = Field(default_factory=list, max_length=8)
 
