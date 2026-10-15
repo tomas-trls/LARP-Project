@@ -10,6 +10,7 @@ Then open http://localhost:8000/docs to see and try every route.
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 
 from app import settings
@@ -37,6 +38,16 @@ async def lifespan(app: FastAPI):
 
 # The app object. Every route below is attached to it.
 app = FastAPI(title="LARP API", version="0.1.0", lifespan=lifespan)
+
+# CORS: browsers block a page on one address from reading answers from another address,
+# unless the back end says that page is allowed. This lets the front end (on its own Render URL) call us.
+# We log in with a token in the Authorization header, not cookies, so allow_credentials isn't needed.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.FRONTEND_ORIGINS,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Account routes: register, login, /me, /me/preferences.
 app.include_router(users_router)
