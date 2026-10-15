@@ -226,3 +226,34 @@ What `GET /api/home` returns:
 "I went": only works once the event has started. The answer suggests the skills the event builds; the student confirms the ones they want and they are added with `POST /api/profile/skills`, so progress follows the profile and not attendance counts.
 
 Not built yet: groups forming for the student (Event Groups), and society events (they need the Societies push; the filter is ready and shows 0 until then).
+
+### P2c – People and Event Groups (done)
+All routes need a login token (the moderator routes need the admin key instead).
+
+| Route | What it does |
+|---|---|
+| `GET /api/people/career` | Alumni who hold or held the active route's role, then students further along the same route, each with a reason |
+| `GET /api/people/social` | People ranked by shared hobbies, similar personality (if both took the Big Five check) and shared societies |
+| `POST /api/connections` | Ask to connect (`kind` career or social, optional note). If that person already asked you, it accepts |
+| `GET /api/connections` | `connections` (accepted), `incoming` (waiting for my answer), `outgoing` (I asked) |
+| `PUT /api/connections/{id}` | The receiver accepts or declines |
+| `DELETE /api/connections/{id}` | Withdraw a request or remove a connection |
+| `GET` / `PUT` / `DELETE /api/follows[/{user_id}]` | One-way follow |
+| `GET` / `PUT` / `DELETE /api/blocks[/{user_id}]` | Block (works both ways, removes any connection or follow) |
+| `POST /api/reports` | Report a person or a group you are in |
+| `GET /api/admin/reports`, `PUT /api/admin/reports/{id}` | The moderator's inbox and decision (`dismiss`, `warn`, `suspend`, `ban`). Needs `X-Admin-Key` |
+| `POST` / `GET` / `DELETE /api/events/{id}/group` | Event Groups: "I've booked" (join), see my group, leave |
+| `GET /api/event-groups` | My groups for events that have not ended |
+| `POST /api/groups/{id}/members/{user_id}/no-show` | Flag a member who did not turn up (after the event starts, once each) |
+
+**Career and social are kept apart** (design decisions, section 8). The career list uses only experience, skills and routes. The social list uses only hobbies, personality and societies, and shows no course, year or job. A field a student hides is never used or shown, so someone who hides their hobbies is left out of other people's social list.
+
+**Connections:** both people must agree. A request someone declined still shows as "requested" to the sender, so nobody is told no. Alumni can set `max_alumni_requests_per_month`: once that many requests have arrived this month (any answer), new requests get a polite 409 until next month. Accepting someone who asked first is never blocked by the limit. Messaging between connections arrives with the Messages stage.
+
+**Event Groups (book first):** the student books the event on its own site, then presses "I've booked" (`booked` must be `true`). They are put in the group with room (max 5) that suits them best on the social score, or start a new one. 1-2 members = `forming`; 3 or more = `open` and the chat can open (members get a notification); less than 24 hours before the event = `closed` (nobody new can join, people can still leave). The status follows the clock. If a group drops below 3 it merges into another group for the same event when everyone fits, otherwise it stays `forming` so new people can join it. Blocked people are never put in the same group. These groups are `group.kind = "event"` rows, so the old `/api/pair/auto` groups are unaffected.
+
+**Safety:** a suspended or banned account gets 403 on every route. Blocking does not remove either person from a group they already share (they leave it themselves).
+
+**Also added:** `notifications.py` (a small helper that respects each student's alert settings; the full notification routes come with Messages) and the `noshowflag` table. No existing columns changed, so no `reset_db` is needed (the new table is created on startup).
+
+Not built yet: group chat messages (Messages stage), the Claude conversation starter, "pair up" via `EventPair` (replaced by Event Groups, to be removed), and recommended societies in People -> Social (Societies stage).

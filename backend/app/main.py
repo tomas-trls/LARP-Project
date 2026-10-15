@@ -19,7 +19,9 @@ from app.models import Tag
 from app.routes_admin import router as admin_router
 from app.routes_career import router as career_router
 from app.routes_dev import router as dev_router
+from app.routes_event_groups import router as event_groups_router
 from app.routes_events import router as events_router
+from app.routes_people import router as people_router
 from app.routes_home import router as home_router
 from app.routes_opportunities import router as opportunities_router
 from app.routes_linkedin import router as linkedin_router
@@ -75,6 +77,12 @@ app.include_router(home_router)
 
 # Opportunities tab: career events and jobs, ranked for the active route (/api/opportunities/...).
 app.include_router(opportunities_router)
+
+# People tab: career and social lists, connections, follows, block and report.
+app.include_router(people_router)
+
+# Event Groups: book an event, then join a group of 3 to 5 going to it.
+app.include_router(event_groups_router)
 
 # LinkedIn Max: /api/linkedin-max (links people choose to share; we never contact LinkedIn).
 app.include_router(linkedin_router)

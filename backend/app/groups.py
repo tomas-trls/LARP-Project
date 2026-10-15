@@ -30,9 +30,11 @@ def average_score(person: Person, members: list) -> float:
 
 
 def group_for_user(session: Session, user_id: int) -> Optional[Group]:
-    """The group this student is in, or None."""
-    membership = session.exec(select(GroupMember).where(GroupMember.user_id == user_id)).first()
-    return session.get(Group, membership.group_id) if membership else None
+    """The old auto-paired group this student is in, or None. (Event groups are separate: see event_groups.py.)"""
+    return session.exec(
+        select(Group).join(GroupMember, GroupMember.group_id == Group.id)
+        .where(GroupMember.user_id == user_id, Group.kind == "auto")
+    ).first()
 
 
 def pair_user(session: Session, user: User) -> Optional[Group]:
@@ -57,7 +59,7 @@ def pair_user(session: Session, user: User) -> Optional[Group]:
 
     # Who is in which group right now.
     members_of = {}
-    for row in session.exec(select(GroupMember)).all():
+    for row in session.exec(select(GroupMember).join(Group, Group.id == GroupMember.group_id).where(Group.kind == "auto")).all():
         members_of.setdefault(row.group_id, []).append(row.user_id)
     grouped_ids = {uid for ids in members_of.values() for uid in ids}
 
