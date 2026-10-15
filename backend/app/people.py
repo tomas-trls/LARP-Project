@@ -259,3 +259,77 @@ def social_scorer(session: Session):
         return social_fit(a, b, persons[a.id], persons[b.id], memberships.get(a.id, set()), memberships.get(b.id, set()))["total"]
 
     return score
+
+
+# ---------------------------------------------------------------------------
+# Another person's profile (two views, so career and social data never mix)
+# ---------------------------------------------------------------------------
+
+
+def profile_view(session: Session, me: User, other: User, view: str, now: datetime) -> dict:
+    """What `me` may see of `other`. view='career': experience and skills. view='social': hobbies, personality,
+    societies. A field the other person hides is left out. Contact details are never included."""
+    from app.models import Education, Skill, Tag, UserSkill, UserTag
+
+    def shown(field):
+        return not is_hidden(other, field)
+
+    states = connection_states(session, me.id)
+    card = {"user_id": other.id, "name": other.name, "avatar_url": other.avatar_url, "view": view,
+            "connection": states.get(other.id, "none"), "following": other.id in follows_of(session, me.id)}
+    if view == "career":
+        skills = session.exec(select(Skill.name).join(UserSkill, UserSkill.skill_id == Skill.id)
+                              .where(UserSkill.user_id == other.id).order_by(Skill.name)).all()
+        card.update(
+            headline=other.headline, course=other.course, year=other.year, is_alumni=other.is_alumni,
+            accepting_requests=accepting_requests(session, other, now),
+            education=[{"degree": e.degree, "institution": e.institution, "grade": e.grade}
+                       for e in session.exec(select(Education).where(Education.user_id == other.id)).all()] if shown("education") else None,
+            experience=[{"title": e.title, "organisation": e.organisation, "kind": e.kind, "start": e.start, "end": e.end}
+                        for e in session.exec(select(Experience).where(Experience.user_id == other.id)).all()] if shown("experience") else None,
+            skills=list(skills) if shown("skills") else None,
+        )
+    else:
+        names = {s.id: s.name for s in session.exec(select(Society)).all()}
+        hobbies = session.exec(select(Tag.name).join(UserTag, UserTag.tag_id == Tag.id).where(UserTag.user_id == other.id)).all()
+        card.update(
+            bio=other.bio if shown("bio") else None, hometown=other.hometown if shown("hometown") else None,
+            hobbies=sorted(hobbies) if shown("hobbies") else None,
+            personality=other.big_five or None if shown("personality") else None,
+            societies=sorted(names[s] for s in society_ids_of(session).get(other.id, set())) if shown("societies") else None,
+        )
+    return card
+
+
+# ---------------------------------------------------------------------------
+# Connection lists (used by the People tab and the Profile tab)
+# ---------------------------------------------------------------------------
+
+
+def person_card(other: User) -> dict:
+    """The few fields shown in connection lists: no email, no LinkedIn link."""
+    return {"user_id": other.id, "name": other.name, "avatar_url": other.avatar_url, "headline": other.headline,
+            "is_alumni": other.is_alumni}
+
+
+def connection_lists(session: Session, user: User) -> dict:
+    """connections = accepted; incoming = waiting for my answer; outgoing = I asked (a decline is never shown)."""
+    blocked = blocked_with(session, user.id)
+    rows = session.exec(select(Connection).where((Connection.user_id == user.id) | (Connection.other_user_id == user.id))
+                        .order_by(Connection.id)).all()
+    users = {u.id: u for u in session.exec(select(User)).all()}
+    result = {"connections": [], "incoming": [], "outgoing": []}
+    for c in rows:
+        other_id = c.other_user_id if c.user_id == user.id else c.user_id
+        if other_id in blocked or users[other_id].account_status in SKIPPED_ACCOUNTS:
+            continue
+        item = {"connection_id": c.id, "kind": c.kind, "note": c.note, "created_at": c.created_at,
+                **person_card(users[other_id])}
+        state = connection_state(user.id, c)
+        if state == "connected":
+            result["connections"].append(item)
+        elif state == "incoming":
+            result["incoming"].append(item)
+        elif state == "requested":
+            result["outgoing"].append(item)
+    return result

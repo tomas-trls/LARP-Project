@@ -1,0 +1,123 @@
+[
+ {
+  "name": "Life Science Society",
+  "category": "Academic",
+  "match_words": [
+   "life science society"
+  ]
+ },
+ {
+  "name": "Biomed Society",
+  "category": "Academic",
+  "match_words": [
+   "biomed soc"
+  ]
+ },
+ {
+  "name": "Business Society",
+  "category": "Academic",
+  "match_words": [
+   "ucl business society"
+  ]
+ },
+ {
+  "name": "World History Society",
+  "category": "Academic",
+  "match_words": [
+   "world history society"
+  ]
+ },
+ {
+  "name": "Gaming Society",
+  "category": "Hobbies",
+  "match_words": [
+   "gaming soc"
+  ]
+ },
+ {
+  "name": "Board Games Society",
+  "category": "Hobbies",
+  "match_words": [
+   "board games society"
+  ]
+ },
+ {
+  "name": "Photography Society",
+  "category": "Arts & media",
+  "match_words": [
+   "photo soc"
+  ]
+ },
+ {
+  "name": "Comedy Club",
+  "category": "Arts & media",
+  "match_words": [
+   "comedy club"
+  ]
+ },
+ {
+  "name": "Writers' Society",
+  "category": "Arts & media",
+  "match_words": [
+   "writers' soc",
+   "writers' society"
+  ]
+ },
+ {
+  "name": "Film Society",
+  "category": "Arts & media",
+  "match_words": [
+   "filmsoc"
+  ]
+ },
+ {
+  "name": "Music Society",
+  "category": "Arts & media",
+  "match_words": [
+   "music society"
+  ]
+ },
+ {
+  "name": "Drama Society",
+  "category": "Arts & media",
+  "match_words": [
+   "drama society",
+   "drama x writers"
+  ]
+ },
+ {
+  "name": "Nordic Society",
+  "category": "Cultural",
+  "match_words": [
+   "nordic soc"
+  ]
+ },
+ {
+  "name": "Commuters' Network",
+  "category": "Community",
+  "match_words": [
+   "commuters' network"
+  ]
+ },
+ {
+  "name": "ANZO",
+  "category": "Cultural",
+  "match_words": [
+   "anzo"
+  ]
+ },
+ {
+  "name": "Irish Society",
+  "category": "Cultural",
+  "match_words": [
+   "irish soc"
+  ]
+ },
+ {
+  "name": "Welsh Society",
+  "category": "Cultural",
+  "match_words": [
+   "welsh soc"
+  ]
+ }
+]

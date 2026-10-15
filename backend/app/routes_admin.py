@@ -17,6 +17,7 @@ from app.pipeline.claude_tagger import ClaudeTagger
 from app.jobs import refresh_jobs
 from app.pipeline.job_scraper import GradcrackerSource, SeedJobsSource
 from app.pipeline.runner import build_sources, refresh_events
+from app.pipeline.store import backfill_event_data
 
 router = APIRouter(prefix="/api/admin")
 
@@ -35,7 +36,9 @@ def refresh(session: Session = Depends(get_session)):
     """
     live = not settings.DEMO_MODE
     tagger = ClaudeTagger() if live else None
-    return {"live": live, **refresh_events(session, build_sources(live=live), tagger=tagger)}
+    report = refresh_events(session, build_sources(live=live), tagger=tagger)
+    backfill_event_data(session)  # link society events to their society and set categories
+    return {"live": live, **report}
 
 
 class ReportDecisionIn(BaseModel):

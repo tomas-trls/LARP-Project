@@ -22,7 +22,9 @@ from app.pipeline.runner import build_sources, refresh_events
 from app.pipeline.store import backfill_event_data
 from app.seed_career import load_career_data
 from app.seed_events import SEED_DIR, load_test_events, load_test_venues, load_venues
+from app.seed_people import load_people_details
 from app.seed_profiles import SEED_PASSWORD, load_profiles
+from app.seed_societies import load_societies
 from app.seed_tags import load_tags
 
 
@@ -37,6 +39,8 @@ def reset_db(with_test_data: bool = False):
         tags = load_tags(session)
         career = load_career_data(session)
         students = load_profiles(session)
+        societies = load_societies(session)  # the societies named in the real events
+        people = load_people_details(session)  # bios, skills, routes, alumni and connections for the invented people
         matches = rebuild_match_cache(session)
 
         # Real events: the hand-checked file, put through the same pipeline as live events (offline, no Claude).
@@ -50,11 +54,12 @@ def reset_db(with_test_data: bool = False):
         if with_test_data or (events == 0 and venues == 0):  # nothing real yet: fall back so the app is not empty
             test_events, test_venues = load_test_events(session), load_test_venues(session)
 
-        backfill_event_data(session)  # category (opportunity / social) and skills for every event
+        backfill_event_data(session)  # society events are linked to their society; category (opportunity / social) and skills for every event
         jobs = refresh_jobs(session, [SeedJobsSource()])  # the invented demo jobs (no internet)
 
     print(f"Database reset: {tags} tags, {students} students (including 2 demo accounts) loaded.")
     print(f"Career data: {career['skills']} skills, {career['roles']} roles, {career['work_values']} work values, {career['badges']} badges.")
+    print(f"Societies: {societies} loaded. People details: {people['students']} students filled in, {people['alumni']} invented alumni, {people['connections']} connections.")
     print(f"Loaded {events} real curated events and {venues} real venues.")
     if test_events or test_venues:
         print(f"Also loaded {test_events} INVENTED test events and {test_venues} invented test venues.")

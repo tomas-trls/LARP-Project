@@ -257,3 +257,47 @@ All routes need a login token (the moderator routes need the admin key instead).
 **Also added:** `notifications.py` (a small helper that respects each student's alert settings; the full notification routes come with Messages) and the `noshowflag` table. No existing columns changed, so no `reset_db` is needed (the new table is created on startup).
 
 Not built yet: group chat messages (Messages stage), the Claude conversation starter, "pair up" via `EventPair` (replaced by Event Groups, to be removed), and recommended societies in People -> Social (Societies stage).
+
+### P3 – Societies, Messages and Profile summary (done, built in one push)
+All routes need a login token unless marked admin.
+
+**Societies (a read-only view)**
+
+LARP does not create or run societies. The Societies tab shows the societies that appear in the real events taken from the Students' Union website, and the events linked to the ones a student says they are in.
+
+| Route | What it does |
+|---|---|
+| `GET /api/societies` | The societies LARP knows about (mine first), with member count and how many events are coming up |
+| `GET /api/societies/events?scope=` | Upcoming events from the societies I am in (`scope=mine`, the default) or from all of them (`scope=all`). Each has a why line |
+| `GET /api/societies/{id}` | One society and its upcoming events |
+| `PUT` / `DELETE /api/societies/{id}/membership` | Say "I'm in this society" (self-reported: LARP cannot see the Students' Union member lists) |
+
+The society list (`seed/societies.json`) holds only names that appear in the real event titles, plus the words used to spot them (for example "gaming soc"). Nothing else about a society is invented: no descriptions, prices or links. An event whose title contains one of those words is linked to the society. Social events become `society` events; career events (panels, fairs) stay career events but also show on the society's page. An event run by several societies is linked to the first one in the list. This happens on startup, in `reset_db`, and after `POST /api/admin/refresh-events`, so Home's Societies filter works.
+
+An earlier version of this push had society roles, applications, announcements, committee members and recommendations. They were removed because LARP is not running societies. The tables for them (`societyrole`, `societyroleapplication`, `societyannouncement`, `societytag`, `societyskill`, `societyworkvalue`) still exist but nothing uses them: they are on the clean-up list.
+
+**Messages and notifications**
+
+| Route | What it does |
+|---|---|
+| `GET /api/conversations` | My chats, latest first, with `unread` per chat and `unread_total` for the tab badge |
+| `POST /api/conversations` | Open the one-to-one chat with a **connection** (anyone else gets 403) |
+| `GET /api/conversations/{id}/messages?after=` | Messages oldest first. The front end polls with `after=<last message id>`. Reading marks the chat read |
+| `POST /api/conversations/{id}/messages` | Send (1 to 1000 characters) |
+| `PUT /api/conversations/{id}` | Mute or unmute |
+| `GET /api/notifications`, `PUT /api/notifications/{id}/read`, `POST /api/notifications/read-all` | The alerts list and marking read |
+| `GET` / `PUT /api/notifications/preferences` | Switch each kind (`match`, `message`, `event`, `role`) on or off |
+
+Rules (design decisions, section 6): only chats between mutual connections and Event Group chats. A group chat appears once the group has 3 people; who may read it is decided by the group as it is now, so leaving removes access at once; below 3 people it can be read but not written to. Removing a connection or blocking stops new messages (blocking also hides the chat). A new message makes one alert per chat until the chat is read; muted chats and switched-off kinds make no alert. A message can be reported with `POST /api/reports {message_id}`; the report is about the sender.
+
+**People profile view and conversation starters:** `GET /api/people/{user_id}?view=career|social` shows another student's profile. The career view has experience, education and skills; the social view has bio, hometown, hobbies, personality and societies. The two never mix, fields the person hides are left out, and contact details are never shown. Each includes a `starter`: one friendly opening line built only from what the two share (hobbies and societies for social; their role and shared skills for career). With an API key and `DEMO_MODE=false` Claude words it (only first names and those facts are sent, and the answer is saved so each pair is asked once); otherwise a template is used.
+
+**Profile summary:** `GET /api/profile/summary` returns the user header, stats (events attended, connections, societies, event groups), **`connections`: who you are connected with** (name, headline, kind, when you connected) and `requests_waiting`, badges (earned, locked with progress, `newly_earned`), the active route with its five category scores, saved routes, settings (theme, connection style, hidden fields, visa flag, alert settings) and profile progress. Badges are worked out from what the student has really done (`badges.py`) and saved the first time the rule is met, with a notification; they are checked when the summary is opened.
+
+Badges: the two society badges from the first design (Data Science Soc, Entrepreneurs) were replaced by **Society member** (say you are in a society) and **Group goer** (join an Event Group), because those societies do not exist in the real events.
+
+**The invented people were updated** (`seed/people_extra.json`, loaded by `seed_people.py` in `reset_db`): every student now has a bio, hometown, education, experience, skills, a Big Five result, the societies they are in and saved career routes (the first is active, with its five scores); a few hide a field or need visa sponsorship. There are ten invented alumni with jobs in popular roles and a monthly request limit (one allows only 1 request, so the limit can be demonstrated), plus 19 connections (accepted and pending) and a few follows. The demo account `demo.main@ucl.ac.uk` is connected with two students and an alumnus, has two requests waiting and two sent, and `demo.canary@ucl.ac.uk` has a social circle. Everyone uses the password `demo1234`.
+
+No table changed, so no migration is needed, but run `reset_db` once to load the societies and the updated people.
+
+Still to do after the roadmap: delete `UserNeed`, `EventPair` and the old `User` columns, retire LinkedIn Max, the Monday digest email, and update the README's "Not yet reflected" items.

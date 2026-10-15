@@ -1,0 +1,1679 @@
+{
+ "students": {
+  "ava.test01@ucl.ac.uk": {
+   "bio": "Economics student who likes markets and long runs.",
+   "hometown": "Manchester",
+   "education": [
+    {
+     "degree": "BSc Economics",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Summer Intern",
+     "organisation": "Northgate Partners",
+     "kind": "internship",
+     "description": "Helped analyse small-cap equities in Excel",
+     "start": "2025-06",
+     "end": "2025-09"
+    }
+   ],
+   "skills": [
+    "Excel",
+    "Financial modelling",
+    "Written communication"
+   ],
+   "routes": [
+    "Investment Banking Analyst",
+    "Financial Analyst"
+   ],
+   "societies": [
+    "Business Society"
+   ],
+   "big_five": {
+    "extraversion": 3.5,
+    "agreeableness": 3.8,
+    "conscientiousness": 4.5,
+    "neuroticism": 2.6,
+    "openness": 3.4
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "ben.test02@ucl.ac.uk": {
+   "bio": "Statistics second-year who enjoys puzzles and the gym.",
+   "hometown": "Leeds",
+   "education": [
+    {
+     "degree": "BSc Statistical Science",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Statistics",
+    "Python",
+    "Data analysis"
+   ],
+   "routes": [
+    "Data Analyst"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 2.4,
+    "agreeableness": 3.5,
+    "conscientiousness": 4.2,
+    "neuroticism": 3.0,
+    "openness": 3.8
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "chloe.test03@ucl.ac.uk": {
+   "bio": "Case competition finalist, always up for a pub quiz.",
+   "hometown": "Bristol",
+   "education": [
+    {
+     "degree": "BSc Management Science",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Case Competition Finalist",
+     "organisation": "UCL Business Society",
+     "kind": "society",
+     "description": "Team of 4 presenting to a panel",
+     "start": "2025-02",
+     "end": "2025-03"
+    }
+   ],
+   "skills": [
+    "Presentation skills",
+    "Strategy",
+    "Teamwork"
+   ],
+   "routes": [
+    "Management Consultant",
+    "Strategy Consultant"
+   ],
+   "societies": [
+    "Business Society"
+   ],
+   "big_five": {
+    "extraversion": 4.2,
+    "agreeableness": 4.0,
+    "conscientiousness": 4.0,
+    "neuroticism": 2.4,
+    "openness": 3.6
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "dev.test04@ucl.ac.uk": {
+   "bio": "Back in education after two years in the City.",
+   "hometown": "Pune",
+   "education": [
+    {
+     "degree": "MSc Financial Mathematics",
+     "grade": "Merit"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Junior Analyst",
+     "organisation": "Halden Asset Partners",
+     "kind": "job",
+     "description": "Built Python risk reports for portfolio managers",
+     "start": "2022-09",
+     "end": "2024-08"
+    }
+   ],
+   "skills": [
+    "Python",
+    "SQL",
+    "Financial modelling",
+    "Statistics"
+   ],
+   "routes": [
+    "Quantitative Analyst",
+    "Risk Analyst"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 2.8,
+    "agreeableness": 3.4,
+    "conscientiousness": 4.6,
+    "neuroticism": 2.8,
+    "openness": 3.9
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": true
+  },
+  "elena.test05@ucl.ac.uk": {
+   "bio": "Career-changer from banking into asset management.",
+   "hometown": "Gothenburg",
+   "education": [
+    {
+     "degree": "MSc Finance",
+     "grade": "Merit"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Banking Associate",
+     "organisation": "Fjord Bank",
+     "kind": "job",
+     "description": "Credit analysis and client reports",
+     "start": "2021-09",
+     "end": "2024-07"
+    }
+   ],
+   "skills": [
+    "Excel",
+    "Financial modelling",
+    "Negotiation and sales"
+   ],
+   "routes": [
+    "Asset Management Analyst",
+    "Investment Banking Analyst"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 3.2,
+    "agreeableness": 3.6,
+    "conscientiousness": 4.4,
+    "neuroticism": 2.9,
+    "openness": 3.2
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": true
+  },
+  "felix.test06@ucl.ac.uk": {
+   "bio": "Economics and business, mostly found at five-a-side.",
+   "hometown": "Hamburg",
+   "education": [
+    {
+     "degree": "BSc Economics and Business",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Excel",
+    "Teamwork"
+   ],
+   "routes": [
+    "Business Analyst"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 4.6,
+    "agreeableness": 3.9,
+    "conscientiousness": 3.0,
+    "neuroticism": 2.2,
+    "openness": 3.0
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "grace.test07@ucl.ac.uk": {
+   "bio": "First-year computer scientist who loves board games.",
+   "hometown": "Aberdeen",
+   "education": [
+    {
+     "degree": "BSc Computer Science",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Python",
+    "Programming"
+   ],
+   "routes": [
+    "Software Engineer"
+   ],
+   "societies": [
+    "Board Games Society",
+    "Gaming Society"
+   ],
+   "big_five": {
+    "extraversion": 2.6,
+    "agreeableness": 4.0,
+    "conscientiousness": 3.6,
+    "neuroticism": 3.2,
+    "openness": 4.3
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "hamza.test08@ucl.ac.uk": {
+   "bio": "Placement year at a start-up; building side projects.",
+   "hometown": "Birmingham",
+   "education": [
+    {
+     "degree": "BSc Computer Science",
+     "grade": "First"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Software Placement",
+     "organisation": "Lattice Labs",
+     "kind": "internship",
+     "description": "Backend work in Python and SQL",
+     "start": "2024-07",
+     "end": "2025-06"
+    }
+   ],
+   "skills": [
+    "Python",
+    "SQL",
+    "Programming",
+    "Cloud and DevOps"
+   ],
+   "routes": [
+    "Software Engineer",
+    "Machine Learning Engineer"
+   ],
+   "societies": [
+    "Gaming Society"
+   ],
+   "big_five": {
+    "extraversion": 2.2,
+    "agreeableness": 3.4,
+    "conscientiousness": 4.5,
+    "neuroticism": 2.9,
+    "openness": 4.1
+   },
+   "hidden_fields": [
+    "hobbies"
+   ],
+   "needs_visa_sponsorship": false
+  },
+  "isla.test09@ucl.ac.uk": {
+   "bio": "Aspiring lawyer, writes in her spare time.",
+   "hometown": "Edinburgh",
+   "education": [
+    {
+     "degree": "LLB Law",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Work Shadowing",
+     "organisation": "Calder & Rowe LLP",
+     "kind": "internship",
+     "description": "Two weeks shadowing a commercial team",
+     "start": "2025-07",
+     "end": "2025-07"
+    }
+   ],
+   "skills": [
+    "Written communication",
+    "Research"
+   ],
+   "routes": [
+    "Policy Advisor"
+   ],
+   "societies": [
+    "Writers' Society",
+    "Drama Society"
+   ],
+   "big_five": {
+    "extraversion": 3.4,
+    "agreeableness": 4.1,
+    "conscientiousness": 4.3,
+    "neuroticism": 3.1,
+    "openness": 4.4
+   },
+   "hidden_fields": [
+    "experience"
+   ],
+   "needs_visa_sponsorship": false
+  },
+  "jonas.test10@ucl.ac.uk": {
+   "bio": "Runs a small online shop and wants to start something bigger.",
+   "hometown": "Munich",
+   "education": [
+    {
+     "degree": "BSc Management",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Founder",
+     "organisation": "Alpenkiste Online",
+     "kind": "project",
+     "description": "Ran a small online shop selling hiking gear",
+     "start": "2024-01",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Marketing",
+    "Negotiation and sales",
+    "Entrepreneurship"
+   ],
+   "routes": [
+    "Management Consultant",
+    "Product Manager"
+   ],
+   "societies": [
+    "Business Society"
+   ],
+   "big_five": {
+    "extraversion": 4.4,
+    "agreeableness": 3.5,
+    "conscientiousness": 3.8,
+    "neuroticism": 2.5,
+    "openness": 4.0
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "kavya.test11@ucl.ac.uk": {
+   "bio": "Psychology second-year, coffee shop explorer.",
+   "hometown": "Chennai",
+   "education": [
+    {
+     "degree": "BSc Psychology",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Research",
+    "Communication"
+   ],
+   "routes": [
+    "UX Researcher"
+   ],
+   "societies": [
+    "Music Society",
+    "Film Society"
+   ],
+   "big_five": {
+    "extraversion": 3.3,
+    "agreeableness": 4.6,
+    "conscientiousness": 3.5,
+    "neuroticism": 3.4,
+    "openness": 4.2
+   },
+   "hidden_fields": [
+    "personality"
+   ],
+   "needs_visa_sponsorship": false
+  },
+  "liam.test12@ucl.ac.uk": {
+   "bio": "Architecture first-year, camera always in the bag.",
+   "hometown": "Dublin",
+   "education": [
+    {
+     "degree": "BA Architecture",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Design tools"
+   ],
+   "routes": [
+    "Architect"
+   ],
+   "societies": [
+    "Photography Society",
+    "Film Society"
+   ],
+   "big_five": {
+    "extraversion": 3.9,
+    "agreeableness": 3.7,
+    "conscientiousness": 3.1,
+    "neuroticism": 2.8,
+    "openness": 4.7
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "mei.test13@ucl.ac.uk": {
+   "bio": "Lab placement last year, now thinking about health data.",
+   "hometown": "Osaka",
+   "education": [
+    {
+     "degree": "BSc Biomedical Science",
+     "grade": "First"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Lab Placement",
+     "organisation": "St Aldric Hospital",
+     "kind": "internship",
+     "description": "Prepared samples and recorded results",
+     "start": "2025-06",
+     "end": "2025-09"
+    }
+   ],
+   "skills": [
+    "Research",
+    "Healthcare knowledge",
+    "Statistics"
+   ],
+   "routes": [
+    "Health Data Analyst",
+    "Biomedical Scientist"
+   ],
+   "societies": [
+    "Life Science Society",
+    "Biomed Society"
+   ],
+   "big_five": {
+    "extraversion": 2.9,
+    "agreeableness": 3.9,
+    "conscientiousness": 4.6,
+    "neuroticism": 2.7,
+    "openness": 3.8
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "noah.test14@ucl.ac.uk": {
+   "bio": "Business analytics, five-a-side captain.",
+   "hometown": "Cardiff",
+   "education": [
+    {
+     "degree": "BSc Business Analytics",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Excel",
+    "Data analysis"
+   ],
+   "routes": [
+    "Business Analyst"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 4.7,
+    "agreeableness": 3.8,
+    "conscientiousness": 2.9,
+    "neuroticism": 2.1,
+    "openness": 3.1
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "olivia.test15@ucl.ac.uk": {
+   "bio": "Sustainability MSc with NGO experience.",
+   "hometown": "Oslo",
+   "education": [
+    {
+     "degree": "MSc Sustainability",
+     "grade": "Merit"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Sustainability Analyst",
+     "organisation": "Greenfield Trust",
+     "kind": "job",
+     "description": "Carbon reporting for a small NGO",
+     "start": "2023-09",
+     "end": "2024-08"
+    }
+   ],
+   "skills": [
+    "Sustainability knowledge",
+    "Research",
+    "Written communication"
+   ],
+   "routes": [
+    "Sustainability Analyst",
+    "ESG Analyst"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 3.0,
+    "agreeableness": 4.3,
+    "conscientiousness": 4.4,
+    "neuroticism": 2.6,
+    "openness": 4.0
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "priya.test16@ucl.ac.uk": {
+   "bio": "Civil engineer who plays padel on weekends.",
+   "hometown": "Mumbai",
+   "education": [
+    {
+     "degree": "BEng Civil Engineering",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Site Visit Programme",
+     "organisation": "Brickfield Construction",
+     "kind": "internship",
+     "description": "Shadowed site engineers",
+     "start": "2025-07",
+     "end": "2025-08"
+    }
+   ],
+   "skills": [
+    "Project management",
+    "Teamwork"
+   ],
+   "routes": [
+    "Project Manager"
+   ],
+   "societies": [
+    "Board Games Society"
+   ],
+   "big_five": {
+    "extraversion": 3.8,
+    "agreeableness": 4.0,
+    "conscientiousness": 4.1,
+    "neuroticism": 2.5,
+    "openness": 3.3
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "quinn.test17@ucl.ac.uk": {
+   "bio": "English student, writes for the student paper.",
+   "hometown": "Lagos",
+   "education": [
+    {
+     "degree": "BA English",
+     "grade": null
+    }
+   ],
+   "experience": [
+    {
+     "title": "Features Writer",
+     "organisation": "The Quad (student paper)",
+     "kind": "society",
+     "description": "Weekly features and interviews",
+     "start": "2025-01",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Written communication",
+    "Communication"
+   ],
+   "routes": [
+    "Journalist"
+   ],
+   "societies": [
+    "Writers' Society",
+    "Comedy Club",
+    "Drama Society"
+   ],
+   "big_five": {
+    "extraversion": 4.1,
+    "agreeableness": 4.2,
+    "conscientiousness": 3.3,
+    "neuroticism": 3.0,
+    "openness": 4.6
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "rafael.test18@ucl.ac.uk": {
+   "bio": "First-year economist, football and nights out.",
+   "hometown": "Madrid",
+   "education": [
+    {
+     "degree": "BSc Economics",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Excel"
+   ],
+   "routes": [
+    "Financial Analyst"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 4.8,
+    "agreeableness": 3.7,
+    "conscientiousness": 2.7,
+    "neuroticism": 2.3,
+    "openness": 3.0
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "sofia.test19@ucl.ac.uk": {
+   "bio": "Data science, interested in retail analytics.",
+   "hometown": "Rome",
+   "education": [
+    {
+     "degree": "BSc Data Science",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Data Intern",
+     "organisation": "Marlowe Retail",
+     "kind": "internship",
+     "description": "Built dashboards in Python and SQL",
+     "start": "2025-06",
+     "end": "2025-09"
+    }
+   ],
+   "skills": [
+    "Python",
+    "SQL",
+    "Data visualisation",
+    "Machine learning"
+   ],
+   "routes": [
+    "Data Analyst",
+    "Data Scientist"
+   ],
+   "societies": [
+    "Gaming Society"
+   ],
+   "big_five": {
+    "extraversion": 3.1,
+    "agreeableness": 3.9,
+    "conscientiousness": 4.3,
+    "neuroticism": 2.8,
+    "openness": 4.2
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "tariq.test20@ucl.ac.uk": {
+   "bio": "Founded a food delivery start-up before the MSc.",
+   "hometown": "Amman",
+   "education": [
+    {
+     "degree": "MSc Entrepreneurship",
+     "grade": "Merit"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Founder",
+     "organisation": "Zaytun Eats",
+     "kind": "job",
+     "description": "Ran a food delivery start-up with five staff",
+     "start": "2021-06",
+     "end": "2024-05"
+    }
+   ],
+   "skills": [
+    "Entrepreneurship",
+    "Led a team",
+    "Negotiation and sales"
+   ],
+   "routes": [
+    "Venture Capital Analyst",
+    "Product Manager"
+   ],
+   "societies": [
+    "Business Society"
+   ],
+   "big_five": {
+    "extraversion": 4.3,
+    "agreeableness": 3.4,
+    "conscientiousness": 4.0,
+    "neuroticism": 2.4,
+    "openness": 4.1
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": true
+  },
+  "uma.test21@ucl.ac.uk": {
+   "bio": "Medical student, runs to clear her head.",
+   "hometown": "Kuala Lumpur",
+   "education": [
+    {
+     "degree": "MBBS Medicine",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Healthcare knowledge",
+    "Research"
+   ],
+   "routes": [
+    "Clinical Research Associate"
+   ],
+   "societies": [
+    "Life Science Society"
+   ],
+   "big_five": {
+    "extraversion": 3.0,
+    "agreeableness": 4.4,
+    "conscientiousness": 4.7,
+    "neuroticism": 3.3,
+    "openness": 3.7
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "victor.test22@ucl.ac.uk": {
+   "bio": "Politics student, parliamentary intern, chess regular.",
+   "hometown": "Lyon",
+   "education": [
+    {
+     "degree": "BSc Politics and International Relations",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Parliamentary Intern",
+     "organisation": "Office of a Member of Parliament",
+     "kind": "internship",
+     "description": "Constituency casework and research",
+     "start": "2025-06",
+     "end": "2025-09"
+    }
+   ],
+   "skills": [
+    "Policy analysis",
+    "Research",
+    "Written communication"
+   ],
+   "routes": [
+    "Parliamentary Researcher",
+    "Policy Advisor"
+   ],
+   "societies": [
+    "World History Society"
+   ],
+   "big_five": {
+    "extraversion": 3.5,
+    "agreeableness": 3.8,
+    "conscientiousness": 4.2,
+    "neuroticism": 2.7,
+    "openness": 4.2
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "wen.test23@ucl.ac.uk": {
+   "bio": "MSc computer science, lives for strategy games.",
+   "hometown": "Chengdu",
+   "education": [
+    {
+     "degree": "MSc Computer Science",
+     "grade": "Merit"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Developer",
+     "organisation": "Lotus Apps",
+     "kind": "job",
+     "description": "Mobile app development in Python and cloud",
+     "start": "2022-07",
+     "end": "2024-08"
+    }
+   ],
+   "skills": [
+    "Python",
+    "Programming",
+    "Cloud and DevOps"
+   ],
+   "routes": [
+    "Software Engineer",
+    "Data Engineer"
+   ],
+   "societies": [
+    "Gaming Society",
+    "Board Games Society"
+   ],
+   "big_five": {
+    "extraversion": 2.3,
+    "agreeableness": 3.6,
+    "conscientiousness": 4.0,
+    "neuroticism": 3.1,
+    "openness": 3.9
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": true
+  },
+  "xander.test24@ucl.ac.uk": {
+   "bio": "Geography, always outside.",
+   "hometown": "Sheffield",
+   "education": [
+    {
+     "degree": "BSc Geography",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Research"
+   ],
+   "routes": [
+    "Environmental Consultant"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 4.4,
+    "agreeableness": 4.0,
+    "conscientiousness": 3.2,
+    "neuroticism": 2.4,
+    "openness": 3.8
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "yasmin.test25@ucl.ac.uk": {
+   "bio": "Economics and business, loves design and food.",
+   "hometown": "Cairo",
+   "education": [
+    {
+     "degree": "BSc Economics and Business",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Consulting Analyst",
+     "organisation": "UCL Business Society",
+     "kind": "society",
+     "description": "Client project for a local charity",
+     "start": "2025-01",
+     "end": "2025-05"
+    }
+   ],
+   "skills": [
+    "Strategy",
+    "Presentation skills",
+    "Design tools"
+   ],
+   "routes": [
+    "Associate Consultant",
+    "Product Manager"
+   ],
+   "societies": [
+    "Business Society",
+    "Photography Society"
+   ],
+   "big_five": {
+    "extraversion": 3.6,
+    "agreeableness": 4.1,
+    "conscientiousness": 3.9,
+    "neuroticism": 2.9,
+    "openness": 4.0
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "zane.test26@ucl.ac.uk": {
+   "bio": "History first-year, gigs and comedy nights.",
+   "hometown": "Glasgow",
+   "education": [
+    {
+     "degree": "BA History",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Research",
+    "Written communication"
+   ],
+   "routes": [
+    "Editor"
+   ],
+   "societies": [
+    "World History Society",
+    "Comedy Club",
+    "Music Society"
+   ],
+   "big_five": {
+    "extraversion": 4.0,
+    "agreeableness": 4.0,
+    "conscientiousness": 3.0,
+    "neuroticism": 3.0,
+    "openness": 4.5
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "aisha.test27@ucl.ac.uk": {
+   "bio": "Biochemical engineering with a pharma placement.",
+   "hometown": "Dhaka",
+   "education": [
+    {
+     "degree": "MEng Biochemical Engineering",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Industrial Placement",
+     "organisation": "Calder Pharma",
+     "kind": "internship",
+     "description": "Process improvement on a production line",
+     "start": "2024-07",
+     "end": "2025-06"
+    }
+   ],
+   "skills": [
+    "Operations and logistics",
+    "Project management",
+    "Healthcare knowledge"
+   ],
+   "routes": [
+    "Process Improvement Analyst",
+    "Medtech Product Manager"
+   ],
+   "societies": [
+    "Biomed Society"
+   ],
+   "big_five": {
+    "extraversion": 3.2,
+    "agreeableness": 3.9,
+    "conscientiousness": 4.5,
+    "neuroticism": 2.6,
+    "openness": 3.7
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "bruno.test28@ucl.ac.uk": {
+   "bio": "Management science, investment society committee.",
+   "hometown": "Sao Paulo",
+   "education": [
+    {
+     "degree": "BSc Management Science",
+     "grade": "First"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Committee Member",
+     "organisation": "Investment Society",
+     "kind": "society",
+     "description": "Ran the stock pitch competition",
+     "start": "2024-10",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Financial modelling",
+    "Excel",
+    "Led a team"
+   ],
+   "routes": [
+    "Investment Banking Analyst",
+    "Private Equity Analyst"
+   ],
+   "societies": [
+    "Business Society"
+   ],
+   "big_five": {
+    "extraversion": 4.0,
+    "agreeableness": 3.5,
+    "conscientiousness": 4.4,
+    "neuroticism": 2.5,
+    "openness": 3.5
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "clara.test29@ucl.ac.uk": {
+   "bio": "Philosophy, board games and bookshops.",
+   "hometown": "Antwerp",
+   "education": [
+    {
+     "degree": "BA Philosophy",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Written communication",
+    "Research"
+   ],
+   "routes": [
+    "Policy Analyst"
+   ],
+   "societies": [
+    "Board Games Society",
+    "Writers' Society",
+    "World History Society"
+   ],
+   "big_five": {
+    "extraversion": 2.7,
+    "agreeableness": 4.3,
+    "conscientiousness": 3.6,
+    "neuroticism": 3.2,
+    "openness": 4.6
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "dmitri.test30@ucl.ac.uk": {
+   "bio": "Statistics, quant trading society, chess.",
+   "hometown": "Tallinn",
+   "education": [
+    {
+     "degree": "BSc Statistics",
+     "grade": "First"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Quant Trading Society Member",
+     "organisation": "Quant Trading Society",
+     "kind": "society",
+     "description": "Built a backtesting tool in Python",
+     "start": "2024-10",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Python",
+    "Statistics",
+    "Financial modelling"
+   ],
+   "routes": [
+    "Quantitative Analyst",
+    "Data Scientist"
+   ],
+   "societies": [],
+   "big_five": {
+    "extraversion": 2.2,
+    "agreeableness": 3.3,
+    "conscientiousness": 4.6,
+    "neuroticism": 2.9,
+    "openness": 3.8
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "demo.main@ucl.ac.uk": {
+   "bio": "Demo account: a third-year economist aiming at data and finance roles.",
+   "hometown": "Nottingham",
+   "education": [
+    {
+     "degree": "BSc Economics",
+     "grade": "2:1"
+    }
+   ],
+   "experience": [
+    {
+     "title": "Summer Intern",
+     "organisation": "Harbour Street Capital",
+     "kind": "internship",
+     "description": "Excel models for a small investment firm",
+     "start": "2025-06",
+     "end": "2025-09"
+    }
+   ],
+   "skills": [
+    "Excel",
+    "Statistics",
+    "Written communication",
+    "Presentation skills"
+   ],
+   "routes": [
+    "Data Analyst",
+    "Investment Banking Analyst"
+   ],
+   "societies": [
+    "Business Society"
+   ],
+   "big_five": {
+    "extraversion": 3.6,
+    "agreeableness": 3.9,
+    "conscientiousness": 4.1,
+    "neuroticism": 2.7,
+    "openness": 3.7
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  },
+  "demo.canary@ucl.ac.uk": {
+   "bio": "Demo account: a second-year who is here for the social side.",
+   "hometown": "Brighton",
+   "education": [
+    {
+     "degree": "BSc Business",
+     "grade": null
+    }
+   ],
+   "experience": [],
+   "skills": [
+    "Communication",
+    "Teamwork"
+   ],
+   "routes": [
+    "Digital Marketing Executive"
+   ],
+   "societies": [
+    "Music Society",
+    "Film Society",
+    "Comedy Club"
+   ],
+   "big_five": {
+    "extraversion": 4.5,
+    "agreeableness": 4.2,
+    "conscientiousness": 3.0,
+    "neuroticism": 2.5,
+    "openness": 4.3
+   },
+   "hidden_fields": [],
+   "needs_visa_sponsorship": false
+  }
+ },
+ "alumni": [
+  {
+   "name": "Samira Okonkwo",
+   "ucl_email": "samira.alumni01@ucl.ac.uk",
+   "grad_year": 2023,
+   "degree": "BSc Economics",
+   "headline": "Data Analyst at Fernlight Analytics",
+   "experience": [
+    {
+     "title": "Data Analyst",
+     "organisation": "Fernlight Analytics",
+     "kind": "job",
+     "description": "SQL and dashboards for retail clients",
+     "start": "2024-01",
+     "end": null
+    },
+    {
+     "title": "Analytics Intern",
+     "organisation": "Fernlight Analytics",
+     "kind": "internship",
+     "description": "Excel and SQL",
+     "start": "2022-07",
+     "end": "2022-09"
+    }
+   ],
+   "skills": [
+    "SQL",
+    "Python",
+    "Data visualisation",
+    "Excel"
+   ],
+   "tags": [
+    "data analytics",
+    "running",
+    "food and cafes"
+   ],
+   "max_requests_per_month": 3,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Theo Marchetti",
+   "ucl_email": "theo.alumni02@ucl.ac.uk",
+   "grad_year": 2021,
+   "degree": "BSc Statistics",
+   "headline": "Senior Data Analyst at Northgate Retail",
+   "experience": [
+    {
+     "title": "Senior Data Analyst",
+     "organisation": "Northgate Retail",
+     "kind": "job",
+     "description": "Led a team of 3 analysts",
+     "start": "2023-03",
+     "end": null
+    },
+    {
+     "title": "Data Analyst",
+     "organisation": "Northgate Retail",
+     "kind": "job",
+     "description": "Reporting in SQL",
+     "start": "2021-09",
+     "end": "2023-02"
+    }
+   ],
+   "skills": [
+    "SQL",
+    "Python",
+    "Statistics",
+    "Led a team"
+   ],
+   "tags": [
+    "data analytics",
+    "chess",
+    "gym"
+   ],
+   "max_requests_per_month": 2,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Hannah Lowe",
+   "ucl_email": "hannah.alumni03@ucl.ac.uk",
+   "grad_year": 2022,
+   "degree": "BSc Computer Science",
+   "headline": "Product Manager at Kiln Software",
+   "experience": [
+    {
+     "title": "Product Manager",
+     "organisation": "Kiln Software",
+     "kind": "job",
+     "description": "Owns the onboarding product",
+     "start": "2024-02",
+     "end": null
+    },
+    {
+     "title": "Associate Product Manager",
+     "organisation": "Kiln Software",
+     "kind": "job",
+     "description": "Roadmap and user research",
+     "start": "2022-09",
+     "end": "2024-01"
+    }
+   ],
+   "skills": [
+    "Product thinking",
+    "Stakeholder management",
+    "SQL"
+   ],
+   "tags": [
+    "product and design",
+    "software development",
+    "board games"
+   ],
+   "max_requests_per_month": 3,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Jamal Pryce",
+   "ucl_email": "jamal.alumni04@ucl.ac.uk",
+   "grad_year": 2022,
+   "degree": "BSc Economics",
+   "headline": "Investment Banking Analyst at Halcyon Capital",
+   "experience": [
+    {
+     "title": "Investment Banking Analyst",
+     "organisation": "Halcyon Capital",
+     "kind": "job",
+     "description": "M&A models and pitch books",
+     "start": "2022-09",
+     "end": null
+    },
+    {
+     "title": "Spring Intern",
+     "organisation": "Halcyon Capital",
+     "kind": "internship",
+     "description": "Financial modelling",
+     "start": "2021-04",
+     "end": "2021-04"
+    }
+   ],
+   "skills": [
+    "Financial modelling",
+    "Excel",
+    "Presentation skills"
+   ],
+   "tags": [
+    "finance",
+    "economics",
+    "tennis"
+   ],
+   "max_requests_per_month": 1,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Ingrid Solheim",
+   "ucl_email": "ingrid.alumni05@ucl.ac.uk",
+   "grad_year": 2020,
+   "degree": "BSc Management",
+   "headline": "Management Consultant at Brightwell Advisory",
+   "experience": [
+    {
+     "title": "Management Consultant",
+     "organisation": "Brightwell Advisory",
+     "kind": "job",
+     "description": "Strategy projects for public sector clients",
+     "start": "2022-09",
+     "end": null
+    },
+    {
+     "title": "Consulting Analyst",
+     "organisation": "Brightwell Advisory",
+     "kind": "job",
+     "description": "Research and analysis",
+     "start": "2020-09",
+     "end": "2022-08"
+    }
+   ],
+   "skills": [
+    "Strategy",
+    "Presentation skills",
+    "Stakeholder management"
+   ],
+   "tags": [
+    "consulting",
+    "running",
+    "museums and culture"
+   ],
+   "max_requests_per_month": 4,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Rohan Mistry",
+   "ucl_email": "rohan.alumni06@ucl.ac.uk",
+   "grad_year": 2023,
+   "degree": "BSc Computer Science",
+   "headline": "Software Engineer at Lattice Labs",
+   "experience": [
+    {
+     "title": "Software Engineer",
+     "organisation": "Lattice Labs",
+     "kind": "job",
+     "description": "Backend services in Python",
+     "start": "2023-09",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Python",
+    "Programming",
+    "Cloud and DevOps"
+   ],
+   "tags": [
+    "software development",
+    "video games",
+    "football"
+   ],
+   "max_requests_per_month": 3,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Beatrice Aldous",
+   "ucl_email": "beatrice.alumni07@ucl.ac.uk",
+   "grad_year": 2021,
+   "degree": "BA Politics",
+   "headline": "Policy Advisor at Civic Futures",
+   "experience": [
+    {
+     "title": "Policy Advisor",
+     "organisation": "Civic Futures",
+     "kind": "job",
+     "description": "Briefings for a parliamentary committee",
+     "start": "2023-01",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Policy analysis",
+    "Research",
+    "Written communication"
+   ],
+   "tags": [
+    "politics and policy",
+    "writing",
+    "museums and culture"
+   ],
+   "max_requests_per_month": 3,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Kwame Boateng",
+   "ucl_email": "kwame.alumni08@ucl.ac.uk",
+   "grad_year": 2022,
+   "degree": "MSc Sustainability",
+   "headline": "Sustainability Analyst at Greenfield ESG",
+   "experience": [
+    {
+     "title": "Sustainability Analyst",
+     "organisation": "Greenfield ESG",
+     "kind": "job",
+     "description": "ESG scoring for investors",
+     "start": "2022-10",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Sustainability knowledge",
+    "Data analysis",
+    "Research"
+   ],
+   "tags": [
+    "sustainability",
+    "parks and outdoors",
+    "basketball"
+   ],
+   "max_requests_per_month": 3,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Lucy Tran",
+   "ucl_email": "lucy.alumni09@ucl.ac.uk",
+   "grad_year": 2021,
+   "degree": "BSc Economics",
+   "headline": "Financial Analyst at Marlowe Group",
+   "experience": [
+    {
+     "title": "Financial Analyst",
+     "organisation": "Marlowe Group",
+     "kind": "job",
+     "description": "Budgeting and forecasting",
+     "start": "2021-09",
+     "end": null
+    }
+   ],
+   "skills": [
+    "Excel",
+    "Financial modelling"
+   ],
+   "tags": [
+    "finance",
+    "bowling and arcades",
+    "food and cafes"
+   ],
+   "max_requests_per_month": 3,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  },
+  {
+   "name": "Marcus Hale",
+   "ucl_email": "marcus.alumni10@ucl.ac.uk",
+   "grad_year": 2022,
+   "degree": "BSc Biomedical Science",
+   "headline": "Health Data Analyst at St Aldric Trust",
+   "experience": [
+    {
+     "title": "Health Data Analyst",
+     "organisation": "St Aldric Trust",
+     "kind": "job",
+     "description": "Patient flow reporting in SQL",
+     "start": "2022-09",
+     "end": null
+    }
+   ],
+   "skills": [
+    "SQL",
+    "Statistics",
+    "Healthcare knowledge"
+   ],
+   "tags": [
+    "healthcare",
+    "data analytics",
+    "running"
+   ],
+   "max_requests_per_month": 3,
+   "bio": "Invented alumni profile for testing.",
+   "hometown": "London"
+  }
+ ],
+ "connections": [
+  [
+   "demo.main@ucl.ac.uk",
+   "ava.test01@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ],
+  [
+   "chloe.test03@ucl.ac.uk",
+   "demo.main@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ],
+  [
+   "demo.main@ucl.ac.uk",
+   "jamal.alumni04@ucl.ac.uk",
+   "accepted",
+   "career",
+   "Hi Jamal, I'm aiming for banking and would love your advice."
+  ],
+  [
+   "dev.test04@ucl.ac.uk",
+   "demo.main@ucl.ac.uk",
+   "pending",
+   "career",
+   "Fancy comparing notes on finance applications?"
+  ],
+  [
+   "felix.test06@ucl.ac.uk",
+   "demo.main@ucl.ac.uk",
+   "pending",
+   "social",
+   null
+  ],
+  [
+   "demo.main@ucl.ac.uk",
+   "samira.alumni01@ucl.ac.uk",
+   "pending",
+   "career",
+   "Could I ask how you got into data analysis?"
+  ],
+  [
+   "kavya.test11@ucl.ac.uk",
+   "demo.canary@ucl.ac.uk",
+   "accepted",
+   "social",
+   null
+  ],
+  [
+   "demo.canary@ucl.ac.uk",
+   "liam.test12@ucl.ac.uk",
+   "accepted",
+   "social",
+   null
+  ],
+  [
+   "rafael.test18@ucl.ac.uk",
+   "demo.canary@ucl.ac.uk",
+   "pending",
+   "social",
+   null
+  ],
+  [
+   "ava.test01@ucl.ac.uk",
+   "chloe.test03@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ],
+  [
+   "ben.test02@ucl.ac.uk",
+   "dev.test04@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ],
+  [
+   "sofia.test19@ucl.ac.uk",
+   "hamza.test08@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ],
+  [
+   "grace.test07@ucl.ac.uk",
+   "wen.test23@ucl.ac.uk",
+   "accepted",
+   "social",
+   null
+  ],
+  [
+   "quinn.test17@ucl.ac.uk",
+   "zane.test26@ucl.ac.uk",
+   "accepted",
+   "social",
+   null
+  ],
+  [
+   "clara.test29@ucl.ac.uk",
+   "grace.test07@ucl.ac.uk",
+   "accepted",
+   "social",
+   null
+  ],
+  [
+   "noah.test14@ucl.ac.uk",
+   "rafael.test18@ucl.ac.uk",
+   "accepted",
+   "social",
+   null
+  ],
+  [
+   "bruno.test28@ucl.ac.uk",
+   "dmitri.test30@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ],
+  [
+   "tariq.test20@ucl.ac.uk",
+   "hannah.alumni03@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ],
+  [
+   "olivia.test15@ucl.ac.uk",
+   "kwame.alumni08@ucl.ac.uk",
+   "accepted",
+   "career",
+   null
+  ]
+ ],
+ "follows": [
+  [
+   "demo.canary@ucl.ac.uk",
+   "quinn.test17@ucl.ac.uk"
+  ],
+  [
+   "demo.canary@ucl.ac.uk",
+   "zane.test26@ucl.ac.uk"
+  ],
+  [
+   "kavya.test11@ucl.ac.uk",
+   "liam.test12@ucl.ac.uk"
+  ],
+  [
+   "grace.test07@ucl.ac.uk",
+   "sofia.test19@ucl.ac.uk"
+  ]
+ ]
+}
