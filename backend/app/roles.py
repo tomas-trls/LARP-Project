@@ -113,3 +113,24 @@ def _remember_alias(session: Session, key: str, role: Role) -> None:
     if session.get(RoleAlias, key) is None:
         session.add(RoleAlias(term=key, role_id=role.id))
         session.flush()
+
+
+def find_role(session: Session, title: str) -> Optional[Role]:
+    """The role a job title belongs to, or None. Unlike resolve_role this never creates a role and never calls Claude,
+    so it is safe to run over hundreds of job adverts.
+
+    'Graduate Software Engineer' belongs to 'Software Engineer' because the role's name appears inside the title
+    (the longest such name wins, so 'Data Analyst' beats 'Analyst').
+    """
+    key = clean_title(title).lower()
+    if not key:
+        return None
+    roles = [r for r in session.exec(select(Role)).all() if not r.is_custom]
+    by_name = {r.name.lower(): r for r in roles}
+    if key in by_name:
+        return by_name[key]
+    alias = session.get(RoleAlias, key)
+    if alias is not None:
+        return session.get(Role, alias.role_id)
+    inside = [r for r in roles if re.search(rf"(?<![a-z0-9]){re.escape(r.name.lower())}s?(?![a-z0-9])", key)]
+    return max(inside, key=lambda r: len(r.name)) if inside else None

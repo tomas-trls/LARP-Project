@@ -5,7 +5,7 @@ The rules (from the spec):
   - say who we are in the User-Agent, with a contact you set in .env (SCRAPER_CONTACT);
   - read robots.txt and do not fetch anything it disallows;
   - wait at least a second between requests to the same website;
-  - fetch event information only, never personal data.
+  - fetch event and job information only, never personal data.
 """
 
 import time
@@ -23,7 +23,7 @@ TIMEOUT_SECONDS = 20
 
 def user_agent() -> str:
     contact = SCRAPER_CONTACT or "no contact set"
-    return f"LARP-student-project/0.1 (UCL hackathon; reads public event pages only; contact: {contact})"
+    return f"LARP-student-project/0.1 (UCL hackathon; reads public event and job pages only; contact: {contact})"
 
 
 class PoliteFetcher:

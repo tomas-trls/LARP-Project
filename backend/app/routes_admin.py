@@ -10,6 +10,8 @@ from sqlmodel import Session
 from app import settings
 from app.database import get_session
 from app.pipeline.claude_tagger import ClaudeTagger
+from app.jobs import refresh_jobs
+from app.pipeline.job_scraper import GradcrackerSource, SeedJobsSource
 from app.pipeline.runner import build_sources, refresh_events
 
 router = APIRouter(prefix="/api/admin")
@@ -30,3 +32,15 @@ def refresh(session: Session = Depends(get_session)):
     live = not settings.DEMO_MODE
     tagger = ClaudeTagger() if live else None
     return {"live": live, **refresh_events(session, build_sources(live=live), tagger=tagger)}
+
+
+@router.post("/refresh-jobs", dependencies=[Depends(require_admin_key)])
+def refresh_job_listings(session: Session = Depends(get_session)):
+    """
+    Load job listings and return what happened.
+    With DEMO_MODE=true (the default) only the invented demo jobs are loaded: no internet.
+    With DEMO_MODE=false the polite Gradcracker scraper runs as well (robots.txt checked, slow on purpose).
+    """
+    live = not settings.DEMO_MODE
+    sources = [SeedJobsSource()] + ([GradcrackerSource()] if live else [])
+    return {"live": live, **refresh_jobs(session, sources)}

@@ -12,8 +12,9 @@ from typing import List, Optional
 
 from sqlmodel import Session, delete, select
 
-from app.models import Event, EventTag, Group, Tag
+from app.models import Event, EventSave, EventSkill, EventTag, EventWorkValue, Group, Tag
 from app.pipeline.normalise import to_utc
+from app.skills import SkillMatcher
 
 
 @dataclass
@@ -34,6 +35,30 @@ class ReadyEvent:
     tags: List[str] = field(default_factory=list)
 
 
+def category_for(event_type: str) -> str:
+    """Career events are 'opportunities'; everything else is 'social'. (Society events get 'society' in a later push.)"""
+    return "opportunity" if event_type == "career" else "social"
+
+
+def backfill_event_data(session: Session) -> int:
+    """Give events that were saved before categories and skill tags existed a category and skills. Safe to run often."""
+    matcher = SkillMatcher(session)
+    tagged = set(session.exec(select(EventSkill.event_id)).all())
+    changed = 0
+    for event in session.exec(select(Event)).all():
+        wanted = category_for(event.event_type) if event.society_id is None else "society"
+        if event.category != wanted:
+            event.category = wanted
+            session.add(event)
+            changed += 1
+        if event.id not in tagged:
+            for skill_id in matcher.find(f"{event.title} {event.description or ''}"):
+                session.add(EventSkill(event_id=event.id, skill_id=skill_id))
+                changed += 1
+    session.commit()
+    return changed
+
+
 def _aware(moment: Optional[datetime]) -> Optional[datetime]:
     if moment is not None and moment.tzinfo is None:
         return moment.replace(tzinfo=timezone.utc)
@@ -52,6 +77,7 @@ def _same_event_key(title: str, start: Optional[datetime]):
 def save_events(session: Session, events: List[ReadyEvent], now: datetime) -> dict:
     """Insert new events and update existing ones. Returns counts: added, updated, duplicates."""
     tag_ids = {name: id for name, id in session.exec(select(Tag.name, Tag.id)).all()}
+    matcher = SkillMatcher(session)  # finds the skills an event builds, from its title and description
     by_url = {e.source_url: e for e in session.exec(select(Event)).all() if e.source_url}
     seen_keys = {_same_event_key(e.title, e.start_time): e.source_url for e in by_url.values()}
     counts = {"added": 0, "updated": 0, "duplicates": 0}
@@ -77,6 +103,8 @@ def save_events(session: Session, events: List[ReadyEvent], now: datetime) -> di
         existing.location_name = item.location_name
         existing.area = item.area
         existing.event_type = item.event_type
+        if existing.society_id is None:  # societies (later) set their own category
+            existing.category = category_for(item.event_type)
         existing.alcohol_role = item.alcohol_role
         existing.source = item.source
         existing.image_url = item.image_url
@@ -85,6 +113,11 @@ def save_events(session: Session, events: List[ReadyEvent], now: datetime) -> di
 
         by_url[item.url] = existing
         seen_keys[_same_event_key(item.title, start)] = item.url
+
+        # Replace the skills the event builds (the same skill list roles and jobs use).
+        session.exec(delete(EventSkill).where(EventSkill.event_id == existing.id))
+        for skill_id in matcher.find(f"{item.title} {item.description}"):
+            session.add(EventSkill(event_id=existing.id, skill_id=skill_id))
 
         # Replace the event's tags with the new ones.
         session.exec(delete(EventTag).where(EventTag.event_id == existing.id))
@@ -105,6 +138,9 @@ def delete_ended(session: Session, now: datetime) -> int:
                 group.first_event_id = None
                 session.add(group)
             session.exec(delete(EventTag).where(EventTag.event_id == event.id))
+            session.exec(delete(EventSkill).where(EventSkill.event_id == event.id))
+            session.exec(delete(EventWorkValue).where(EventWorkValue.event_id == event.id))
+            session.exec(delete(EventSave).where(EventSave.event_id == event.id))
             session.delete(event)
             removed += 1
     session.commit()
