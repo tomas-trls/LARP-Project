@@ -281,7 +281,7 @@ class UserSkill(SQLModel, table=True):
 
     user_id: int = Field(foreign_key="user.id", primary_key=True)
     skill_id: int = Field(foreign_key="skill.id", primary_key=True)
-    source: str = "manual"  # cv, manual
+    source: str = "manual"  # manual (the student typed it), detected (spotted in their degrees and roles)
 
 
 class Role(SQLModel, table=True):

@@ -145,3 +145,23 @@ Push order: **P0 docs** → **P1a tables + seeds** → **P1b profile + CV** → 
 - `py -m pytest` from `backend/` after each phase; new tests per feature as listed.
 - Run `uvicorn app.main:app --reload`, walk the journey in `/docs`: register → upload fixture CV → review profile → set values → suggest routes → open `/gap` (5 scores) → jobs → people → societies → messages.
 - Run with `DEMO_MODE=true` to prove no live Claude or scraping is needed.
+
+## Build log
+
+### P1b – Profile and CV (done)
+All routes need a login token and start with `/api/profile`.
+
+| Route | What it does |
+|---|---|
+| `GET /api/profile` | The whole profile: education, experience, skills, languages, hobbies, Big Five, settings |
+| `POST /api/profile/cv` | Upload a PDF or DOCX (max 5 MB). Returns a **draft**; nothing is saved to the profile. The file and its text are dropped, never stored |
+| `PUT /api/profile` | Save the reviewed profile (from the draft, or typed by hand). Replaces education, experience, skills and languages. Skills hidden in degrees and job descriptions are added as "detected" |
+| `PUT /api/profile/details` | Bio, hometown, theme, visa setting, hidden fields, connection style, onboarding step |
+| `GET` / `PUT /api/profile/personality` | The 10 optional Big Five statements and scoring |
+| `PUT /api/profile/hobbies` | Up to 8 interest tags (social matching only) |
+| `GET /api/profile/skills/search?q=` | Skill suggestions as the student types (matches synonyms) |
+
+How the CV is read: with an API key and `DEMO_MODE=false` Claude reads it (`CV_MODEL` in `.env`, default `claude-sonnet-5-5`). Otherwise, or if Claude fails, a simple offline reader looks for headings such as Education and Experience.
+
+Skill matching (`app/skills.py`): exact name or synonym, then a whole-word scan of longer text, then a fuzzy match for typos. A skill nobody has heard of is kept as a custom skill in the "skills" category.
+

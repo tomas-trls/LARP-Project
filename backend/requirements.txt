@@ -21,6 +21,11 @@ tzdata
 # Claude API for event search and tagging (Step 6)
 anthropic
 
+# Reading CVs (P1b): PDF and Word files, and file uploads
+pypdf
+python-docx
+python-multipart
+
 # Testing
 pytest
 httpx
