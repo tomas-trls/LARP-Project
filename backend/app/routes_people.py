@@ -11,7 +11,7 @@ The People tab: who to meet, connecting, following, blocking and reporting.
     GET    /api/blocks                   people I blocked         PUT/DELETE /api/blocks/{user_id}
     POST   /api/reports                  report a person or a group to the moderator
 
-All need a login token. Messaging is only possible between accepted connections (built with the Messages stage).
+All need a login token. Messaging is only possible between accepted connections.
 """
 
 from datetime import datetime, timezone
@@ -21,7 +21,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field, model_validator
 from sqlmodel import Session, delete, select
 
-from app import people
+from app import people, starters
 from app.auth import get_current_user
 from app.database import get_session
 from app.models import Block, Connection, Follow, Group, GroupMember, Report, User
@@ -39,12 +39,6 @@ def find_person(session: Session, me: User, user_id: int) -> User:
     return other
 
 
-def person_card(other: User) -> dict:
-    """The few fields shown in connection lists: no email, no LinkedIn link."""
-    return {"user_id": other.id, "name": other.name, "avatar_url": other.avatar_url, "headline": other.headline,
-            "is_alumni": other.is_alumni}
-
-
 # ---------- the two lists ----------
 
 @router.get("/people/career")
@@ -57,6 +51,18 @@ def people_career(user: User = Depends(get_current_user), session: Session = Dep
 def people_social(user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     """People ranked by shared hobbies, similar personality (if both took the check) and shared societies."""
     return people.social_list(session, user, datetime.now(timezone.utc))
+
+
+@router.get("/people/{user_id}")
+def person_profile(user_id: int, view: Literal["career", "social"] = "social", user: User = Depends(get_current_user),
+                   session: Session = Depends(get_session)):
+    """Another student's profile. view=career shows experience and skills; view=social shows hobbies, personality and
+    societies. Fields they hide are left out, and the two views never mix. Includes a conversation starter."""
+    other = find_person(session, user, user_id)
+    now = datetime.now(timezone.utc)
+    answer = people.profile_view(session, user, other, view, now)
+    answer["starter"] = starters.conversation_starter(session, user, other, view)
+    return answer
 
 
 # ---------- connections ----------
@@ -107,25 +113,7 @@ def connect(data: ConnectIn, user: User = Depends(get_current_user), session: Se
 @router.get("/connections")
 def my_connections(user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     """connections = accepted; incoming = waiting for my answer; outgoing = I asked (a decline is never shown)."""
-    blocked = people.blocked_with(session, user.id)
-    rows = session.exec(select(Connection).where((Connection.user_id == user.id) | (Connection.other_user_id == user.id))
-                        .order_by(Connection.id)).all()
-    users = {u.id: u for u in session.exec(select(User)).all()}
-    result = {"connections": [], "incoming": [], "outgoing": []}
-    for c in rows:
-        other_id = c.other_user_id if c.user_id == user.id else c.user_id
-        if other_id in blocked or users[other_id].account_status in people.SKIPPED_ACCOUNTS:
-            continue
-        item = {"connection_id": c.id, "kind": c.kind, "note": c.note, "created_at": c.created_at,
-                **person_card(users[other_id])}
-        state = people.connection_state(user.id, c)
-        if state == "connected":
-            result["connections"].append(item)
-        elif state == "incoming":
-            result["incoming"].append(item)
-        elif state == "requested":
-            result["outgoing"].append(item)
-    return result
+    return people.connection_lists(session, user)
 
 
 @router.put("/connections/{connection_id}")
@@ -164,7 +152,7 @@ def my_follows(user: User = Depends(get_current_user), session: Session = Depend
     ids = [i for i in people.follows_of(session, user.id) if i not in blocked]
     users = session.exec(select(User).where(User.id.in_(ids)).order_by(User.id)).all() if ids else []
     followers = session.exec(select(Follow).where(Follow.followed_user_id == user.id)).all()
-    return {"following": [person_card(u) for u in users], "followers": len([f for f in followers if f.user_id not in blocked])}
+    return {"following": [people.person_card(u) for u in users], "followers": len([f for f in followers if f.user_id not in blocked])}
 
 
 @router.put("/follows/{user_id}")
@@ -227,12 +215,13 @@ def unblock(user_id: int, user: User = Depends(get_current_user), session: Sessi
 class ReportIn(BaseModel):
     user_id: Optional[int] = None
     group_id: Optional[int] = None
+    message_id: Optional[int] = None  # a message in a chat you can read
     reason: str = Field(min_length=5, max_length=600)
 
     @model_validator(mode="after")
     def needs_someone_to_report(self):
-        if self.user_id is None and self.group_id is None:
-            raise ValueError("Say who you are reporting (user_id) or which group (group_id).")
+        if self.user_id is None and self.group_id is None and self.message_id is None:
+            raise ValueError("Say what you are reporting: a person (user_id), a group (group_id) or a message (message_id).")
         return self
 
 
@@ -245,7 +234,18 @@ def report(data: ReportIn, user: User = Depends(get_current_user), session: Sess
         # You can only report a group you are in.
         if session.get(Group, data.group_id) is None or session.get(GroupMember, (data.group_id, user.id)) is None:
             raise HTTPException(status_code=404, detail="No such group.")
-    row = Report(reporter_id=user.id, reported_user_id=data.user_id, group_id=data.group_id, reason=data.reason)
+    reported_id = data.user_id
+    if data.message_id is not None:
+        from app import messages
+        from app.models import Message
+
+        message = session.get(Message, data.message_id)
+        chat = messages.get_chat(session, message.conversation_id, user) if message else None
+        if chat is None or message.sender_id == user.id:
+            raise HTTPException(status_code=404, detail="No such message.")
+        reported_id = message.sender_id  # the report is about the person who wrote it
+    row = Report(reporter_id=user.id, reported_user_id=reported_id, group_id=data.group_id,
+                 message_id=data.message_id, reason=data.reason)
     session.add(row)
     session.commit()
     return {"report_id": row.id, "status": row.status}

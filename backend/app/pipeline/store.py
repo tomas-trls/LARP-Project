@@ -36,17 +36,20 @@ class ReadyEvent:
 
 
 def category_for(event_type: str) -> str:
-    """Career events are 'opportunities'; everything else is 'social'. (Society events get 'society' in a later push.)"""
+    """Career events are 'opportunities'; everything else is 'social'. Events run by a society are 'society' (set when
+    they are linked to their society, see seed_societies.link_society_events)."""
     return "opportunity" if event_type == "career" else "social"
 
 
 def backfill_event_data(session: Session) -> int:
     """Give events that were saved before categories and skill tags existed a category and skills. Safe to run often."""
+    from app.seed_societies import link_society_events  # imported here to keep the two modules independent
+
     matcher = SkillMatcher(session)
     tagged = set(session.exec(select(EventSkill.event_id)).all())
-    changed = 0
+    changed = link_society_events(session)  # society events get their society first, then their category below
     for event in session.exec(select(Event)).all():
-        wanted = category_for(event.event_type) if event.society_id is None else "society"
+        wanted = "society" if event.society_id is not None and event.event_type != "career" else category_for(event.event_type)
         if event.category != wanted:
             event.category = wanted
             session.add(event)
@@ -103,8 +106,7 @@ def save_events(session: Session, events: List[ReadyEvent], now: datetime) -> di
         existing.location_name = item.location_name
         existing.area = item.area
         existing.event_type = item.event_type
-        if existing.society_id is None:  # societies (later) set their own category
-            existing.category = category_for(item.event_type)
+        existing.category = "society" if existing.society_id is not None and item.event_type != "career" else category_for(item.event_type)
         existing.alcohol_role = item.alcohol_role
         existing.source = item.source
         existing.image_url = item.image_url
