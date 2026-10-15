@@ -39,16 +39,27 @@ def match_skill_name(session: Session, name: str) -> Optional[int]:
     return table[close[0]] if close else None
 
 
+class SkillMatcher:
+    """Finds skills in text. Build it once and reuse it when scanning many texts (events, job adverts)."""
+
+    def __init__(self, session: Session):
+        self.table = synonym_table(session)
+        # One big pattern of all the terms, longest first so "machine learning" wins over "learning".
+        # The lookarounds make sure we match whole words only ("sql" must not match inside "mysqlx").
+        terms = sorted(self.table, key=len, reverse=True)
+        self.pattern = (re.compile(r"(?<![a-z0-9])(" + "|".join(re.escape(t) for t in terms) + r")(?![a-z0-9])")
+                        if terms else None)
+
+    def find(self, text: str) -> Set[int]:
+        """Every skill id whose name or a synonym appears in the text."""
+        if self.pattern is None or not text:
+            return set()
+        return {self.table[m.group(1)] for m in self.pattern.finditer(text.lower())}
+
+
 def find_skills_in_text(session: Session, text: str) -> Set[int]:
     """Every skill id whose name or a synonym appears in a piece of text."""
-    table = synonym_table(session)
-    if not table or not text:
-        return set()
-    # One big pattern of all the terms, longest first so "machine learning" wins over "learning".
-    # The lookarounds make sure we match whole words only ("sql" must not match inside "mysqlx").
-    terms = sorted(table, key=len, reverse=True)
-    pattern = re.compile(r"(?<![a-z0-9])(" + "|".join(re.escape(t) for t in terms) + r")(?![a-z0-9])")
-    return {table[m.group(1)] for m in pattern.finditer(text.lower())}
+    return SkillMatcher(session).find(text)
 
 
 def get_or_create_custom_skill(session: Session, name: str) -> int:
@@ -65,16 +76,64 @@ def get_or_create_custom_skill(session: Session, name: str) -> int:
     return skill.id
 
 
-def skills_for_profile(session: Session, typed_names: Iterable[str], text_parts: Iterable[str]) -> dict:
+# Words in a job or internship that show which industry it was in. The first item is the experience skill
+# it earns (these are the 'experience' skills in skills.json).
+INDUSTRY_WORDS = {
+    "Tech internship": r"\b(software|data|product|engineer\w*|developer|analytics|tech\w*|machine learning|app|cloud|ai|digital)\b",
+    "Finance internship": r"\b(bank\w*|financ\w*|invest\w*|audit\w*|trading|equity|fund|asset management|accounting|insurance)\b",
+    "Consulting experience": r"\b(consult\w*|advisory|strategy)\b",
+    "Marketing or media experience": r"\b(marketing|media|journalis\w*|pr|brand\w*|content|social media|communications|publishing)\b",
+    "Public sector experience": r"\b(government|civil service|policy|charity|ngo|parliament\w*|council|public sector)\b",
+    "Healthcare or science experience": r"\b(nhs|clinical|lab|hospital|pharma\w*|biomedical|health\w*|laborator\w*)\b",
+    "Operations experience": r"\b(operations|supply chain|logistics|procurement|warehouse)\b",
+    "Design experience": r"\b(design\w*|ux|ui|creative)\b",
+    "Energy or environment experience": r"\b(energy|climate|sustainab\w*|renewable|environment\w*)\b",
+}
+
+
+def infer_experience_skills(session: Session, experiences: Iterable) -> Set[int]:
+    """Experience skills worked out from the kind and wording of each job, internship or project.
+
+    'Product Intern at Deliveroo' earns 'Tech internship'; a 'Treasurer' role earns 'Society committee role';
+    anything marked as a project earns 'Project portfolio'. Each item needs .kind, .title, .organisation, .description.
+    """
+    by_name = {s.name: s.id for s in session.exec(select(Skill).where(Skill.category == "experience")).all()}
+    earned: Set[str] = set()
+    for item in experiences:
+        text = f"{item.title} {item.organisation} {item.description or ''}".lower()
+        if item.kind in ("job", "internship", "project"):
+            for skill_name, words in INDUSTRY_WORDS.items():
+                if re.search(words, text):
+                    earned.add(skill_name)
+        if item.kind == "project":
+            earned.add("Project portfolio")
+        if item.kind == "job" and re.search(r"retail|hospitality|bar |waiter|waitress|cafe|shop|barista|tutor", text):
+            earned.add("Part-time or customer work")
+        if re.search(r"volunteer", text):
+            earned.add("Volunteering")
+        if re.search(r"research assistant|dissertation|thesis|research project", text):
+            earned.add("Research experience")
+    ids = {by_name[n] for n in earned if n in by_name}
+    if any(item.kind == "society" for item in experiences):  # running or joining a society committee is leadership
+        committee = session.exec(select(Skill).where(Skill.name == "Society committee role")).first()
+        if committee:
+            ids.add(committee.id)
+    return ids
+
+
+def skills_for_profile(session: Session, typed_names: Iterable[str], text_parts: Iterable[str], experiences: Iterable = ()) -> dict:
     """Work out all the skill ids for a profile.
 
     typed_names: skills the student listed themselves (matched loosely, or added as custom skills).
     text_parts:  degrees, job titles and descriptions, scanned for skills the student did not list.
+    experiences: the job/internship/society/project entries, used to work out experience and leadership skills.
     Returns {skill_id: "manual" or "detected"}.
     """
     found: dict = {}
     for text_skill in find_skills_in_text(session, "\n".join(text_parts)):
         found[text_skill] = "detected"
+    for skill_id in infer_experience_skills(session, list(experiences)):
+        found[skill_id] = "detected"
     for name in typed_names:
         skill_id = match_skill_name(session, name) or get_or_create_custom_skill(session, name)
         found[skill_id] = "manual"  # something they typed counts as manual even if we also spotted it

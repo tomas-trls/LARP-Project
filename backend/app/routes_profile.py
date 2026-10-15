@@ -157,7 +157,7 @@ def save_profile(data: ProfileSaveIn, user: User = Depends(get_current_user), se
 
     text_parts = [f"{e.degree} {e.institution} {e.grade or ''}" for e in data.education]
     text_parts += [f"{x.title} {x.organisation} {x.description or ''}" for x in data.experience]
-    for skill_id, source in skills_for_profile(session, data.skills, text_parts).items():
+    for skill_id, source in skills_for_profile(session, data.skills, text_parts, data.experience).items():
         session.add(UserSkill(user_id=user.id, skill_id=skill_id, source=source))
 
     # Keep the older "course" field (used by the existing matching) in step with the newest degree.
