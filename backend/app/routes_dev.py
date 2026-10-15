@@ -56,14 +56,70 @@ def tables_by_name() -> dict:
     return dict(SQLModel.metadata.tables)
 
 
+# Which area of the app each table belongs to, so the list is easy to scan. Any table not listed here
+# shows up under "Other", so a new table is never hidden.
+TABLE_GROUPS = {
+    "Account and profile": ["user", "education", "experience", "userlanguage", "cvupload", "personalityanswer",
+                            "emailverification", "tag", "usertag", "userneed"],
+    "Career engine": ["skill", "skillsynonym", "userskill", "role", "roleskill", "workvalue", "userworkvalue",
+                      "roleworkvalue", "userroute", "routescore"],
+    "Opportunities (events and jobs)": ["event", "eventtag", "eventsave", "job", "jobskill", "jobsave",
+                                        "classificationcache", "venue", "venuetag"],
+    "People": ["connection", "follow", "eventpair", "matchcache", "group", "groupmember"],
+    "Societies": ["society", "societytag", "societymember", "societyrole", "societyroleapplication",
+                  "societyannouncement"],
+    "Messages and profile": ["conversation", "conversationmember", "message", "notification", "notificationpref",
+                             "badge", "userbadge"],
+}
+
+
+def relationship_diagram(tables: dict) -> str:
+    """A Mermaid "entity relationship" diagram, built from the foreign keys in models.py.
+
+    Because it is built from the real tables, it can never get out of date.
+    Each line reads: parent table, one-to-many, child table, and the column that links them.
+    """
+    lines = ["erDiagram"]
+    for name in sorted(tables):
+        for fk in tables[name].foreign_keys:
+            parent = fk.column.table.name
+            lines.append(f'    {parent} ||--o{{ {name} : "{fk.parent.name}"')
+    return "\n".join(lines)
+
+
+# Draws the diagram in the browser. It needs internet; without it the plain text below it still shows.
+MERMAID_SCRIPT = (
+    '<script type="module">'
+    'import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs";'
+    'mermaid.initialize({startOnLoad: true, maxTextSize: 200000});'
+    "</script>"
+)
+
+
 @router.get("/tables", response_class=HTMLResponse)
 def list_tables(session: Session = Depends(get_session)):
-    """All tables with their row counts."""
-    rows = ""
-    for name, table in sorted(tables_by_name().items()):
-        count = session.execute(select(func.count()).select_from(table)).scalar()
-        rows += f'<tr><td><a href="/dev/tables/{escape(name)}">{escape(name)}</a></td><td>{count}</td></tr>'
-    body = f"<h1>LARP database</h1><p class='muted'>Read-only. Development only.</p><table><tr><th>Table</th><th>Rows</th></tr>{rows}</table>"
+    """All tables with their row counts, grouped by area of the app."""
+    tables = tables_by_name()
+    grouped = {title: [n for n in names if n in tables] for title, names in TABLE_GROUPS.items()}
+    placed = {n for names in grouped.values() for n in names}
+    grouped["Other"] = sorted(n for n in tables if n not in placed)
+
+    body = "<h1>LARP database</h1><p class='muted'>Read-only. Development only.</p>"
+    body += (
+        "<h2>How the tables connect</h2>"
+        "<p class='muted'>Each line goes from a table to the tables that point at it. "
+        "Scroll sideways or zoom the page if it is wide.</p>"
+        f"<div style='overflow:auto;border:1px solid #ccc;padding:8px'><pre class='mermaid'>{escape(relationship_diagram(tables))}</pre></div>"
+        f"{MERMAID_SCRIPT}"
+    )
+    for title, names in grouped.items():
+        if not names:
+            continue
+        rows = ""
+        for name in names:
+            count = session.execute(select(func.count()).select_from(tables[name])).scalar()
+            rows += f'<tr><td><a href="/dev/tables/{escape(name)}">{escape(name)}</a></td><td>{count}</td></tr>'
+        body += f"<h2>{escape(title)}</h2><table><tr><th>Table</th><th>Rows</th></tr>{rows}</table>"
     return page("LARP database", body)
 
 

@@ -1,0 +1,174 @@
+[
+ {
+  "title": "Using your abilities",
+  "description": "Not feeling like you could do the job with one hand tied behind your back. Stretching yourself. Using your skills."
+ },
+ {
+  "title": "Accomplishment",
+  "description": "Feeling that you achieve something. You have clear goals. You can see the result of your efforts."
+ },
+ {
+  "title": "Being busy",
+  "description": "Not having stretches of time when you have nothing to do. You have a buzz of activity."
+ },
+ {
+  "title": "Being responsible",
+  "description": "Taking charge of your own work and the work of others. Being accountable."
+ },
+ {
+  "title": "Variety of task",
+  "description": "Every day is not the same because you do different things."
+ },
+ {
+  "title": "Variety of environment",
+  "description": "Every day is not the same because you are in different places."
+ },
+ {
+  "title": "Variety of contact",
+  "description": "Every day is not the same because you are interacting with different people."
+ },
+ {
+  "title": "Adventure",
+  "description": "You regularly take risks and have feelings of exhilaration or danger."
+ },
+ {
+  "title": "Fun",
+  "description": "You are able to be light-hearted. You don’t have to be serious all the time."
+ },
+ {
+  "title": "Prestige environment",
+  "description": "The place where you work is held in high regard as a major player in the field."
+ },
+ {
+  "title": "Advancement",
+  "description": "There are opportunities to be promoted to higher positions."
+ },
+ {
+  "title": "Money",
+  "description": "You earn or have the potential to earn a larger than average salary. You have perks, such as a company car, etc."
+ },
+ {
+  "title": "Development",
+  "description": "There are opportunities to enhance, expand, or develop your role and learn new things."
+ },
+ {
+  "title": "Recognition",
+  "description": "When you perform well, your efforts are acknowledged or rewarded by praise, promotion, or money."
+ },
+ {
+  "title": "Authority",
+  "description": "You get to tell people what to do. You give direction to others."
+ },
+ {
+  "title": "Social status",
+  "description": "You feel proud when you tell people what you do for a living. People think your job is interesting or glamorous."
+ },
+ {
+  "title": "Colleagues",
+  "description": "The people you work with are easy to get on with or interesting. There are opportunities for socialising with colleagues."
+ },
+ {
+  "title": "Helping individuals",
+  "description": "You are involved in providing aid and assistance to people directly."
+ },
+ {
+  "title": "Helping society",
+  "description": "You are doing something which contributes beneficially to society."
+ },
+ {
+  "title": "Caring",
+  "description": "You are involved in showing support, empathy and love to others."
+ },
+ {
+  "title": "Nurturing",
+  "description": "You are involved in helping other people develop."
+ },
+ {
+  "title": "Justifiable",
+  "description": "What you are doing fits in with your moral value system."
+ },
+ {
+  "title": "Fairness",
+  "description": "You and other workers are treated fairly by your employer. You have good conditions of employment."
+ },
+ {
+  "title": "Spirituality",
+  "description": "Your work allows you to express or explore your faith."
+ },
+ {
+  "title": "Management",
+  "description": "You have a good working relationship with your boss. Your manager's way of working fits well with your own."
+ },
+ {
+  "title": "Training",
+  "description": "Structured opportunities for learning are provided and supported."
+ },
+ {
+  "title": "Creativity",
+  "description": "You get to generate new ideas or solutions to problems. You get to innovate and be original."
+ },
+ {
+  "title": "Decision making",
+  "description": "You get to make some of the choices that affect your work."
+ },
+ {
+  "title": "Autonomy",
+  "description": "You have some freedom to do things when you want and how you want."
+ },
+ {
+  "title": "Being expert",
+  "description": "You have the opportunity to gain and use an in-depth knowledge of a subject. You are seeking advice in this area."
+ },
+ {
+  "title": "Competition",
+  "description": "You get the opportunity to test your abilities against others."
+ },
+ {
+  "title": "Subject",
+  "description": "Your work is enjoyable because you have a strong interest in the subject matter you are dealing with."
+ },
+ {
+  "title": "Aesthetics",
+  "description": "You deal with ideas or things that are beautiful and require appreciation."
+ },
+ {
+  "title": "Quality",
+  "description": "You work in situations in which precision and attention to detail are important, or where there is little room for error."
+ },
+ {
+  "title": "Security",
+  "description": "You have security of employment. It is not likely that you will lose your job or find another job regularly."
+ },
+ {
+  "title": "Stress-free",
+  "description": "You do not have to work under high levels of stress. The pressure of work is not too high and there is little conflict."
+ },
+ {
+  "title": "Health",
+  "description": "Your work positively contributes to your physical and psychological wellbeing."
+ },
+ {
+  "title": "Stability",
+  "description": "Work routines and duties are largely predictable and not likely to be subject to sudden or unforeseen changes."
+ },
+ {
+  "title": "Hours",
+  "description": "You do not work more than average or irregular hours. Your job does not impinge on your family or social life. The patterns of work suit your lifestyle."
+ },
+ {
+  "title": "Resources",
+  "description": "You have the materials, equipment, and money you need to do the job. You are not expected to produce great results without the right tools."
+ },
+ {
+  "title": "Workspace",
+  "description": "The place where you work is comfortable and suited to your working style and personal preferences."
+ },
+ {
+  "title": "Supportive",
+  "description": "The organisation you work for is open and tolerant. Your views are sought and respected during decision making."
+ },
+ {
+  "title": "Cooperation",
+  "description": "Your work requires operating as part of a team and interacting with others to achieve a goal."
+ }
+]

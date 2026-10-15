@@ -1,0 +1,42 @@
+[
+ {
+  "id": "funny",
+  "text": "I'm funny",
+  "trait": "extrovert"
+ },
+ {
+  "id": "logical",
+  "text": "I'm more logical than emotional",
+  "trait": "logical"
+ },
+ {
+  "id": "party",
+  "text": "I feel energised after a big social event",
+  "trait": "extrovert"
+ },
+ {
+  "id": "plans",
+  "text": "I like to plan things well in advance",
+  "trait": "organised"
+ },
+ {
+  "id": "new",
+  "text": "I enjoy trying new things",
+  "trait": "open"
+ },
+ {
+  "id": "quiet",
+  "text": "I need quiet time alone to recharge",
+  "trait": "introvert"
+ },
+ {
+  "id": "lead",
+  "text": "I naturally take the lead in a group",
+  "trait": "leader"
+ },
+ {
+  "id": "deep",
+  "text": "I prefer deep one-to-one chats to big groups",
+  "trait": "introvert"
+ }
+]

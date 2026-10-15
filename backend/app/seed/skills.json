@@ -1,0 +1,736 @@
+[
+ {
+  "name": "Computer science degree",
+  "category": "academics",
+  "synonyms": [
+   "computer science",
+   "computing",
+   "software engineering degree",
+   "informatics"
+  ]
+ },
+ {
+  "name": "Maths or statistics degree",
+  "category": "academics",
+  "synonyms": [
+   "mathematics",
+   "maths",
+   "statistics degree",
+   "applied maths",
+   "physics degree"
+  ]
+ },
+ {
+  "name": "Economics degree",
+  "category": "academics",
+  "synonyms": [
+   "economics",
+   "econometrics",
+   "economics and finance"
+  ]
+ },
+ {
+  "name": "Business or management degree",
+  "category": "academics",
+  "synonyms": [
+   "business",
+   "management",
+   "business analytics",
+   "business administration",
+   "bsc management"
+  ]
+ },
+ {
+  "name": "Engineering degree",
+  "category": "academics",
+  "synonyms": [
+   "engineering",
+   "mechanical engineering",
+   "civil engineering",
+   "electrical engineering"
+  ]
+ },
+ {
+  "name": "Social science degree",
+  "category": "academics",
+  "synonyms": [
+   "sociology",
+   "politics",
+   "international relations",
+   "geography",
+   "psychology",
+   "anthropology"
+  ]
+ },
+ {
+  "name": "Law degree",
+  "category": "academics",
+  "synonyms": [
+   "law",
+   "llb",
+   "jurisprudence"
+  ]
+ },
+ {
+  "name": "Life sciences degree",
+  "category": "academics",
+  "synonyms": [
+   "biology",
+   "biomedical",
+   "chemistry",
+   "medicine",
+   "pharmacology",
+   "neuroscience"
+  ]
+ },
+ {
+  "name": "Arts or design degree",
+  "category": "academics",
+  "synonyms": [
+   "design degree",
+   "fine art",
+   "architecture degree",
+   "media studies",
+   "creative arts"
+  ]
+ },
+ {
+  "name": "Humanities degree",
+  "category": "academics",
+  "synonyms": [
+   "history",
+   "english literature",
+   "philosophy",
+   "languages degree",
+   "classics"
+  ]
+ },
+ {
+  "name": "Postgraduate degree",
+  "category": "academics",
+  "synonyms": [
+   "msc",
+   "master's",
+   "masters",
+   "postgraduate",
+   "ma degree",
+   "mba",
+   "phd"
+  ]
+ },
+ {
+  "name": "Strong grades (2:1 or above)",
+  "category": "academics",
+  "synonyms": [
+   "2:1",
+   "first class",
+   "distinction",
+   "merit",
+   "high honours",
+   "first-class"
+  ]
+ },
+ {
+  "name": "Python",
+  "category": "skills",
+  "synonyms": [
+   "python programming",
+   "pandas",
+   "numpy",
+   "scikit-learn"
+  ]
+ },
+ {
+  "name": "SQL",
+  "category": "skills",
+  "synonyms": [
+   "sql queries",
+   "mysql",
+   "postgresql",
+   "databases",
+   "bigquery"
+  ]
+ },
+ {
+  "name": "Excel",
+  "category": "skills",
+  "synonyms": [
+   "microsoft excel",
+   "spreadsheets",
+   "vlookup",
+   "pivot tables"
+  ]
+ },
+ {
+  "name": "Data analysis",
+  "category": "skills",
+  "synonyms": [
+   "analytics",
+   "analysed data",
+   "data analytics",
+   "quantitative analysis",
+   "analytical skills"
+  ]
+ },
+ {
+  "name": "Data visualisation",
+  "category": "skills",
+  "synonyms": [
+   "tableau",
+   "power bi",
+   "dashboards",
+   "data visualization",
+   "looker"
+  ]
+ },
+ {
+  "name": "Statistics",
+  "category": "skills",
+  "synonyms": [
+   "statistical analysis",
+   "hypothesis testing",
+   "regression",
+   "a/b testing",
+   "experimentation"
+  ]
+ },
+ {
+  "name": "Machine learning",
+  "category": "skills",
+  "synonyms": [
+   "ml",
+   "deep learning",
+   "predictive modelling",
+   "ai models",
+   "neural networks"
+  ]
+ },
+ {
+  "name": "Programming",
+  "category": "skills",
+  "synonyms": [
+   "coding",
+   "software development",
+   "java",
+   "javascript",
+   "c++",
+   "typescript",
+   "react"
+  ]
+ },
+ {
+  "name": "Cloud and DevOps",
+  "category": "skills",
+  "synonyms": [
+   "aws",
+   "azure",
+   "gcp",
+   "docker",
+   "kubernetes",
+   "ci/cd",
+   "terraform"
+  ]
+ },
+ {
+  "name": "Financial modelling",
+  "category": "skills",
+  "synonyms": [
+   "dcf",
+   "valuation",
+   "financial analysis",
+   "financial modeling",
+   "accounting"
+  ]
+ },
+ {
+  "name": "Research",
+  "category": "skills",
+  "synonyms": [
+   "research skills",
+   "literature review",
+   "qualitative research",
+   "user research",
+   "interviews"
+  ]
+ },
+ {
+  "name": "Written communication",
+  "category": "skills",
+  "synonyms": [
+   "writing",
+   "report writing",
+   "copywriting",
+   "drafting",
+   "editing"
+  ]
+ },
+ {
+  "name": "Presentation skills",
+  "category": "skills",
+  "synonyms": [
+   "presenting",
+   "public speaking",
+   "pitching",
+   "presentations"
+  ]
+ },
+ {
+  "name": "Problem solving",
+  "category": "skills",
+  "synonyms": [
+   "problem-solving",
+   "critical thinking",
+   "analytical thinking",
+   "troubleshooting"
+  ]
+ },
+ {
+  "name": "Product thinking",
+  "category": "skills",
+  "synonyms": [
+   "product management",
+   "roadmap",
+   "user stories",
+   "product strategy",
+   "prioritisation"
+  ]
+ },
+ {
+  "name": "Project management",
+  "category": "skills",
+  "synonyms": [
+   "project planning",
+   "agile",
+   "scrum",
+   "jira",
+   "programme management",
+   "delivery"
+  ]
+ },
+ {
+  "name": "Strategy",
+  "category": "skills",
+  "synonyms": [
+   "strategic thinking",
+   "business strategy",
+   "market analysis",
+   "commercial awareness",
+   "business case"
+  ]
+ },
+ {
+  "name": "Marketing",
+  "category": "skills",
+  "synonyms": [
+   "digital marketing",
+   "seo",
+   "social media",
+   "content marketing",
+   "branding",
+   "campaigns"
+  ]
+ },
+ {
+  "name": "Design tools",
+  "category": "skills",
+  "synonyms": [
+   "figma",
+   "wireframing",
+   "prototyping",
+   "adobe",
+   "ui design",
+   "ux design"
+  ]
+ },
+ {
+  "name": "Policy analysis",
+  "category": "skills",
+  "synonyms": [
+   "policy",
+   "public policy",
+   "regulation",
+   "government affairs",
+   "impact assessment"
+  ]
+ },
+ {
+  "name": "Negotiation and sales",
+  "category": "skills",
+  "synonyms": [
+   "negotiating",
+   "sales",
+   "business development",
+   "closing deals",
+   "account management"
+  ]
+ },
+ {
+  "name": "Technical writing",
+  "category": "skills",
+  "synonyms": [
+   "documentation",
+   "technical documentation",
+   "knowledge base"
+  ]
+ },
+ {
+  "name": "Operations and logistics",
+  "category": "skills",
+  "synonyms": [
+   "supply chain",
+   "logistics",
+   "procurement",
+   "process improvement",
+   "lean",
+   "six sigma"
+  ]
+ },
+ {
+  "name": "Sustainability knowledge",
+  "category": "skills",
+  "synonyms": [
+   "esg",
+   "climate",
+   "carbon accounting",
+   "net zero",
+   "sustainability reporting"
+  ]
+ },
+ {
+  "name": "Healthcare knowledge",
+  "category": "skills",
+  "synonyms": [
+   "clinical",
+   "nhs",
+   "healthcare systems",
+   "public health",
+   "medical terminology"
+  ]
+ },
+ {
+  "name": "Teamwork",
+  "category": "teamwork",
+  "synonyms": [
+   "cooperative",
+   "collaborative",
+   "team player",
+   "worked in a team",
+   "collaboration",
+   "cooperation",
+   "team-oriented",
+   "group projects"
+  ]
+ },
+ {
+  "name": "Stakeholder management",
+  "category": "teamwork",
+  "synonyms": [
+   "stakeholder engagement",
+   "managing stakeholders",
+   "partner management",
+   "stakeholders"
+  ]
+ },
+ {
+  "name": "Cross-functional working",
+  "category": "teamwork",
+  "synonyms": [
+   "cross functional",
+   "cross-team",
+   "worked with engineers",
+   "multidisciplinary"
+  ]
+ },
+ {
+  "name": "Client-facing skills",
+  "category": "teamwork",
+  "synonyms": [
+   "client facing",
+   "customer facing",
+   "client relationships",
+   "customer service",
+   "clients"
+  ]
+ },
+ {
+  "name": "Interpersonal skills",
+  "category": "teamwork",
+  "synonyms": [
+   "people skills",
+   "relationship building",
+   "empathy",
+   "active listening",
+   "rapport"
+  ]
+ },
+ {
+  "name": "Networking",
+  "category": "teamwork",
+  "synonyms": [
+   "networked",
+   "professional network",
+   "building connections",
+   "outreach"
+  ]
+ },
+ {
+  "name": "Communication",
+  "category": "teamwork",
+  "synonyms": [
+   "communicator",
+   "communicating",
+   "verbal communication",
+   "communication skills",
+   "articulate"
+  ]
+ },
+ {
+  "name": "Adaptability",
+  "category": "teamwork",
+  "synonyms": [
+   "flexible",
+   "adaptable",
+   "fast-paced",
+   "thrives in ambiguity",
+   "resilient"
+  ]
+ },
+ {
+  "name": "Finance internship",
+  "category": "experience",
+  "synonyms": [
+   "investment banking internship",
+   "banking placement",
+   "finance placement",
+   "spring week",
+   "audit internship"
+  ]
+ },
+ {
+  "name": "Tech internship",
+  "category": "experience",
+  "synonyms": [
+   "software internship",
+   "engineering internship",
+   "data internship",
+   "product internship",
+   "tech placement"
+  ]
+ },
+ {
+  "name": "Consulting experience",
+  "category": "experience",
+  "synonyms": [
+   "consulting internship",
+   "consultancy",
+   "case competition",
+   "client project"
+  ]
+ },
+ {
+  "name": "Marketing or media experience",
+  "category": "experience",
+  "synonyms": [
+   "marketing internship",
+   "media placement",
+   "journalism experience",
+   "pr internship"
+  ]
+ },
+ {
+  "name": "Public sector experience",
+  "category": "experience",
+  "synonyms": [
+   "government internship",
+   "civil service",
+   "charity experience",
+   "ngo",
+   "parliament"
+  ]
+ },
+ {
+  "name": "Healthcare or science experience",
+  "category": "experience",
+  "synonyms": [
+   "lab placement",
+   "clinical placement",
+   "research assistant",
+   "nhs placement"
+  ]
+ },
+ {
+  "name": "Operations experience",
+  "category": "experience",
+  "synonyms": [
+   "operations internship",
+   "supply chain placement",
+   "logistics experience"
+  ]
+ },
+ {
+  "name": "Design experience",
+  "category": "experience",
+  "synonyms": [
+   "design internship",
+   "freelance design",
+   "portfolio",
+   "design studio"
+  ]
+ },
+ {
+  "name": "Project portfolio",
+  "category": "experience",
+  "synonyms": [
+   "personal projects",
+   "github",
+   "side project",
+   "portfolio projects",
+   "hackathon"
+  ]
+ },
+ {
+  "name": "Research experience",
+  "category": "experience",
+  "synonyms": [
+   "dissertation",
+   "thesis",
+   "research project",
+   "published research",
+   "research assistantship"
+  ]
+ },
+ {
+  "name": "Part-time or customer work",
+  "category": "experience",
+  "synonyms": [
+   "part-time job",
+   "retail",
+   "hospitality",
+   "bar work",
+   "waiter",
+   "tutoring"
+  ]
+ },
+ {
+  "name": "Volunteering",
+  "category": "experience",
+  "synonyms": [
+   "volunteer",
+   "volunteered",
+   "charity work",
+   "community service"
+  ]
+ },
+ {
+  "name": "Energy or environment experience",
+  "category": "experience",
+  "synonyms": [
+   "energy placement",
+   "environmental internship",
+   "sustainability internship"
+  ]
+ },
+ {
+  "name": "Led a team",
+  "category": "leadership",
+  "synonyms": [
+   "team lead",
+   "team leader",
+   "managed a team",
+   "led a team",
+   "supervised",
+   "captain"
+  ]
+ },
+ {
+  "name": "Society committee role",
+  "category": "leadership",
+  "synonyms": [
+   "president",
+   "treasurer",
+   "secretary",
+   "committee member",
+   "society officer",
+   "events officer",
+   "vice president"
+  ]
+ },
+ {
+  "name": "Took initiative",
+  "category": "leadership",
+  "synonyms": [
+   "initiative",
+   "self-starter",
+   "proactive",
+   "launched",
+   "founded",
+   "started a"
+  ]
+ },
+ {
+  "name": "Ownership of outcomes",
+  "category": "leadership",
+  "synonyms": [
+   "ownership",
+   "accountable",
+   "owned",
+   "end to end",
+   "responsible for delivery"
+  ]
+ },
+ {
+  "name": "Mentoring",
+  "category": "leadership",
+  "synonyms": [
+   "mentor",
+   "mentored",
+   "coached",
+   "peer tutor",
+   "buddy scheme"
+  ]
+ },
+ {
+  "name": "Decision making",
+  "category": "leadership",
+  "synonyms": [
+   "decision-making",
+   "made decisions",
+   "judgement",
+   "decisive"
+  ]
+ },
+ {
+  "name": "Event organising",
+  "category": "leadership",
+  "synonyms": [
+   "organised events",
+   "event management",
+   "ran events",
+   "organiser",
+   "event planning"
+  ]
+ },
+ {
+  "name": "Entrepreneurship",
+  "category": "leadership",
+  "synonyms": [
+   "entrepreneur",
+   "startup",
+   "start-up",
+   "own business",
+   "founder",
+   "venture"
+  ]
+ },
+ {
+  "name": "Influencing others",
+  "category": "leadership",
+  "synonyms": [
+   "influence",
+   "persuaded",
+   "motivated",
+   "inspired",
+   "advocacy"
+  ]
+ }
+]

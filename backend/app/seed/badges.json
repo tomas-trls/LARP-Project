@@ -1,0 +1,32 @@
+[
+ {
+  "code": "data-science-soc",
+  "name": "Data Science Soc",
+  "how_earned": "Join the Data Science Society"
+ },
+ {
+  "code": "entrepreneurs",
+  "name": "Entrepreneurs",
+  "how_earned": "Join the Entrepreneurs Society"
+ },
+ {
+  "code": "quiz-regular",
+  "name": "Quiz regular",
+  "how_earned": "Go to 3 quiz nights"
+ },
+ {
+  "code": "first-event",
+  "name": "First event",
+  "how_earned": "Attend your first event"
+ },
+ {
+  "code": "connector",
+  "name": "Connector",
+  "how_earned": "Make 10 connections"
+ },
+ {
+  "code": "route-set",
+  "name": "Route set",
+  "how_earned": "Save your first career route"
+ }
+]

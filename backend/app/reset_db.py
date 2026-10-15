@@ -17,6 +17,7 @@ from app.database import DB_FILE, create_db_and_tables, engine
 from app.match_cache import rebuild_match_cache
 from app.pipeline.finders.curated_file import CURATED_FILE
 from app.pipeline.runner import build_sources, refresh_events
+from app.seed_career import load_career_data
 from app.seed_events import SEED_DIR, load_test_events, load_test_venues, load_venues
 from app.seed_profiles import SEED_PASSWORD, load_profiles
 from app.seed_tags import load_tags
@@ -31,6 +32,7 @@ def reset_db(with_test_data: bool = False):
     create_db_and_tables()
     with Session(engine) as session:
         tags = load_tags(session)
+        career = load_career_data(session)
         students = load_profiles(session)
         matches = rebuild_match_cache(session)
 
@@ -46,6 +48,7 @@ def reset_db(with_test_data: bool = False):
             test_events, test_venues = load_test_events(session), load_test_venues(session)
 
     print(f"Database reset: {tags} tags, {students} students (including 2 demo accounts) loaded.")
+    print(f"Career data: {career['skills']} skills, {career['roles']} roles, {career['work_values']} work values, {career['badges']} badges.")
     print(f"Loaded {events} real curated events and {venues} real venues.")
     if test_events or test_venues:
         print(f"Also loaded {test_events} INVENTED test events and {test_venues} invented test venues.")

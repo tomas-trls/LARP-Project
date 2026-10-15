@@ -2,6 +2,8 @@
 
 This is the planned shape of the database after the back-end re-plan (see `BACKEND_REPLAN.md`). GitHub draws the diagram below automatically. Tables marked **(existing)** are already in `backend/app/models.py`; the rest are added phase by phase. This file is updated in every push.
 
+**Status: P1a done.** Every table below now exists in `models.py` and the career tables are seeded (67 skills, 150 roles, 43 work values, 6 badges). Look inside with `/dev/tables`. In the real database, table names are lower case with no underscores (`UserSkill` is `userskill`); the diagram uses underscores for readability. Two things differ from the first plan: `user_need` is only *deprecated* for now (the register route still writes to it, so it is deleted in the profile push), and the old `User` columns (`goal`, `experience_industry`, ...) stay until the routes using them are replaced.
+
 ```mermaid
 erDiagram
     USER ||--o{ EDUCATION : has
