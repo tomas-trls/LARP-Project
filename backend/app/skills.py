@@ -39,16 +39,27 @@ def match_skill_name(session: Session, name: str) -> Optional[int]:
     return table[close[0]] if close else None
 
 
+class SkillMatcher:
+    """Finds skills in text. Build it once and reuse it when scanning many texts (events, job adverts)."""
+
+    def __init__(self, session: Session):
+        self.table = synonym_table(session)
+        # One big pattern of all the terms, longest first so "machine learning" wins over "learning".
+        # The lookarounds make sure we match whole words only ("sql" must not match inside "mysqlx").
+        terms = sorted(self.table, key=len, reverse=True)
+        self.pattern = (re.compile(r"(?<![a-z0-9])(" + "|".join(re.escape(t) for t in terms) + r")(?![a-z0-9])")
+                        if terms else None)
+
+    def find(self, text: str) -> Set[int]:
+        """Every skill id whose name or a synonym appears in the text."""
+        if self.pattern is None or not text:
+            return set()
+        return {self.table[m.group(1)] for m in self.pattern.finditer(text.lower())}
+
+
 def find_skills_in_text(session: Session, text: str) -> Set[int]:
     """Every skill id whose name or a synonym appears in a piece of text."""
-    table = synonym_table(session)
-    if not table or not text:
-        return set()
-    # One big pattern of all the terms, longest first so "machine learning" wins over "learning".
-    # The lookarounds make sure we match whole words only ("sql" must not match inside "mysqlx").
-    terms = sorted(table, key=len, reverse=True)
-    pattern = re.compile(r"(?<![a-z0-9])(" + "|".join(re.escape(t) for t in terms) + r")(?![a-z0-9])")
-    return {table[m.group(1)] for m in pattern.finditer(text.lower())}
+    return SkillMatcher(session).find(text)
 
 
 def get_or_create_custom_skill(session: Session, name: str) -> int:

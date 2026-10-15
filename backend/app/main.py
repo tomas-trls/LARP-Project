@@ -20,10 +20,12 @@ from app.routes_admin import router as admin_router
 from app.routes_career import router as career_router
 from app.routes_dev import router as dev_router
 from app.routes_events import router as events_router
+from app.routes_opportunities import router as opportunities_router
 from app.routes_linkedin import router as linkedin_router
 from app.routes_pairing import router as pairing_router
 from app.routes_profile import router as profile_router
 from app.routes_users import router as users_router
+from app.pipeline.store import backfill_event_data
 from app.seed_career import load_career_data
 from app.seed_tags import load_tags
 
@@ -35,6 +37,7 @@ async def lifespan(app: FastAPI):
     with Session(engine) as session:
         load_tags(session)
         load_career_data(session)  # skills, roles, work values and badges
+        backfill_event_data(session)  # category and skills for events saved before they existed
     yield
 
 
@@ -65,6 +68,9 @@ app.include_router(pairing_router)
 
 # Things to do: /api/events and /api/venues.
 app.include_router(events_router)
+
+# Opportunities tab: career events and jobs, ranked for the active route (/api/opportunities/...).
+app.include_router(opportunities_router)
 
 # LinkedIn Max: /api/linkedin-max (links people choose to share; we never contact LinkedIn).
 app.include_router(linkedin_router)

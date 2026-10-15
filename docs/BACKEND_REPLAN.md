@@ -184,3 +184,24 @@ Routes start with `/api`. Everything needs a login token except role search.
 **Data rules** (from `DESIGN_DECISIONS.md`): a role built from real adverts needs 20 or more, otherwise it is "not enough data" and the closest common roles are offered. Our seeded roles are marked `estimate` until job adverts replace them (P2a).
 
 **Also changed:** saving a profile now works out experience skills from internships, jobs and societies (a "Product Intern" earns Tech internship; a society treasurer earns Society committee role).
+
+### P2a – Opportunities: career events and jobs (done)
+All routes need a login token. The Opportunities tab holds **career events** and **jobs**; both are ranked for the student's active route and every item says why.
+
+| Route | What it does |
+|---|---|
+| `GET /api/opportunities` | Counts for the tab header: events, open jobs, closing soon, saved |
+| `GET /api/opportunities/events` | Career events. Each skill the student lacks for their route is weighted by how often the role asks for it; an event scores the sum of the weights it builds ("Builds SQL - a gap on your Data Analyst route") |
+| `GET /api/opportunities/jobs` | Jobs with filters (`level`, `location`, `work_mode`, `q`, `saved_only`, `closing_soon`, `hide_no_sponsorship`) and sort (`best`, `closing`, `newest`) |
+| `GET /api/opportunities/jobs/{id}` | One job, with the skills you have and the skills to build |
+| `POST` / `DELETE /api/opportunities/jobs/{id}/save` | Save, mark applied, or un-save a job |
+| `POST /api/admin/refresh-jobs` | (admin key) load jobs. Demo mode: the invented demo jobs only. `DEMO_MODE=false`: the Gradcracker scraper too |
+
+**Where jobs come from**
+- **Demo jobs** (`seed/jobs_seed.json`, 39 jobs): invented, with fictional employers, marked `source="demo"` and `is_demo: true` in the API so the front end can label them. They never count as real adverts.
+- **Gradcracker** (live scraper, `pipeline/job_scraper.py`): its `robots.txt` allows its job listing pages (checked 15 Oct 2026). It uses the polite fetcher (reads robots.txt, waits 2 seconds between requests, names a contact) and reads at most 3 pages. It only runs when `DEMO_MODE=false`.
+- **Not scraped:** LinkedIn (`CLAUDE.md` forbids it) and Indeed (its terms forbid it). Check a site's robots.txt and terms before adding one. Robots.txt alone does not settle whether scraping is allowed.
+
+**Role data from adverts** (`app/jobs.py`): a role with 20 or more real adverts is rebuilt from them (a skill asked for in 70% of adverts gets importance 0.7, skills under 10% are dropped), then marked `data_source="adverts"`. The result is cached for a week. Under 20, the starter estimate is kept. Students whose active route matches a brand new real job get a "role" notification, unless they switched role alerts off.
+
+**Also changed:** events now have a `category` (career events are `opportunity`, the rest `social`) and are tagged with the skills they build. This is filled in on startup for older events (`backfill_event_data`) and whenever events are saved.
