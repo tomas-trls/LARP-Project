@@ -48,3 +48,15 @@ def test_work_values_come_from_the_ucl_activity(session):
     titles = set(session.exec(select(WorkValue.title)).all())
     assert {"Money", "Autonomy", "Helping society"} <= titles
     assert session.exec(select(Badge)).first() is not None
+
+
+def test_personality_file_is_the_short_big_five_check():
+    import json
+
+    from app.seed_career import SEED_DIR
+
+    data = json.loads((SEED_DIR / "personality.json").read_text(encoding="utf-8"))
+    assert len(data["items"]) == 10
+    traits = [i["trait"] for i in data["items"]]
+    assert {t: traits.count(t) for t in set(traits)} == {  # two statements for each of the five traits
+        "extraversion": 2, "agreeableness": 2, "conscientiousness": 2, "neuroticism": 2, "openness": 2}

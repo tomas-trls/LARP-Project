@@ -16,6 +16,8 @@ Decisions made with you: job listings come from scraping public job sites; fit s
 - **Tab naming.** *Opportunities* = career events (UCL Careers, employer talks, fairs) **plus** scraped jobs, with an Events / Jobs filter. *Societies* = the society directory **plus** an events feed of all society events. `Event` gets `category` (opportunity / social / society) and `society_id`; Home reads the same table.
 - **Separate pushes.** One git branch and one push per section (listed in section 5), each with its own tests passing and its docs updated, so the group can follow each stage. I will not push without your go-ahead for each one.
 
+- **Design review (15 Oct).** `docs/DESIGN_DECISIONS.md` overrides this plan where they disagree: free-text roles with a 20-advert minimum and a weekly cache, CV deleted after extraction, Big Five instead of statements, book-first groups of 3-5, visa flag, report/block, alumni handover. The table changes it caused are listed at the end of `docs/DATABASE_DIAGRAM.md`.
+
 ## 1. What happens to the existing tables
 
 | Table | Verdict | Why |

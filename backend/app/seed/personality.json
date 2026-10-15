@@ -1,42 +1,16 @@
-[
- {
-  "id": "funny",
-  "text": "I'm funny",
-  "trait": "extrovert"
- },
- {
-  "id": "logical",
-  "text": "I'm more logical than emotional",
-  "trait": "logical"
- },
- {
-  "id": "party",
-  "text": "I feel energised after a big social event",
-  "trait": "extrovert"
- },
- {
-  "id": "plans",
-  "text": "I like to plan things well in advance",
-  "trait": "organised"
- },
- {
-  "id": "new",
-  "text": "I enjoy trying new things",
-  "trait": "open"
- },
- {
-  "id": "quiet",
-  "text": "I need quiet time alone to recharge",
-  "trait": "introvert"
- },
- {
-  "id": "lead",
-  "text": "I naturally take the lead in a group",
-  "trait": "leader"
- },
- {
-  "id": "deep",
-  "text": "I prefer deep one-to-one chats to big groups",
-  "trait": "introvert"
- }
-]
+{
+  "about": "The 10-item Big Five Inventory (BFI-10, Rammstedt and John 2007). Optional. Self-reported, used for social matching only, never for jobs. Answers run 1 (disagree strongly) to 5 (agree strongly). Items marked reverse are scored 6 minus the answer.",
+  "prompt": "I see myself as someone who...",
+  "items": [
+    {"id": "bfi1", "text": "is reserved", "trait": "extraversion", "reverse": true},
+    {"id": "bfi2", "text": "is generally trusting", "trait": "agreeableness", "reverse": false},
+    {"id": "bfi3", "text": "tends to be lazy", "trait": "conscientiousness", "reverse": true},
+    {"id": "bfi4", "text": "is relaxed and handles stress well", "trait": "neuroticism", "reverse": true},
+    {"id": "bfi5", "text": "has few artistic interests", "trait": "openness", "reverse": true},
+    {"id": "bfi6", "text": "is outgoing and sociable", "trait": "extraversion", "reverse": false},
+    {"id": "bfi7", "text": "tends to find fault with others", "trait": "agreeableness", "reverse": true},
+    {"id": "bfi8", "text": "does a thorough job", "trait": "conscientiousness", "reverse": false},
+    {"id": "bfi9", "text": "gets nervous easily", "trait": "neuroticism", "reverse": false},
+    {"id": "bfi10", "text": "has an active imagination", "trait": "openness", "reverse": false}
+  ]
+}

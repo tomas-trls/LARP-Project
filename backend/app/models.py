@@ -51,10 +51,19 @@ class User(SQLModel, table=True):
     is_alumni: bool = False
     grad_year: Optional[int] = None  # alumni only
     headline: Optional[str] = None  # e.g. "Data Analyst at Deloitte"
-    personality_type: Optional[str] = None  # result of the statements, e.g. ambivert
+    big_five: dict = Field(default_factory=dict, sa_column=Column(JSON))  # optional short Big Five result, 1-5 per trait
     theme: str = "light"  # light, dark
     connection_style: str = "request"  # swipe, request
     onboarding_step: int = 0  # how far through the profile creator they got (0 = not started, 6 = done)
+
+    # --- Design decisions (docs/DESIGN_DECISIONS.md) ---
+    needs_visa_sponsorship: bool = False  # self-reported; jobs with unknown sponsorship get a "check with employer" flag
+    max_alumni_requests_per_month: Optional[int] = None  # alumni only: how many connection requests they accept
+    hidden_fields: list = Field(default_factory=list, sa_column=Column(JSON))  # profile fields the student hides
+    account_status: str = "active"  # active, warned, suspended, banned (moderation ladder)
+    code_of_conduct_accepted_at: Optional[datetime] = None  # accepted at sign-up
+    personal_email: Optional[str] = None  # added in final year, used for the alumni handover
+    alumni_verified: bool = False  # true once a confirmed UCL student becomes a verified alumnus
 
 
 class Tag(SQLModel, table=True):
@@ -152,13 +161,16 @@ class Group(SQLModel, table=True):
     created_at: datetime = Field(default_factory=now)
     first_event_id: Optional[int] = Field(default=None, foreign_key="event.id")
     kind: str = "auto"  # auto (auto-paired group), event (people going to one event)
+    status: str = "forming"  # forming, open (3 or more, chat is open), closed (matching shut 24h before the event)
 
 
 class GroupMember(SQLModel, table=True):
-    """Links a student to their group (4 to 6 members; 3 allowed in the demo)."""
+    """Links a student to their group (3 to 5 members)."""
 
     group_id: int = Field(foreign_key="group.id", primary_key=True)
     user_id: int = Field(foreign_key="user.id", primary_key=True)
+    booked: bool = False  # the "I've booked" button (trust-based, no ticket upload)
+    no_show_flags: int = 0  # how many group members flagged them as a no-show
 
 
 class MatchCache(SQLModel, table=True):
@@ -216,22 +228,23 @@ class UserLanguage(SQLModel, table=True):
 
 
 class CVUpload(SQLModel, table=True):
-    """A CV the student uploaded. We keep the extracted text, not the file itself."""
+    """Record that a CV was uploaded. The file AND its text are deleted once the details are extracted,
+    so only the draft below (cleared when the student approves) and the approved profile fields are kept."""
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="user.id", index=True)
     filename: str
-    raw_text: Optional[str] = None
     status: str = "parsing"  # parsing, done, failed
-    parsed_json: dict = Field(default_factory=dict, sa_column=Column(JSON))  # what was found, before the student edits it
+    parsed_json: dict = Field(default_factory=dict, sa_column=Column(JSON))  # the draft shown to the student; cleared on approval
+    approved_at: Optional[datetime] = None
     created_at: datetime = Field(default_factory=now)
 
 
 class PersonalityAnswer(SQLModel, table=True):
-    """A student's answer to one agree/disagree statement."""
+    """A student's answer to one Big Five statement (optional, social matching only)."""
 
     user_id: int = Field(foreign_key="user.id", primary_key=True)
-    statement_id: str = Field(primary_key=True)  # id from seed/personality.json
+    statement_id: str = Field(primary_key=True)  # id from seed/personality.json (the short Big Five check)
     value: int  # 1 (strongly disagree) to 5 (strongly agree)
 
 
@@ -280,6 +293,10 @@ class Role(SQLModel, table=True):
     alumni_count: int = 0
     median_start_salary_k: int = 0  # in thousands of pounds
     description: Optional[str] = None
+    is_custom: bool = False  # true for a role a student typed that was not in the starter list
+    advert_count: int = 0  # real job adverts behind the skill list; under 20 means "not enough data"
+    data_source: str = "estimate"  # estimate (starter guess from the seed file), adverts (aggregated from real adverts)
+    aggregated_at: Optional[datetime] = None  # when the advert results were last built (cached for a week)
 
 
 class RoleSkill(SQLModel, table=True):
@@ -351,6 +368,8 @@ class Job(SQLModel, table=True):
     company: str
     location: Optional[str] = None
     work_mode: Optional[str] = None  # on-site, hybrid, remote
+    level: Optional[str] = None  # internship, graduate, entry
+    sponsorship: str = "unknown"  # yes, no, unknown (unknown is flagged "check with employer")
     salary_text: Optional[str] = None
     summary: Optional[str] = None
     source: str = "seed"  # where it came from
@@ -547,3 +566,71 @@ class UserBadge(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.id", primary_key=True)
     badge_code: str = Field(foreign_key="badge.code", primary_key=True)
     earned_at: datetime = Field(default_factory=now)
+
+
+# --- Added after the design review (docs/DESIGN_DECISIONS.md) -------------------
+
+
+class RoleAlias(SQLModel, table=True):
+    """Another title that means the same role ("Data Analyst - Graduate" is the Data Analyst role).
+    Claude groups similar titles; this table remembers the answer."""
+
+    term: str = Field(primary_key=True)  # always lower case
+    role_id: int = Field(foreign_key="role.id", index=True)
+
+
+class EventSkill(SQLModel, table=True):
+    """A skill an event helps a student build. Same skill list as roles and jobs, so 'builds X' works for events."""
+
+    event_id: int = Field(foreign_key="event.id", primary_key=True)
+    skill_id: int = Field(foreign_key="skill.id", primary_key=True)
+
+
+class SocietySkill(SQLModel, table=True):
+    """A skill a society helps a student build."""
+
+    society_id: int = Field(foreign_key="society.id", primary_key=True)
+    skill_id: int = Field(foreign_key="skill.id", primary_key=True)
+
+
+class JobWorkValue(SQLModel, table=True):
+    """A work value a job offers (used for the smaller 'matches your work values' part of ranking)."""
+
+    job_id: int = Field(foreign_key="job.id", primary_key=True)
+    work_value_id: int = Field(foreign_key="workvalue.id", primary_key=True)
+
+
+class EventWorkValue(SQLModel, table=True):
+    """A work value an event speaks to."""
+
+    event_id: int = Field(foreign_key="event.id", primary_key=True)
+    work_value_id: int = Field(foreign_key="workvalue.id", primary_key=True)
+
+
+class SocietyWorkValue(SQLModel, table=True):
+    """A work value a society speaks to."""
+
+    society_id: int = Field(foreign_key="society.id", primary_key=True)
+    work_value_id: int = Field(foreign_key="workvalue.id", primary_key=True)
+
+
+class Report(SQLModel, table=True):
+    """A report about a person, message or group, for the pilot moderator to review (24-hour response)."""
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    reporter_id: int = Field(foreign_key="user.id", index=True)
+    reported_user_id: Optional[int] = Field(default=None, foreign_key="user.id")
+    message_id: Optional[int] = Field(default=None, foreign_key="message.id")
+    group_id: Optional[int] = Field(default=None, foreign_key="group.id")
+    reason: str
+    status: str = "open"  # open, warned, suspended, banned, dismissed (the warning > suspension > ban ladder)
+    created_at: datetime = Field(default_factory=now)
+    resolved_at: Optional[datetime] = None
+
+
+class Block(SQLModel, table=True):
+    """A student blocking another: no profile views, requests or messages either way."""
+
+    user_id: int = Field(foreign_key="user.id", primary_key=True)
+    blocked_user_id: int = Field(foreign_key="user.id", primary_key=True)
+    created_at: datetime = Field(default_factory=now)

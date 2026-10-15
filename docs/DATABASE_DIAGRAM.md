@@ -2,7 +2,9 @@
 
 This is the planned shape of the database after the back-end re-plan (see `BACKEND_REPLAN.md`). GitHub draws the diagram below automatically. Tables marked **(existing)** are already in `backend/app/models.py`; the rest are added phase by phase. This file is updated in every push.
 
-**Status: P1a done.** Every table below now exists in `models.py` and the career tables are seeded (67 skills, 150 roles, 43 work values, 6 badges). Look inside with `/dev/tables`. In the real database, table names are lower case with no underscores (`UserSkill` is `userskill`); the diagram uses underscores for readability. Two things differ from the first plan: `user_need` is only *deprecated* for now (the register route still writes to it, so it is deleted in the profile push), and the old `User` columns (`goal`, `experience_industry`, ...) stay until the routes using them are replaced.
+**Status: P1a and the design-decisions update are done.** The second update follows `DESIGN_DECISIONS.md` (see "Changes from the design review" at the end).
+
+**P1a:** Every table below now exists in `models.py` and the career tables are seeded (67 skills, 150 roles, 43 work values, 6 badges). Look inside with `/dev/tables`. In the real database, table names are lower case with no underscores (`UserSkill` is `userskill`); the diagram uses underscores for readability. Two things differ from the first plan: `user_need` is only *deprecated* for now (the register route still writes to it, so it is deleted in the profile push), and the old `User` columns (`goal`, `experience_industry`, ...) stay until the routes using them are replaced.
 
 ```mermaid
 erDiagram
@@ -22,6 +24,19 @@ erDiagram
     ROLE  ||--o{ ROLE_SKILL : requires
     JOB   ||--o{ JOB_SKILL : asks
     ROLE  ||--o{ JOB : "advertised as"
+    ROLE  ||--o{ ROLE_ALIAS : "also called"
+    EVENT ||--o{ EVENT_SKILL : builds
+    SKILL ||--o{ EVENT_SKILL : ""
+    SOCIETY ||--o{ SOCIETY_SKILL : builds
+    SKILL ||--o{ SOCIETY_SKILL : ""
+    JOB ||--o{ JOB_WORK_VALUE : offers
+    EVENT ||--o{ EVENT_WORK_VALUE : ""
+    SOCIETY ||--o{ SOCIETY_WORK_VALUE : ""
+    WORK_VALUE ||--o{ JOB_WORK_VALUE : ""
+    WORK_VALUE ||--o{ EVENT_WORK_VALUE : ""
+    WORK_VALUE ||--o{ SOCIETY_WORK_VALUE : ""
+    USER ||--o{ REPORT : files
+    USER ||--o{ BLOCK : makes
 
     WORK_VALUE ||--o{ USER_WORK_VALUE : ""
     WORK_VALUE ||--o{ ROLE_WORK_VALUE : ""
@@ -131,3 +146,23 @@ erDiagram
 | `user_need` | Removed (not in the new screens) |
 | `venue`, `venue_tag` | Parked: kept but unused |
 | `classification_cache` (existing) | Kept; the same pattern caches Claude's skill answers |
+
+## Changes from the design review
+
+These follow `docs/DESIGN_DECISIONS.md` and change the first plan.
+
+| Decision | Change |
+|---|---|
+| Free-text roles; Claude groups similar titles | `role.is_custom`, new `rolealias` table. The 150 seed roles are starter suggestions |
+| At least 20 adverts, else "not enough data"; one-week cache | `role.advert_count`, `role.data_source` (estimate / adverts), `role.aggregated_at` |
+| One shared vocabulary for jobs, events, societies | New `eventskill`, `societyskill` (jobs already had `jobskill`) and `jobworkvalue`, `eventworkvalue`, `societyworkvalue` |
+| Job level filter and visa flag | `job.level`, `job.sponsorship` (yes / no / unknown), `user.needs_visa_sponsorship` |
+| CV deleted after extraction | `cvupload.raw_text` removed; the draft in `parsed_json` is cleared on approval (`approved_at`) |
+| Optional Big Five check, not statements | `personality.json` is now the 10-item BFI-10; `user.big_five` replaces `personality_type` |
+| Book first, then group of 3-5; chat opens at 3; closes 24h before | `group.status`, `groupmember.booked`, `groupmember.no_show_flags` |
+| Alumni request limit; hide any field; alumni handover | `user.max_alumni_requests_per_month`, `user.hidden_fields`, `user.personal_email`, `user.alumni_verified` |
+| Report, block, code of conduct, moderation ladder | New `report` and `block` tables; `user.account_status`, `user.code_of_conduct_accepted_at` |
+| Weekly digest | No table: a `notification` of kind `digest`, switched by `notificationpref` |
+| "I went" then add the result to the profile | `eventsave.status = attended`; no new table |
+
+Still to do later: delete `user_need`, and remove the old `User` columns (`goal`, `experience_industry`, ...) once the register route no longer uses them.

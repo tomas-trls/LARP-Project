@@ -60,14 +60,14 @@ def tables_by_name() -> dict:
 # shows up under "Other", so a new table is never hidden.
 TABLE_GROUPS = {
     "Account and profile": ["user", "education", "experience", "userlanguage", "cvupload", "personalityanswer",
-                            "emailverification", "tag", "usertag", "userneed"],
+                            "emailverification", "tag", "usertag", "userneed", "report", "block"],
     "Career engine": ["skill", "skillsynonym", "userskill", "role", "roleskill", "workvalue", "userworkvalue",
-                      "roleworkvalue", "userroute", "routescore"],
+                      "roleworkvalue", "rolealias", "userroute", "routescore"],
     "Opportunities (events and jobs)": ["event", "eventtag", "eventsave", "job", "jobskill", "jobsave",
-                                        "classificationcache", "venue", "venuetag"],
+                                        "eventskill", "eventworkvalue", "jobworkvalue", "classificationcache", "venue", "venuetag"],
     "People": ["connection", "follow", "eventpair", "matchcache", "group", "groupmember"],
     "Societies": ["society", "societytag", "societymember", "societyrole", "societyroleapplication",
-                  "societyannouncement"],
+                  "societyannouncement", "societyskill", "societyworkvalue"],
     "Messages and profile": ["conversation", "conversationmember", "message", "notification", "notificationpref",
                              "badge", "userbadge"],
 }
