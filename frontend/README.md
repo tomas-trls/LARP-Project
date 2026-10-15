@@ -1,16 +1,34 @@
-# React + Vite
+# LARP front end (v2)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite + Tailwind. Built from the design in `UI Design/LARP App Screens.dc.html`.
 
-Currently, two official plugins are available:
+## Run it
+```
+cd frontend
+npm install
+npm run dev        # then open http://localhost:5173
+```
+Best viewed at phone width. On a laptop the app shows as a phone-sized column.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Where things are
+| Path | What it is |
+|---|---|
+| `src/App.jsx` | The list of pages and their addresses (numbers match the design's screens) |
+| `src/pages/` | One file per screen: Intro, SignUp, ProfileCreator, Review, Personality, Interests, CareerPath, WorkValues, Areas, Gaps, Home, Opportunities, People, Connections, Societies, Messages, Profile |
+| `src/components/` | Shared pieces (Screen, TabBar, StepHeader, Mascot, Icon, BottomSheet, ui.jsx) and per-area folders (onboarding, career, home, people) |
+| `src/index.css` | Colours (dark and light), fonts and animations from the design |
+| `src/profileStore.jsx` | The student's answers and choices, saved in the browser (localStorage) |
+| `src/sampleData.js` | The one place screens get data from |
+| `src/data/*.json` | Real UCL sample data, made by `scripts/build_sample_data.py` |
+| `src/data/*.js` | Made-up but realistic data: jobs, people, messages, career areas |
 
-## React Compiler
+## Sample data
+The JSON files come from `../Sample data/` (SU events, UCL Careers events and services, student groups).
+After changing those files, run from the project root:
+```
+python3 frontend/scripts/build_sample_data.py
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Not connected yet
+These screens don't call the back end yet. `src/api.js` and `src/useApi.js` are ready for when the endpoints in `docs/BACKEND_REPLAN.md` exist: change the matching function in `src/sampleData.js` and the screens stay the same.
+"Reset demo" on the Profile screen clears the saved answers.
