@@ -56,14 +56,40 @@ def tables_by_name() -> dict:
     return dict(SQLModel.metadata.tables)
 
 
+# Which area of the app each table belongs to, so the list is easy to scan. Any table not listed here
+# shows up under "Other", so a new table is never hidden.
+TABLE_GROUPS = {
+    "Account and profile": ["user", "education", "experience", "userlanguage", "cvupload", "personalityanswer",
+                            "emailverification", "tag", "usertag", "userneed"],
+    "Career engine": ["skill", "skillsynonym", "userskill", "role", "roleskill", "workvalue", "userworkvalue",
+                      "roleworkvalue", "userroute", "routescore"],
+    "Opportunities (events and jobs)": ["event", "eventtag", "eventsave", "job", "jobskill", "jobsave",
+                                        "classificationcache", "venue", "venuetag"],
+    "People": ["connection", "follow", "eventpair", "matchcache", "group", "groupmember"],
+    "Societies": ["society", "societytag", "societymember", "societyrole", "societyroleapplication",
+                  "societyannouncement"],
+    "Messages and profile": ["conversation", "conversationmember", "message", "notification", "notificationpref",
+                             "badge", "userbadge"],
+}
+
+
 @router.get("/tables", response_class=HTMLResponse)
 def list_tables(session: Session = Depends(get_session)):
-    """All tables with their row counts."""
-    rows = ""
-    for name, table in sorted(tables_by_name().items()):
-        count = session.execute(select(func.count()).select_from(table)).scalar()
-        rows += f'<tr><td><a href="/dev/tables/{escape(name)}">{escape(name)}</a></td><td>{count}</td></tr>'
-    body = f"<h1>LARP database</h1><p class='muted'>Read-only. Development only.</p><table><tr><th>Table</th><th>Rows</th></tr>{rows}</table>"
+    """All tables with their row counts, grouped by area of the app."""
+    tables = tables_by_name()
+    grouped = {title: [n for n in names if n in tables] for title, names in TABLE_GROUPS.items()}
+    placed = {n for names in grouped.values() for n in names}
+    grouped["Other"] = sorted(n for n in tables if n not in placed)
+
+    body = "<h1>LARP database</h1><p class='muted'>Read-only. Development only.</p>"
+    for title, names in grouped.items():
+        if not names:
+            continue
+        rows = ""
+        for name in names:
+            count = session.execute(select(func.count()).select_from(tables[name])).scalar()
+            rows += f'<tr><td><a href="/dev/tables/{escape(name)}">{escape(name)}</a></td><td>{count}</td></tr>'
+        body += f"<h2>{escape(title)}</h2><table><tr><th>Table</th><th>Rows</th></tr>{rows}</table>"
     return page("LARP database", body)
 
 

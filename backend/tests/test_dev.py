@@ -40,3 +40,10 @@ def test_other_computers_are_refused(session):
 def test_viewer_is_not_listed_on_the_api_docs_page(client):
     paths = client.get("/openapi.json").json()["paths"]
     assert not any(p.startswith("/dev") for p in paths)
+
+
+def test_index_lists_the_new_career_tables_under_group_headings(client):
+    text = client.get("/dev/tables").text
+    for name in ["skill", "role", "roleskill", "userroute", "routescore", "job", "society", "message", "notification"]:
+        assert f"/dev/tables/{name}" in text
+    assert "Career engine" in text and "Societies" in text
