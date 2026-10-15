@@ -24,11 +24,11 @@ from app.models import (
 )
 from app.pipeline.cv_parser import MAX_FILE_BYTES, CVError, extract_text, parse_cv
 from app.schemas_profile import (
-    CVDraftOut, DetailsIn, EducationItem, ExperienceItem, HobbiesIn, LanguageItem, PersonalityIn,
+    AddSkillsIn, CVDraftOut, DetailsIn, EducationItem, ExperienceItem, HobbiesIn, LanguageItem, PersonalityIn,
     ProfileFullOut, ProfileSaveIn, SkillOut,
 )
 from app.seed_career import SEED_DIR
-from app.skills import search_skills, skills_for_profile
+from app.skills import get_or_create_custom_skill, match_skill_name, search_skills, skills_for_profile
 
 router = APIRouter(prefix="/api/profile")
 
@@ -279,3 +279,17 @@ def save_hobbies(data: HobbiesIn, user: User = Depends(get_current_user), sessio
 def skill_search(q: str, user: User = Depends(get_current_user), session: Session = Depends(get_session)):
     """Suggest skills while the student types. Matches names and synonyms (type 'team' to find Teamwork)."""
     return [SkillOut(id=s.id, name=s.name, category=s.category) for s in search_skills(session, q)]
+
+
+@router.post("/skills", response_model=ProfileFullOut)
+def add_skills(data: AddSkillsIn, user: User = Depends(get_current_user), session: Session = Depends(get_session)):
+    """Add skills to the profile WITHOUT replacing anything (unlike PUT /api/profile). Used after 'I went' on an event:
+    progress follows the profile, so the student confirms what they gained."""
+    have = set(session.exec(select(UserSkill.skill_id).where(UserSkill.user_id == user.id)).all())
+    for name in data.skills:
+        skill_id = match_skill_name(session, name) or get_or_create_custom_skill(session, name)
+        if skill_id not in have:
+            session.add(UserSkill(user_id=user.id, skill_id=skill_id, source="manual"))
+            have.add(skill_id)
+    session.commit()
+    return build_full_profile(user, session)

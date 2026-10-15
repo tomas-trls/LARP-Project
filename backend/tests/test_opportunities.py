@@ -52,7 +52,7 @@ def career(session):
 
 @pytest.fixture
 def demo_jobs(session, career):
-    return refresh_jobs(session, [SeedJobsSource(now=NOW)], now=NOW)
+    return refresh_jobs(session, [SeedJobsSource()])
 
 
 def raw(title="Graduate Data Analyst", url="https://example.com/job/1", source="gradcracker", **kw):

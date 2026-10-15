@@ -205,3 +205,24 @@ All routes need a login token. The Opportunities tab holds **career events** and
 **Role data from adverts** (`app/jobs.py`): a role with 20 or more real adverts is rebuilt from them (a skill asked for in 70% of adverts gets importance 0.7, skills under 10% are dropped), then marked `data_source="adverts"`. The result is cached for a week. Under 20, the starter estimate is kept. Students whose active route matches a brand new real job get a "role" notification, unless they switched role alerts off.
 
 **Also changed:** events now have a `category` (career events are `opportunity`, the rest `social`) and are tagged with the skills they build. This is filled in on startup for older events (`backfill_event_data`) and whenever events are saved.
+
+### P2b – Home (done)
+All routes need a login token.
+
+| Route | What it does |
+|---|---|
+| `GET /api/home?filter=` | Everything on the Home screen in one answer (`filter` is `all`, `careers`, `social` or `societies`) |
+| `PUT` / `DELETE /api/events/{id}/rsvp` | Mark an event `saved`, `going` or `attended` ("I went"), or remove the mark |
+| `POST /api/profile/skills` | Add skills to the profile without replacing anything (used after "I went") |
+
+What `GET /api/home` returns:
+- **greeting:** first name, part of the day (London time), date and how many events are coming up.
+- **actions:** up to three recommended actions. The first is the action of the day. Rules, in priority order: add a profile (no skills yet), choose a career path (no active route), finish a saved job that closes within 7 days, go to the event that builds most of the route's gap, look at the best job on the route. If none apply: explore.
+- **featured:** the career event that builds the most of the gap and starts within 14 days; otherwise the soonest event.
+- **feed:** every upcoming event, soonest first, each with a `why` line, a button label (`Book` for career events, `Join` for the rest), how many connections are going, and the student's own saved status. Events ruled out by the student's preferences (for example alcohol) are left out.
+- **filters:** how many events each chip shows. The counts ignore the current filter.
+- **this_week:** the weekly digest section: new jobs and events that build the gap. (The Monday email itself is not built yet.)
+
+"I went": only works once the event has started. The answer suggests the skills the event builds; the student confirms the ones they want and they are added with `POST /api/profile/skills`, so progress follows the profile and not attendance counts.
+
+Not built yet: groups forming for the student (Event Groups), and society events (they need the Societies push; the filter is ready and shows 0 until then).

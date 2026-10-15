@@ -143,3 +143,62 @@ def job_why(job: Job, skills: Set[int], names: Dict[int, str], have: Set[int], o
 
 def saved_status(session: Session, user: User) -> Dict[int, str]:
     return {s.job_id: s.status for s in session.exec(select(JobSave).where(JobSave.user_id == user.id)).all()}
+
+
+# ---------------------------------------------------------------------------
+# Ranked lists (used by the Opportunities tab AND the Home screen)
+# ---------------------------------------------------------------------------
+
+
+def rank_career_events(session: Session, user: User, now: datetime, limit: int = 200) -> tuple:
+    """Upcoming career events for this student, best first. Returns (focus, list of event dicts).
+
+    With an active route they are ranked by how much of the route's skill gap they build; ties and the
+    no-route case use the older interest-based ranking."""
+    from app.events import events_from_db, rank_events
+    from app.routes_events import person_for
+
+    focus = active_focus(session, user)
+    skills_by_event = event_skill_map(session)
+    names = skill_names(session, {s for ids in skills_by_event.values() for s in ids})
+
+    base = rank_events(person_for(session, user), events_from_db(session), now, event_type="career", limit=500)
+    by_id = {e.id: e for e in session.exec(select(Event)).all()}
+    rows = []
+    for position, scored in enumerate(base):
+        event = by_id[scored.item.id]
+        if event.category != "opportunity":
+            continue
+        ids = skills_by_event.get(event.id, set())
+        build, top = score_event_build(ids, focus.missing) if focus else (0.0, None)
+        reason = (f"Builds {names.get(top) or focus.names.get(top)} - a gap on your {focus.role.name} route"
+                  if top else scored.reason)
+        rows.append((-build, position, {
+            "event_id": event.id, "title": event.title, "start_time": event.start_time, "end_time": event.end_time,
+            "location_name": event.location_name, "area": event.area, "employer": event.employer,
+            "source_url": event.source_url, "builds": sorted(names[s] for s in ids if focus and s in focus.missing),
+            "build_score": build, "reason": reason,
+        }))
+    rows.sort(key=lambda r: (r[0], r[1]))
+    return focus, [r[2] for r in rows[:limit]]
+
+
+def rank_jobs(session: Session, user: User, now: datetime) -> tuple:
+    """Every open job with its match, best first. Returns (focus, rows, saved) where each row is
+    (match %, on_route, job, skill ids, why) and saved maps job id -> saved/applied."""
+    focus = active_focus(session, user)
+    have = fit.user_skill_ids(session, user.id)
+    role_reqs = fit.all_requirements(session) if focus else {}
+    skills_by_job = job_skill_map(session)
+    names = skill_names(session, {s for ids in skills_by_job.values() for s in ids})
+
+    rows = []
+    for job in session.exec(select(Job)).all():
+        if not is_open(job, now):
+            continue
+        skills = skills_by_job.get(job.id, set())
+        match, on_route = job_match(job, skills, focus, role_reqs, have)
+        rows.append((match, on_route, job, skills, job_why(job, skills, names, have, on_route, focus, now)))
+    far = datetime.max.replace(tzinfo=timezone.utc)
+    rows.sort(key=lambda r: (-r[0], aware(r[2].closes_on) or far))
+    return focus, rows, saved_status(session, user)

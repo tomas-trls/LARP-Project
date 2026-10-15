@@ -21,9 +21,7 @@ from sqlmodel import Session, select
 from app import fit, opportunities as opp
 from app.auth import get_current_user
 from app.database import get_session
-from app.events import events_from_db, rank_events
 from app.models import Event, Job, JobSave, User
-from app.routes_events import person_for
 
 router = APIRouter(prefix="/api/opportunities")
 
@@ -41,30 +39,6 @@ def job_card(job: Job, user: User, match: int, why: str, on_route: bool, saved: 
         "match_pct": match, "why": why, "on_active_route": on_route, "saved_status": saved,
         "visa_flag": opp.visa_flag(user, job),
     }
-
-
-def ranked_jobs(session: Session, user: User, now: datetime) -> list:
-    """Every open job with its match, best first (before filters)."""
-    focus = opp.active_focus(session, user)
-    have = fit.user_skill_ids(session, user.id)
-    role_reqs = fit.all_requirements(session) if focus else {}
-    skills_by_job = opp.job_skill_map(session)
-    all_ids = {s for ids in skills_by_job.values() for s in ids}
-    names = opp.skill_names(session, all_ids)
-    saved = opp.saved_status(session, user)
-
-    rows = []
-    for job in session.exec(select(Job)).all():
-        if not opp.is_open(job, now):
-            continue
-        skills = skills_by_job.get(job.id, set())
-        match, on_route = opp.job_match(job, skills, focus, role_reqs, have)
-        rows.append((match, on_route, job, skills, why_for(job, skills, names, have, on_route, focus, now)))
-    return rows, saved
-
-
-def why_for(job, skills, names, have, on_route, focus, now):
-    return opp.job_why(job, skills, names, have, on_route, focus, now)
 
 
 @router.get("")
@@ -97,29 +71,8 @@ def career_events(
     """Upcoming career events. With an active route they are ranked by how much of the route's skill gap they build;
     otherwise by the student's interests. Each has a reason."""
     now = datetime.now(timezone.utc)
-    focus = opp.active_focus(session, user)
-    skills_by_event = opp.event_skill_map(session)
-    names = opp.skill_names(session, {s for ids in skills_by_event.values() for s in ids})
-
-    base = rank_events(person_for(session, user), events_from_db(session), now, event_type="career", limit=200)
-    category = {e.id: e for e in session.exec(select(Event)).all()}
-    rows = []
-    for position, scored in enumerate(base):
-        event = category[scored.item.id]
-        if event.category != "opportunity":
-            continue
-        ids = skills_by_event.get(event.id, set())
-        build, top = opp.score_event_build(ids, focus.missing) if focus else (0.0, None)
-        reason = (f"Builds {names.get(top) or focus.names.get(top)} - a gap on your {focus.role.name} route"
-                  if top else scored.reason)
-        rows.append((-build, position, {
-            "event_id": event.id, "title": event.title, "start_time": event.start_time, "end_time": event.end_time,
-            "location_name": event.location_name, "area": event.area, "employer": event.employer,
-            "source_url": event.source_url, "builds": sorted(names[s] for s in ids if focus and s in focus.missing),
-            "build_score": build, "reason": reason,
-        }))
-    rows.sort(key=lambda r: (r[0], r[1]))
-    return {"active_route": focus.role.name if focus else None, "events": [r[2] for r in rows[:limit]]}
+    focus, events = opp.rank_career_events(session, user, now, limit)
+    return {"active_route": focus.role.name if focus else None, "events": events}
 
 
 @router.get("/jobs")
@@ -138,8 +91,7 @@ def jobs(
 ):
     """Open jobs ranked for the student's active route. Filter by level, place, work mode, text, or saved only."""
     now = datetime.now(timezone.utc)
-    rows, saved = ranked_jobs(session, user, now)
-    focus = opp.active_focus(session, user)
+    focus, rows, saved = opp.rank_jobs(session, user, now)
 
     def keep(match, on_route, job, skills, why):
         if level and job.level != level:

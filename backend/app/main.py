@@ -20,6 +20,7 @@ from app.routes_admin import router as admin_router
 from app.routes_career import router as career_router
 from app.routes_dev import router as dev_router
 from app.routes_events import router as events_router
+from app.routes_home import router as home_router
 from app.routes_opportunities import router as opportunities_router
 from app.routes_linkedin import router as linkedin_router
 from app.routes_pairing import router as pairing_router
@@ -68,6 +69,9 @@ app.include_router(pairing_router)
 
 # Things to do: /api/events and /api/venues.
 app.include_router(events_router)
+
+# Home screen: /api/home, plus saving / going / "I went" on events.
+app.include_router(home_router)
 
 # Opportunities tab: career events and jobs, ranked for the active route (/api/opportunities/...).
 app.include_router(opportunities_router)
