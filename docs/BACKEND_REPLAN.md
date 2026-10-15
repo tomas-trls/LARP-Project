@@ -1,0 +1,145 @@
+# LARP back end: re-plan for the new screens
+
+## Context
+The current back end (FastAPI + SQLModel/SQLite in `backend/app/`) was built for an events-and-groups product: a questionnaire gives interest tags, tags give matches and groups, and groups get events. The new screens (`Project LARP UI Design.zip`) and the new README change the product. A student now builds a profile (CV or manual), picks a career route, and sees how close they are to that role in 5 categories. Every other tab (Home, Opportunities, People, Societies, Messages, Profile) is ranked against that route.
+
+The Future Me profile and Career Path are the new core. Most existing tables and code can be reused for the social and events side. Hackathon demo is **Fri 16 Oct, 4pm**. Today is Thu 15 Oct, so the phasing matters.
+
+Decisions made with you: job listings come from scraping public job sites; fit scores come from a keyword and synonym table with Claude as a cached fallback; the build runs career engine first, then the tabs; messages are stored in tables and polled.
+
+---
+
+## 0. Updates after your review
+- **Back end only.** We do not touch `frontend/`.
+- **Team docs.** The plan and the table diagram go into the repo so the group can read them: `docs/BACKEND_REPLAN.md` (this plan, tidied) and `docs/DATABASE_DIAGRAM.md` (a Mermaid entity-relationship diagram that GitHub renders, plus a one-line description per table). Both are updated at the end of every phase.
+- **Table viewer.** `routes_dev.py` (`/dev/tables`) is updated so it lists every new table and drops the removed ones. It must keep working after each phase.
+- **Tab naming.** *Opportunities* = career events (UCL Careers, employer talks, fairs) **plus** scraped jobs, with an Events / Jobs filter. *Societies* = the society directory **plus** an events feed of all society events. `Event` gets `category` (opportunity / social / society) and `society_id`; Home reads the same table.
+- **Separate pushes.** One git branch and one push per section (listed in section 5), each with its own tests passing and its docs updated, so the group can follow each stage. I will not push without your go-ahead for each one.
+
+## 1. What happens to the existing tables
+
+| Table | Verdict | Why |
+|---|---|---|
+| `User` | **Change** | Drop `goal`, `experience_industry`, `experience_note`, `availability`, `linkedin_max_optin`. Education and experience now live in their own tables. Add profile and settings columns (see 2a). |
+| `Tag`, `UserTag` | **Keep** | They become the hobbies list ("What are you into outside of work?"). Used for social matching only. |
+| `Event`, `EventTag` | **Keep + extend** | Home needs a category (careers / social / societies), an optional society, and an employer. |
+| `Venue`, `VenueTag` | **Park** | No screen shows venues. Leave them in place, build nothing new on them. |
+| `ClassificationCache` | **Keep** | Same idea is reused for the Claude skill extraction cache. |
+| `Group`, `GroupMember` | **Keep + extend** | Add `kind` (event pair / auto group) and `event_id`. They back the event pairing and group chats. |
+| `MatchCache` | **Keep + extend** | Add `kind` (career / social) and `starter` (the Claude conversation starter). |
+| `UserNeed` | **Drop** | "Looking for / offers" appears on no screen. |
+| `routes_linkedin.py` and the LinkedIn Max feature | **Retire** | Not in the new screens. Keep `linkedin_url` on the profile only. |
+
+## 2. New tables, grouped by feature
+
+### 2a. Profile (CV or manual)
+- `Education` (user_id, degree, institution, start, end, grade)
+- `Experience` (user_id, title, organisation, location, start, end, description, kind: job / internship / society / project)
+- `UserSkill` (user_id, skill_id, source: cv / manual)
+- `UserLanguage` (user_id, language, level)
+- `CVUpload` (user_id, filename, raw_text, status: parsing / done / failed, parsed_json). Keep the extracted text, not the file, to limit private data held.
+- `PersonalityAnswer` (user_id, statement_id, value) plus result columns on `User` (`personality_type`, e.g. ambivert).
+- New `User` columns: `bio`, `hometown`, `relationship_status`, `zodiac`, `profile_note`, `avatar_url`, `is_alumni`, `grad_year`, `headline`, `theme`, `connection_style` (swipe / request), `onboarding_step`.
+- `EmailVerification` (email, code_hash, expires_at). Sign-up sends a code. Real SSO needs UCL approval, so it is shown but not built.
+
+### 2b. Career engine (the core)
+- `Skill` (id, name, category: academics / skills / teamwork / experience / leadership). This is the single canonical skill list.
+- `SkillSynonym` (term, skill_id). Maps "cooperative", "collaborated" and similar words to canonical skills, so the CV words can match.
+- `Role` (id, name, sector, alumni_count, median_start_salary, description). Seeded from the ~200-role list in the screens (`Product Manager|Tech|1240|48;...`). This is the searchable "career paths" list.
+- `RoleSkill` (role_id, skill_id, importance 0–1). The role's requirement list.
+- `WorkValue` (id, title, description). Seeded from the UCL Careers values activity docx (about 40 values; users can add their own).
+- `UserWorkValue` (user_id, work_value_id, rank). Changed to **pick the top 3–5**, not a 1–5 rating.
+- `RoleWorkValue` (role_id, work_value_id, strength). Tags each role with the values it offers.
+- `UserRoute` (id, user_id, role_id or custom_title, source: chosen / suggested, rationale, is_active, fit_pct). Users can save several and switch.
+- `RouteScore` (route_id, category, user_score, benchmark_score, matched_skills JSON, missing_skills JSON). One row per category (5 per route).
+
+### 2c. Jobs (Opportunities)
+- `Job` (title, company, location, work_mode, salary_text, summary, source, source_url unique, posted_on, closes_on, scraped_at, role_id nullable, raw_text)
+- `JobSkill` (job_id, skill_id), filled by the same skill extractor. Aggregating `JobSkill` by role is how `RoleSkill.importance` gets built ("communication: 82% of adverts").
+- `JobSave` (user_id, job_id, status: saved / applied)
+- `Notification` (see 2f), used for "new roles on a saved route".
+
+### 2d. People (Networking, Social, Connections)
+- `Connection` (user_id, other_user_id, kind: career / social, status: pending / accepted / declined, requested_by, note). Mutual accept is what unlocks messaging.
+- `Follow` (user_id, followed_user_id), for the "follow people who share hobbies" list.
+- `EventPair` (event_id, user_id, partner_id, status), for "Pair up with Marco" on a Students' Union event.
+- Matching: career matching compares route, skills and programme. Social matching compares personality and hobbies only, never career data (README privacy rule).
+
+### 2e. Societies
+- `Society` (name, category incl. new "Academic", tagline, description, membership_price, membership_url, member_count)
+- `SocietyTag` (society_id, tag_id), used for fit ranking
+- `SocietyMember` (society_id, user_id, role: member / committee)
+- `SocietyRole` (society_id, title, description, counts_as_category) – student rep roles. `counts_as_category` is "leadership" in the screens' example.
+- `SocietyRoleApplication` (role_id, user_id, status)
+- `SocietyAnnouncement` (society_id, title, body, members_only)
+- Add `society_id` to `Event`.
+
+### 2f. Messages, notifications, profile
+- `Conversation` (kind: direct / group / society / event / system, title, group_id, society_id, event_id)
+- `ConversationMember` (conversation_id, user_id, last_read_at, muted)
+- `Message` (conversation_id, sender_id, body, created_at)
+- `Notification` (user_id, kind: match / message / event / role, title, body, link, read_at)
+- `NotificationPref` (user_id, kind, enabled)
+- `Badge` (code, name, how_earned) and `UserBadge` (user_id, badge_code). Profile stats (events attended, connections, societies) are counted from `EventPair`, `Connection` and `SocietyMember`. They are not stored.
+- `EventSave` (user_id, event_id, status: saved / going / attended), feeds Home and the profile stats.
+
+## 3. How the tables connect
+```
+User ─┬─ Education / Experience / UserSkill ── Skill ── SkillSynonym
+      │                                          │
+      ├─ UserWorkValue ── WorkValue ── RoleWorkValue ──┐
+      │                                                ▼
+      └─ UserRoute ──────────────────────────────────► Role ── RoleSkill ── Skill
+              │                                         ▲
+              └─ RouteScore (5 rows)                    │ aggregated from
+                                                  Job ── JobSkill ── Skill
+User ── Connection / Follow / EventPair ── User      Event ── Society ── SocietyMember ── User
+Conversation ── ConversationMember / Message          Society ── SocietyRole ── Application
+```
+`Skill` is the hub. CV text, role requirements, job adverts and society roles all resolve to the same skill rows, which is what makes the matching and the fit scores comparable.
+
+## 4. Fit-score logic (route page, 5 categories)
+1. **Normalise** the user's CV/manual entries to `Skill` rows: exact name, then `SkillSynonym`, then a simple fuzzy match. Anything still unmatched goes to Claude once and the answer is cached in `SkillSynonym`.
+2. **Per category**: `score = sum(importance of the role's skills the user has) / sum(importance of all the role's skills in that category) × 100`. Five leadership skills required and four held gives 80.
+3. **Academics** use degree level, subject and grade against the role's academic skills. **Experience** uses roles, internships and years.
+4. Store 5 `RouteScore` rows, with `matched_skills` and `missing_skills` driving the gap summary. `fit_pct` is the average. The alumni benchmark comes from `RoleSkill`, with seed values for the demo.
+5. Route suggestions: top roles ranked by profile fit plus overlap between the user's top work values and `RoleWorkValue`. Claude writes the one-line rationale (cached; demo mode uses saved text).
+
+## 5. Phases and pushes (each one demoable, tested, documented, and pushed on its own)
+Push order: **P0 docs** → **P1a tables + seeds** → **P1b profile + CV** → **P1c career engine** → **P2a opportunities (events + jobs)** → **P2b home** → **P2c people** → **P3a societies** → **P3b messages + notifications** → **P3c profile summary**. Each push updates `docs/DATABASE_DIAGRAM.md` and `/dev/tables`.
+
+**P0 – Docs push:** this plan and the diagram committed to `docs/` so the group sees the design first.
+
+**Phase 1 – Career engine (build first, tonight)**
+1. Migrations/reset: new tables, drop `UserNeed`, update `reset_db.py` and seeds (`roles.json`, `skills.json`, `synonyms.json`, `work_values.json`).
+2. Profile: `POST /api/cv` (upload PDF/DOCX, text extraction with `pypdf`/`python-docx`, Claude extraction, demo fallback), `GET/PUT /api/profile` (education, experience, skills, languages), personality and hobbies endpoints.
+3. Career: `GET /api/roles?q=`, `GET /api/work-values`, `PUT /api/me/work-values`, `POST /api/routes/suggest`, `POST/GET/DELETE /api/routes`, `PUT /api/routes/{id}/activate`, `GET /api/routes/{id}/gap`.
+4. Tests: synonym matching, the 80% leadership example, suggestion ranking, CV parse (fixture CV, no live Claude).
+
+**Phase 2 – Home, Opportunities, People**
+1. Job scraper plus seeded fallback, `GET /api/jobs` ranked by active route with a "why" line, save/apply, `Notification` on new roles.
+2. `GET /api/home` (action of the day, featured event, filtered feed with reasons), extend event scoring to use route gaps.
+3. People: `GET /api/people?kind=career|social`, connection request/accept, follow, event pairing, `GET /api/connections`.
+
+**Phase 3 – Societies, Messages, Profile**
+1. Societies list, ranked by fit, join, rep-role apply, announcements.
+2. Conversations, messages (front end polls `GET /api/conversations/{id}/messages?after=`), unread counts, notification prefs, Claude conversation starters.
+3. `GET /api/profile/summary` (stats, badges, active route gap, saved routes), settings.
+
+## 6. Risks and rules to keep
+- **Job scraping:** you chose to scrape. I will reuse `PoliteFetcher` in `app/pipeline/web.py` (robots.txt check, 2s delay, named User-Agent). **CLAUDE.md says never scrape LinkedIn, so LinkedIn is excluded.** Indeed's terms and robots.txt also forbid it, so each site is only enabled if its robots.txt allows the page, and the seeded job file stays as the guaranteed demo fallback. Expect to try gov.uk Find a Job or graduate boards; I will check robots.txt first.
+- **Time:** Phase 1 is the realistic target before Fri 4pm; Phases 2–3 are likely beyond it, so the seeded versions of Phase 2 endpoints come first.
+- Never auto-send LinkedIn requests; passwords stay bcrypt hashes; secrets stay in `.env`; keep `DEMO_MODE` fallbacks for every Claude call.
+- SQLite resets on Render restart, so seeds must load on startup.
+- New packages: `python-multipart`, `pypdf`, `python-docx`.
+
+## 7. Files touched
+- `backend/app/models.py` (all table changes), `schemas.py`, `main.py` (register new routers), `reset_db.py`, `seed_*.py`
+- New: `routes_profile.py`, `routes_career.py`, `routes_jobs.py`, `routes_people.py`, `routes_societies.py`, `routes_messages.py`, `fit.py` (scoring), `skills.py` (normaliser), `pipeline/cv_parser.py`, `pipeline/job_scraper.py`
+- Reuse: `auth.get_current_user`, `matching.py` scoring helpers for social matches, `match_cache.py`, `pipeline/web.py` `PoliteFetcher`, `pipeline/claude_tagger.py` client and cache pattern, `settings.DEMO_MODE`
+- Seeds from the zip: `LARP App Screens.dc.html` (roles, areas), `Career values activity.docx` (values)
+
+## 8. Verification
+- `py -m pytest` from `backend/` after each phase; new tests per feature as listed.
+- Run `uvicorn app.main:app --reload`, walk the journey in `/docs`: register → upload fixture CV → review profile → set values → suggest routes → open `/gap` (5 scores) → jobs → people → societies → messages.
+- Run with `DEMO_MODE=true` to prove no live Claude or scraping is needed.
