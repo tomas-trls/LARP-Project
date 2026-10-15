@@ -21,6 +21,7 @@ from app.routes_dev import router as dev_router
 from app.routes_events import router as events_router
 from app.routes_linkedin import router as linkedin_router
 from app.routes_pairing import router as pairing_router
+from app.routes_profile import router as profile_router
 from app.routes_users import router as users_router
 from app.seed_career import load_career_data
 from app.seed_tags import load_tags
@@ -51,6 +52,9 @@ app.add_middleware(
 
 # Account routes: register, login, /me, /me/preferences.
 app.include_router(users_router)
+
+# Profile: CV upload, review and save, details, personality, hobbies (/api/profile/...).
+app.include_router(profile_router)
 
 # Matches and groups: /api/matches, /api/pair/auto, /api/group.
 app.include_router(pairing_router)
