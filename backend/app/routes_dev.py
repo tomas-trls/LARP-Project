@@ -73,6 +73,29 @@ TABLE_GROUPS = {
 }
 
 
+def relationship_diagram(tables: dict) -> str:
+    """A Mermaid "entity relationship" diagram, built from the foreign keys in models.py.
+
+    Because it is built from the real tables, it can never get out of date.
+    Each line reads: parent table, one-to-many, child table, and the column that links them.
+    """
+    lines = ["erDiagram"]
+    for name in sorted(tables):
+        for fk in tables[name].foreign_keys:
+            parent = fk.column.table.name
+            lines.append(f'    {parent} ||--o{{ {name} : "{fk.parent.name}"')
+    return "\n".join(lines)
+
+
+# Draws the diagram in the browser. It needs internet; without it the plain text below it still shows.
+MERMAID_SCRIPT = (
+    '<script type="module">'
+    'import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs";'
+    'mermaid.initialize({startOnLoad: true, maxTextSize: 200000});'
+    "</script>"
+)
+
+
 @router.get("/tables", response_class=HTMLResponse)
 def list_tables(session: Session = Depends(get_session)):
     """All tables with their row counts, grouped by area of the app."""
@@ -82,6 +105,13 @@ def list_tables(session: Session = Depends(get_session)):
     grouped["Other"] = sorted(n for n in tables if n not in placed)
 
     body = "<h1>LARP database</h1><p class='muted'>Read-only. Development only.</p>"
+    body += (
+        "<h2>How the tables connect</h2>"
+        "<p class='muted'>Each line goes from a table to the tables that point at it. "
+        "Scroll sideways or zoom the page if it is wide.</p>"
+        f"<div style='overflow:auto;border:1px solid #ccc;padding:8px'><pre class='mermaid'>{escape(relationship_diagram(tables))}</pre></div>"
+        f"{MERMAID_SCRIPT}"
+    )
     for title, names in grouped.items():
         if not names:
             continue

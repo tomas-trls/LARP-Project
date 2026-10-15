@@ -47,3 +47,11 @@ def test_index_lists_the_new_career_tables_under_group_headings(client):
     for name in ["skill", "role", "roleskill", "userroute", "routescore", "job", "society", "message", "notification"]:
         assert f"/dev/tables/{name}" in text
     assert "Career engine" in text and "Societies" in text
+
+
+def test_index_starts_with_the_relationship_diagram(client):
+    text = client.get("/dev/tables").text
+    assert "How the tables connect" in text
+    assert text.index("How the tables connect") < text.index("Career engine")  # diagram is above the table list
+    assert "erDiagram" in text
+    assert 'role ||--o{ roleskill : &quot;role_id&quot;' in text  # built from the real foreign keys
