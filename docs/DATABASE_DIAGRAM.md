@@ -72,6 +72,8 @@ erDiagram
     SOCIETY ||--o{ SOCIETY_ANNOUNCEMENT : posts
 
     GROUP ||--o{ GROUP_MEMBER : ""
+    GROUP ||--o{ NO_SHOW_FLAG : ""
+    USER  ||--o{ NO_SHOW_FLAG : "flags / is flagged"
     USER  ||--o{ GROUP_MEMBER : ""
     CONVERSATION ||--o{ CONVERSATION_MEMBER : ""
     USER ||--o{ CONVERSATION_MEMBER : ""
@@ -123,7 +125,8 @@ erDiagram
 | `follow` | One-way follow for shared hobbies |
 | `event_pair` | Two students going to an event together |
 | `match_cache` (existing, extended) | Saved top matches with a reason and a conversation starter |
-| `group`, `group_member` (existing, extended) | Small groups for an event |
+| `group`, `group_member` (existing, extended) | Event Groups of 3 to 5 who each booked one event (`group.kind = event`, `first_event_id` = the event). The old auto-paired groups are `kind = auto` |
+| `no_show_flag` | One group member saying another did not turn up (one flag per pair) |
 
 ### Societies
 | Table | Purpose |
