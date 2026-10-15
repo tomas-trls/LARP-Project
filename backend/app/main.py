@@ -17,6 +17,7 @@ from app import settings
 from app.database import create_db_and_tables, engine, get_session
 from app.models import Tag
 from app.routes_admin import router as admin_router
+from app.routes_career import router as career_router
 from app.routes_dev import router as dev_router
 from app.routes_events import router as events_router
 from app.routes_linkedin import router as linkedin_router
@@ -55,6 +56,9 @@ app.include_router(users_router)
 
 # Profile: CV upload, review and save, details, personality, hobbies (/api/profile/...).
 app.include_router(profile_router)
+
+# Career engine: roles, work values, suggested routes, saved routes and the gap summary.
+app.include_router(career_router)
 
 # Matches and groups: /api/matches, /api/pair/auto, /api/group.
 app.include_router(pairing_router)

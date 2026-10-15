@@ -165,3 +165,22 @@ How the CV is read: with an API key and `DEMO_MODE=false` Claude reads it (`CV_M
 
 Skill matching (`app/skills.py`): exact name or synonym, then a whole-word scan of longer text, then a fuzzy match for typos. A skill nobody has heard of is kept as a custom skill in the "skills" category.
 
+
+### P1c – Career engine (done)
+Routes start with `/api`. Everything needs a login token except role search.
+
+| Route | What it does |
+|---|---|
+| `GET /roles?q=` | Search the career paths by name, sector or a known alternative title. No search text gives the most popular roles |
+| `POST /roles/resolve` | Turn any typed title into one of our roles (exact, alias, close spelling, Claude if live, else a new custom role) |
+| `GET` / `POST` / `PUT /work-values` | The UCL values list; add a value of your own; pick your top 3 to 5 in order |
+| `POST /routes/suggest` | 1 to 5 suggested roles from the profile (60%) and work values (40%), or roles adjacent to a chosen role. Each has a "why" |
+| `GET` / `POST /routes` | List saved routes (with average fit) / save one. The first becomes active; up to 8 |
+| `PUT /routes/{id}/activate`, `DELETE /routes/{id}` | Switch the active route / remove one |
+| `GET /routes/{id}/gap` | The gap summary: five category scores vs the alumni benchmark, the biggest gap, and every missing skill ranked by impact |
+
+**The maths** (`app/fit.py`): category score = importance of the role's skills you have in that category ÷ importance of all the role's skills in it × 100. So 4 of 5 equal leadership skills scores 80. The overall fit is the average of the five. The alumni benchmark is an **estimate** (alumni are assumed to hold the role's core skills, importance 0.6 or more) until we have alumni profiles.
+
+**Data rules** (from `DESIGN_DECISIONS.md`): a role built from real adverts needs 20 or more, otherwise it is "not enough data" and the closest common roles are offered. Our seeded roles are marked `estimate` until job adverts replace them (P2a).
+
+**Also changed:** saving a profile now works out experience skills from internships, jobs and societies (a "Product Intern" earns Tech internship; a society treasurer earns Society committee role).

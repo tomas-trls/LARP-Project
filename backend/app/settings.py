@@ -62,3 +62,9 @@ SCRAPER_CONTACT = os.getenv("SCRAPER_CONTACT", "").strip()
 
 # The Claude model that reads CVs when there is a key and DEMO_MODE is false.
 CV_MODEL = os.getenv("CV_MODEL", "claude-sonnet-5-5")
+
+# --- Career engine ---
+
+# The Claude model that matches typed role titles and writes the "why this role" lines.
+CAREER_MODEL = os.getenv("CAREER_MODEL", "claude-haiku-5-5")
+
