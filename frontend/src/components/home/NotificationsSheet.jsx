@@ -183,13 +183,13 @@ export default function NotificationsSheet({ state, setState, titles, onClose, o
   }
 
   return (
-    <div className="fixed inset-0 z-50 mx-auto max-w-[402px]">
+    <div className="fixed inset-0 z-50">
       <style>{NOTIFICATION_KEYFRAMES}</style>
       <div className="absolute inset-0 bg-[rgba(20,8,40,.55)]" style={{ animation: 'larpIn .2s both' }} onClick={onClose} />
       <div
         role="dialog"
         aria-label="Notifications"
-        className="absolute inset-x-0 bottom-0 flex h-[85dvh] flex-col rounded-t-[28px] bg-bg pt-2.5 shadow-[0_-10px_40px_rgba(20,8,40,.35)]"
+        className="absolute inset-x-0 bottom-0 mx-auto flex h-[85dvh] max-w-(--app-w) flex-col rounded-t-[28px] bg-bg pt-2.5 shadow-[0_-10px_40px_rgba(20,8,40,.35)]"
         style={{ animation: 'ntUp .35s cubic-bezier(.2,.8,.3,1) both' }}
       >
         <div className="mx-auto mb-3 h-[5px] w-10 flex-none rounded-[3px] bg-line" />

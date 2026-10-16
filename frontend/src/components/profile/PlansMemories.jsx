@@ -164,7 +164,7 @@ export function MemoryStack({ memories, index, setIndex, onOpen, myPhoto }) {
 // A full-screen page over Profile with a back button and a small title.
 export function FullPage({ title, onBack, children, z = 'z-40' }) {
   return (
-    <div className={`fixed inset-0 ${z} mx-auto flex w-full max-w-[402px] flex-col bg-bg pt-[max(20px,env(safe-area-inset-top))] text-ink`} style={{ animation: 'larpIn .25s both' }}>
+    <div className={`fixed inset-0 ${z} mx-auto flex w-full max-w-(--app-w) flex-col bg-bg pt-[max(20px,env(safe-area-inset-top))] text-ink`} style={{ animation: 'larpIn .25s both' }}>
       <div className="flex h-11 flex-none items-center justify-between px-4 pt-1">
         <button type="button" onClick={onBack} aria-label="Back" className="flex h-10 w-10 items-center justify-center rounded-full bg-sf text-mute shadow-ring">
           <Icon name="back" size={20} />

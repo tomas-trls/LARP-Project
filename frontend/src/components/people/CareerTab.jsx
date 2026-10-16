@@ -88,15 +88,18 @@ export default function CareerTab({ savedOpen, onCloseSaved }) {
 
   return (
     <>
-      <SwipeDeck
-        deck={deck}
-        onPass={(p) => update('passedPeople', [...passed, p.id])}
-        onSave={(p) => {
-          update('savedPeople', [...saved, p.id])
-          showToast(`${p.first} saved to your bookmark`)
-        }}
-        onCoffee={(p) => setCoffeeWith(p)}
-      />
+      {/* On a laptop the card stays phone-sized in the middle instead of stretching across the page. */}
+      <div className="lg:mx-auto lg:w-full lg:max-w-md">
+        <SwipeDeck
+          deck={deck}
+          onPass={(p) => update('passedPeople', [...passed, p.id])}
+          onSave={(p) => {
+            update('savedPeople', [...saved, p.id])
+            showToast(`${p.first} saved to your bookmark`)
+          }}
+          onCoffee={(p) => setCoffeeWith(p)}
+        />
+      </div>
 
       {/* Go to careers events together */}
       <div className="mt-[26px] flex flex-none items-baseline justify-between px-1">

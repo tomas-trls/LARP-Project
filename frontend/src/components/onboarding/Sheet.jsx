@@ -14,12 +14,12 @@ export default function Sheet({ title, onClose, onBack, withBack = false, maxHei
   }, [onClose])
 
   return (
-    <div className="fixed inset-0 z-50 mx-auto flex max-w-[402px] flex-col justify-end">
+    <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <div className="absolute inset-0 bg-[rgba(20,8,40,.55)]" onClick={onClose} />
       <div
         role="dialog"
         aria-label={title}
-        className="relative flex flex-col rounded-t-[28px] bg-sf pt-2.5 pb-[max(34px,env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(20,8,40,.35)]"
+        className="relative mx-auto flex w-full max-w-(--app-w) flex-col rounded-t-[28px] bg-sf pt-2.5 pb-[max(34px,env(safe-area-inset-bottom))] shadow-[0_-10px_40px_rgba(20,8,40,.35)]"
         style={{ maxHeight, animation: 'sheetUp .25s cubic-bezier(.2,.7,.2,1)' }}
       >
         <div className="mx-auto mb-3.5 h-[5px] w-10 flex-none rounded-[3px] bg-line" />
