@@ -8,7 +8,7 @@
 //   data  -> what the screen should draw (real if live, sample otherwise)
 //   live  -> true when `data` really came from the back end
 import { useEffect, useState } from 'react'
-import { api } from './api.js'
+import { api, assetUrl } from './api.js'
 import { isLoggedIn } from './auth.js'
 
 // Loads `path` once when the screen opens. `adapt` reshapes the answer into what the screen draws.
@@ -248,6 +248,9 @@ export async function syncSociety(name, join) {
 // People › Career: alumni and students further along the student's route
 // ---------------------------------------------------------------------------
 
+// The CSS background for a person's round avatar: their picture if they have one, else a plain colour.
+const faceBg = (avatarUrl, fallback) => (avatarUrl ? `url(${assetUrl(avatarUrl)}) center/cover` : fallback)
+
 const AVATAR_COLORS = ['#BA82FF', '#993BFF', '#A66BFF', '#8D5BD9', '#DDBDFF', '#56338A', '#C4A3F0', '#7A4FB5']
 
 // One person from /people/career -> the card the swipe deck draws.
@@ -260,7 +263,7 @@ export function adaptPeople(answer) {
     role: p.headline || [p.course, p.year ? `year ${p.year}` : null].filter(Boolean).join(' · '),
     match: Math.max(60, 92 - i * 4), // the back end already sorts best first; this just shows that order
     alumni: p.is_alumni,
-    color: AVATAR_COLORS[i % AVATAR_COLORS.length],
+    color: faceBg(p.avatar_url, AVATAR_COLORS[i % AVATAR_COLORS.length]),
     tags: [p.is_alumni ? 'Alumni' : 'Student', ...(p.skills_to_learn || []).slice(0, 2), p.accepting_requests ? 'Open to coffee' : null].filter(Boolean),
     why: p.reason,
     hook: `following the ${answer.active_route || 'same'} route`,
@@ -292,6 +295,7 @@ export function adaptConnections(answer) {
     name: c.name,
     kind: c.kind,
     line: line(c),
+    photo: assetUrl(c.avatar_url),
     note: c.note || 'Connected on LARP',
     linkedin: c.kind === 'career',
     link: c.kind === 'social',
@@ -299,11 +303,11 @@ export function adaptConnections(answer) {
   const pending = [
     ...answer.incoming.map((c) => ({
       id: `u${c.user_id}`, connectionId: c.connection_id, name: c.name, kind: c.kind,
-      line: `${line(c)} · sent you a request · ${ago(c.created_at)}`, linkedin: c.kind === 'career', link: c.kind === 'social',
+      photo: assetUrl(c.avatar_url), line: `${line(c)} · sent you a request · ${ago(c.created_at)}`, linkedin: c.kind === 'career', link: c.kind === 'social',
     })),
     ...answer.outgoing.map((c) => ({
       id: `u${c.user_id}`, connectionId: c.connection_id, name: c.name, kind: c.kind,
-      line: `${line(c)} · you sent a request · ${ago(c.created_at)}`, linkedin: c.kind === 'career', link: c.kind === 'social', sentByMe: true,
+      photo: assetUrl(c.avatar_url), line: `${line(c)} · you sent a request · ${ago(c.created_at)}`, linkedin: c.kind === 'career', link: c.kind === 'social', sentByMe: true,
     })),
   ]
   return { connections, pending }
@@ -386,6 +390,7 @@ export async function loadServerProfile() {
     const active = r.routes.find((x) => x.is_active)
     return {
       name: p.name,
+      photos: p.avatar_url ? [assetUrl(p.avatar_url)] : undefined, // your own face, used as your main photo
       cv: {
         file: 'CV saved on LARP',
         edu: p.education.map((e) => ({ degree: e.degree, inst: e.institution, start: e.start_year ? String(e.start_year) : '', end: e.end_year ? String(e.end_year) : '' })),

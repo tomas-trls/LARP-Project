@@ -427,5 +427,181 @@
   "closes_in_days": 9,
   "sponsorship": "unknown",
   "summary": "Help early-stage founders test ideas. Take initiative, own projects end to end and organise events."
+ },
+ {
+  "title": "Frontend Developer",
+  "company": "Pixel & Co",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "graduate",
+  "salary": "£42,000",
+  "closes_in_days": 30,
+  "sponsorship": "yes",
+  "summary": "Build customer-facing web apps in a small product team. Programming in JavaScript, plus wireframing and prototyping in Figma with our designers. Cross-functional working every day."
+ },
+ {
+  "title": "UX Researcher",
+  "company": "Lumen Health",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "entry",
+  "salary": "£36,000",
+  "closes_in_days": 25,
+  "sponsorship": "unknown",
+  "summary": "Run interviews and usability tests with patients and clinicians. Qualitative research, report writing and presenting findings to stakeholders. Healthcare systems knowledge a plus."
+ },
+ {
+  "title": "Cybersecurity Analyst",
+  "company": "Sentinel Systems",
+  "location": "London",
+  "work_mode": "on-site",
+  "level": "graduate",
+  "salary": "£40,000",
+  "closes_in_days": 28,
+  "sponsorship": "yes",
+  "summary": "Monitor alerts and investigate incidents. Problem solving, Python scripting and AWS cloud security. Clear documentation for the wider team."
+ },
+ {
+  "title": "Marketing Analyst",
+  "company": "Bloom Beauty",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "entry",
+  "salary": "£33,000",
+  "closes_in_days": 20,
+  "sponsorship": "unknown",
+  "summary": "Measure campaign performance with Excel, SQL and Power BI dashboards. Digital marketing and SEO insight for the growth team. Present results to marketing managers."
+ },
+ {
+  "title": "Financial Analyst",
+  "company": "Harbour Capital",
+  "location": "London",
+  "work_mode": "on-site",
+  "level": "graduate",
+  "salary": "£45,000",
+  "closes_in_days": 35,
+  "sponsorship": "yes",
+  "summary": "Build financial models and valuation work for the corporate finance team. Excel at an advanced level, strong written communication and presentation skills."
+ },
+ {
+  "title": "Data Scientist",
+  "company": "Orbit Labs",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "graduate",
+  "salary": "£48,000",
+  "closes_in_days": 32,
+  "sponsorship": "yes",
+  "summary": "Develop machine learning and predictive modelling in Python. Statistics, SQL and data visualisation. Work with product managers and engineers."
+ },
+ {
+  "title": "Business Analyst",
+  "company": "Cobalt Consulting",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "graduate",
+  "salary": "£38,000",
+  "closes_in_days": 18,
+  "sponsorship": "unknown",
+  "summary": "Gather requirements and map processes for client projects. Stakeholder management, agile project planning and Excel. Client-facing from week one."
+ },
+ {
+  "title": "Product Manager",
+  "company": "Kite Mobility",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "entry",
+  "salary": "£46,000",
+  "closes_in_days": 40,
+  "sponsorship": "unknown",
+  "summary": "Own a roadmap with user stories and prioritisation. Product thinking, data analysis and presenting to leadership. Ownership of outcomes and strong teamwork."
+ },
+ {
+  "title": "DevOps Engineer",
+  "company": "Cloudbridge",
+  "location": "Remote",
+  "work_mode": "remote",
+  "level": "graduate",
+  "salary": "£44,000",
+  "closes_in_days": 26,
+  "sponsorship": "yes",
+  "summary": "Run our deployment pipelines on AWS and Azure. Programming, Python automation, problem solving and teamwork with developers."
+ },
+ {
+  "title": "Sustainability Analyst",
+  "company": "Greenfield Partners",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "entry",
+  "salary": "£35,000",
+  "closes_in_days": 22,
+  "sponsorship": "unknown",
+  "summary": "Carbon accounting and ESG reporting for portfolio companies. Research, data analysis in Excel, and written communication for client reports."
+ },
+ {
+  "title": "Policy Analyst",
+  "company": "Civic Futures Institute",
+  "location": "London",
+  "work_mode": "on-site",
+  "level": "entry",
+  "salary": "£34,000",
+  "closes_in_days": 30,
+  "sponsorship": "unknown",
+  "summary": "Policy analysis and research on housing and regulation. Report writing, presenting to stakeholders and a strong network across government."
+ },
+ {
+  "title": "Customer Success Manager",
+  "company": "Relay Software",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "graduate",
+  "salary": "£37,000",
+  "closes_in_days": 24,
+  "sponsorship": "yes",
+  "summary": "Look after client accounts. Client-facing skills, interpersonal skills, communication and negotiation. Own onboarding and renewals."
+ },
+ {
+  "title": "Operations Analyst",
+  "company": "Parcelwise",
+  "location": "Manchester",
+  "work_mode": "on-site",
+  "level": "entry",
+  "salary": "£32,000",
+  "closes_in_days": 16,
+  "sponsorship": "unknown",
+  "summary": "Improve supply chain and logistics processes. Excel, SQL, process problem solving and cross-functional working with warehouse teams."
+ },
+ {
+  "title": "Technical Writer",
+  "company": "Docuforge",
+  "location": "Remote",
+  "work_mode": "remote",
+  "level": "entry",
+  "salary": "£34,000",
+  "closes_in_days": 34,
+  "sponsorship": "unknown",
+  "summary": "Write technical documentation and a knowledge base for developers. Written communication, programming basics (Python, SQL) and attention to detail."
+ },
+ {
+  "title": "Health Data Analyst",
+  "company": "Meridian NHS Trust",
+  "location": "London",
+  "work_mode": "on-site",
+  "level": "graduate",
+  "salary": "£36,000",
+  "closes_in_days": 21,
+  "sponsorship": "yes",
+  "summary": "Analyse NHS patient data with SQL and Tableau. Statistics, data visualisation and healthcare systems knowledge. Clear presentations for clinical teams."
+ },
+ {
+  "title": "Growth Marketer",
+  "company": "Spark Social",
+  "location": "London",
+  "work_mode": "hybrid",
+  "level": "entry",
+  "salary": "£35,000",
+  "closes_in_days": 27,
+  "sponsorship": "unknown",
+  "summary": "Run social media and email experiments. Marketing, data analysis, creative problem solving and event organising for community launches."
  }
 ]

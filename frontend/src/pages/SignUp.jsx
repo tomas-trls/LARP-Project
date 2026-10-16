@@ -92,6 +92,7 @@ export default function SignUp() {
       update('firstName', first)
       update('lastName', rest.join(' '))
       update('cv', server.cv)
+      if (server.photos) update('photos', server.photos) // your face from the back end becomes your main photo
       if (server.activeRoute) update('activeRoute', server.activeRoute)
       if (server.roles.length) update('roles', { sel: server.roles })
     } else {

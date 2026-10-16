@@ -31,21 +31,34 @@ from app.routes_linkedin import router as linkedin_router
 from app.routes_pairing import router as pairing_router
 from app.routes_profile import router as profile_router
 from app.routes_users import router as users_router
+from app.routes_avatars import router as avatars_router
 from app.pipeline.store import backfill_event_data
+from app.avatars import give_everyone_a_face
+from app.match_cache import rebuild_match_cache
 from app.seed_career import load_career_data
+from app.seed_people import load_people_details
+from app.seed_profiles import load_profiles
 from app.seed_societies import load_societies
+from app.seed_startup import load_events_venues_jobs
 from app.seed_tags import load_tags
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Runs once when the server starts: make the tables, then load the tags."""
+    """Runs once when the server starts: make the tables, then load the tags and the invented students."""
     create_db_and_tables()
     with Session(engine) as session:
         load_tags(session)
         load_career_data(session)  # skills, roles, work values and badges
         load_societies(session)  # the society directory
+        # The invented students (30 plus the 2 demo accounts), so the app is never empty.
+        # Safe on every launch: anyone already in the database is skipped.
+        if load_profiles(session):
+            load_people_details(session)  # bios, skills, routes, alumni and connections (needs the career data and societies above)
+            rebuild_match_cache(session)  # work out each student's top matches
+        load_events_venues_jobs(session)  # events, venues and jobs from the seed files (only if none exist yet)
         backfill_event_data(session)  # category and skills for events saved before they existed
+        give_everyone_a_face(session)  # a cartoon profile picture for anyone without one
     yield
 
 
@@ -106,6 +119,7 @@ app.include_router(admin_router)
 
 # Read-only "look inside the database" pages at /dev/tables (development only).
 app.include_router(dev_router)
+app.include_router(avatars_router)  # the fake profile pictures
 
 
 @app.get("/api/health")

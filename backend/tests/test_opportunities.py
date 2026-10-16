@@ -113,7 +113,7 @@ def test_scraper_respects_robots_and_errors():
 
 def test_demo_jobs_are_invented_and_never_use_real_sites():
     jobs = SeedJobsSource(now=NOW).fetch()
-    assert len(jobs) == 39 and all(j.source == "demo" and j.url.startswith("demo://") for j in jobs)
+    assert len(jobs) == 55 and all(j.source == "demo" and j.url.startswith("demo://") for j in jobs)
     assert not any(name in j.company for j in jobs for name in ("Deloitte", "Google", "Goldman", "LinkedIn", "Indeed"))
     assert all(j.closes_on > NOW for j in jobs)
 
@@ -229,7 +229,7 @@ def test_a_failing_source_is_reported_not_fatal(session, career):
             raise RuntimeError("site is down")
 
     report = refresh_jobs(session, [Broken(), SeedJobsSource(now=NOW)], now=NOW)
-    assert report["added"] == 39 and report["problems"] == ["broken: site is down"]
+    assert report["added"] == 55 and report["problems"] == ["broken: site is down"]
 
 
 # ---------- admin ----------
@@ -238,7 +238,7 @@ def test_admin_refresh_jobs_needs_the_key_and_stays_offline_in_demo_mode(client,
     monkeypatch.setattr(settings, "DEMO_MODE", True)
     assert client.post("/api/admin/refresh-jobs").status_code == 403
     done = client.post("/api/admin/refresh-jobs", headers={"X-Admin-Key": settings.ADMIN_KEY}).json()
-    assert done["live"] is False and done["added"] == 39
+    assert done["live"] is False and done["added"] == 55
 
 
 # ---------- the tab: jobs ----------
@@ -254,7 +254,7 @@ def test_jobs_are_ranked_for_the_active_route(client, demo_jobs):
     client.post("/api/routes", headers=headers, json={"title": "Data Analyst"})
     answer = client.get("/api/opportunities/jobs", headers=headers).json()
     jobs = answer["jobs"]
-    assert answer["active_route"] == "Data Analyst" and answer["total"] == 39
+    assert answer["active_route"] == "Data Analyst" and answer["total"] == 55
     assert [j["match_pct"] for j in jobs] == sorted((j["match_pct"] for j in jobs), reverse=True)
     assert jobs[0]["on_active_route"] and "Data Analyst" in jobs[0]["title"]
     assert jobs[0]["why"].startswith("Why: matches your Data Analyst route")
@@ -322,7 +322,7 @@ def test_job_detail_shows_skills_you_have_and_need(client, demo_jobs):
 def test_summary_counts(client, demo_jobs):
     headers = login(client)
     answer = client.get("/api/opportunities", headers=headers).json()
-    assert answer["jobs"] == 39 and answer["closing_soon"] >= 1 and answer["saved"] == 0 and answer["active_route"] is None
+    assert answer["jobs"] == 55 and answer["closing_soon"] >= 1 and answer["saved"] == 0 and answer["active_route"] is None
 
 
 # ---------- the tab: career events ----------
