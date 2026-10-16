@@ -1,14 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="LARP: meet your people at UCL. Events, groups and career help, ranked for you." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#361a54" />
+    <meta name="description" content="LARP: shape your career path at UCL, surrounded by the people who share your vision." />
     <title>LARP</title>
-    <!-- Runs before the page is drawn, so a saved dark-mode choice never flashes white first. -->
+    <!-- Runs before the page is drawn, so a saved light-mode choice never flashes dark first. -->
     <script>
-      if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark')
+      try {
+        if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light'
+      } catch (e) {}
     </script>
   </head>
   <body>

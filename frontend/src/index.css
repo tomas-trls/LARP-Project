@@ -1,42 +1,164 @@
 @import "tailwindcss";
 
 /*
-  Light / dark switch: dark styles apply when the page has the class "dark"
-  (the toggle button adds and removes it). Use them in components like:  bg-paper dark:bg-ink
+  LARP colours, copied from the design file (UI Design/LARP App Screens.dc.html).
+
+  Every colour is a CSS variable that changes with the theme. The <html> tag gets
+  data-theme="dark" or data-theme="light" (see src/theme.js), and the matching block below wins.
+
+    --bg    page background          --sf     card ("surface")       --sf2   raised chip / input
+    --ink   main text                --mute   quieter text           --acc   accent purple
+    --acc-ink  text on accent        --blue   small "why" dots       --hero  bright purple hero card
+    --cta   main button background   --cta-ink  main button text     --line  thin dividers
 */
-@custom-variant dark (&:where(.dark, .dark *));
+:root,
+[data-theme="dark"] {
+  --bg: #361a54;
+  --sf: #452570;
+  --sf2: #56338a;
+  --ink: #fafafa;
+  --mute: #c9b7e3;
+  --acc: #ba82ff;
+  --acc-ink: #361a54;
+  --blue: #30d6ff;
+  --hero: #993bff;
+  --hero-ink: #ffffff;
+  --cta: #fafafa;
+  --cta-ink: #361a54;
+  --line: rgba(250, 250, 250, 0.14);
+  --ring: none;
+}
+
+[data-theme="light"] {
+  --bg: #fafafa;
+  --sf: #ffffff;
+  --sf2: #eedeff;
+  --ink: #361a54;
+  --mute: #7a6796;
+  --acc: #993bff;
+  --acc-ink: #ffffff;
+  --blue: #993bff;
+  --hero: #993bff;
+  --hero-ink: #ffffff;
+  --cta: #361a54;
+  --cta-ink: #fafafa;
+  --line: rgba(54, 26, 84, 0.12);
+  --ring: 0 0 0 1px rgba(54, 26, 84, 0.08);
+}
 
 /*
-  The LARP palette and fonts, from the team's design hand-over.
-  Change a colour here once and every page updates.
-  Tailwind turns each name into classes, e.g. --color-brand gives bg-brand, text-brand, border-brand.
+  Tailwind turns each name below into classes, so components can write
+  bg-sf, text-mute, bg-acc text-acc-ink, border-line, font-display, and so on.
 */
 @theme {
-  --color-ink: #361a54;          /* dark purple: lead colour, text, dark-mode background */
-  --color-brand: #993bff;        /* bright purple: hero blocks (pair with white only) */
-  --color-brand-mid: #ba82ff;    /* mid purple: use instead of bright purple on dark purple */
-  --color-brand-light: #ddbdff;  /* light purple: supporting colour */
-  --color-brand-pale: #eedeff;   /* pale purple: supporting / card backgrounds */
-  --color-paper: #fafafa;        /* off-white: light-mode page background */
-  --color-heritage: #30d6ff;     /* heritage blue: accent, ONLY on dark purple */
-  --color-muted: #7a6796;        /* quiet purple-grey for small text on light backgrounds */
+  --color-bg: var(--bg);
+  --color-sf: var(--sf);
+  --color-sf2: var(--sf2);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
+  --color-acc: var(--acc);
+  --color-acc-ink: var(--acc-ink);
+  --color-blue: var(--blue);
+  --color-hero: var(--hero);
+  --color-hero-ink: var(--hero-ink);
+  --color-cta: var(--cta);
+  --color-cta-ink: var(--cta-ink);
+  --color-line: var(--line);
+  /* Fixed brand colours that do not change with the theme (mascots, faces). */
+  --color-plum: #361a54;
+  --color-lilac: #ddbdff;
+  --color-lilac-pale: #eedeff;
+  --color-violet: #993bff;
+  --color-heritage: #30d6ff;
 
-  --font-display: "EB Garamond", Georgia, serif;           /* headlines (one italic word) */
-  --font-sans: "DM Sans", system-ui, sans-serif;           /* everything else */
+  --shadow-ring: var(--ring);
+
+  --font-display: "EB Garamond", Georgia, serif; /* headlines, with one italic word */
+  --font-sans: "DM Sans", system-ui, sans-serif; /* everything else */
 }
 
 @layer base {
-  body {
-    @apply bg-paper font-sans text-ink antialiased;
+  html {
+    background: #eae3f1; /* the lilac backdrop around the phone column on a laptop */
   }
-  html.dark body {
-    @apply bg-ink text-white;
+  body {
+    @apply font-sans text-ink antialiased;
+    margin: 0;
   }
   /* A clear outline when someone uses the keyboard. */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-brand;
+    @apply outline-2 outline-offset-2 outline-acc;
   }
-  html.dark :focus-visible {
-    @apply outline-heritage;
+  button {
+    cursor: pointer;
   }
+}
+
+/* Animations from the design (mascots swaying, cards fading in, the glowing word on Intro). */
+@keyframes larpIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes larpOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes arPop {
+  0% { transform: scale(0.4); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes arRing {
+  from { box-shadow: 0 0 0 0 transparent; }
+  to { box-shadow: 0 0 0 2px var(--acc); }
+}
+@keyframes wvPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+@keyframes larpSway {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  30% { transform: translateY(-2.5px) rotate(1.2deg); }
+  50% { transform: translateY(-3px) rotate(0.4deg); }
+  75% { transform: translateY(-1px) rotate(-1.1deg); }
+}
+@keyframes larpArmL {
+  0%, 100% { transform: rotate(28deg); }
+  50% { transform: rotate(22deg); }
+}
+@keyframes larpArmR {
+  0%, 100% { transform: rotate(-28deg); }
+  50% { transform: rotate(-34deg); }
+}
+@keyframes larpCaret {
+  0%, 45% { opacity: 1; }
+  50%, 95% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes larpPulse {
+  0%, 100% { color: var(--acc); text-shadow: 0 0 0 transparent; filter: brightness(1); }
+  22% { color: var(--ink); text-shadow: 0 0 18px var(--acc), 0 0 40px color-mix(in srgb, var(--acc) 60%, transparent); filter: brightness(1.4); }
+  62% { color: var(--acc); text-shadow: 0 0 0 transparent; filter: brightness(1); }
+}
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+
+/* Hides the scrollbar on sideways-scrolling chip rows, like the design. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* The striped placeholder used for photos and logos in the design. */
+.stripes {
+  background: repeating-linear-gradient(135deg, var(--sf2) 0 4px, var(--sf) 4px 8px);
+}
+/* The lighter stripes used for "you" (your own avatar) and close friends. */
+.stripes-light {
+  background: repeating-linear-gradient(135deg, #ddbdff 0 4px, #ba82ff 4px 8px);
 }
