@@ -3,7 +3,7 @@
 <p align="center"><strong>Become who you want to be at UCL.</strong></p>
 
 <p align="center">
-  <a href="https://wakatime.com/badge/github/tomas-trls/LARP-Project?style=for-the-badge"><img src="https://wakatime.com/badge/github/tomas-trls/LARP-Project.svg?style=for-the-badge" alt="wakatime"/></a>
+  <a href="https://larp-project-z3xh.onrender.com">LIVE DEMO</a>
 </p>
 
 <!-- TODO: what LARP stands for -->
