@@ -371,9 +371,9 @@ We are four MSc Business Analytics students at the UCL School of Management.
 | Name | Role | Contributions |
 | --- | --- | --- |
 | Tomas Truyols | Product Manager | <!-- TODO: contributions --> |
-| <!-- TODO: name --> | Front-end lead | <!-- TODO: contributions --> |
-| <!-- TODO: name --> | Back-end lead | <!-- TODO: contributions --> |
-| <!-- TODO: name --> | Business lead | <!-- TODO: contributions --> |
+| Jad Malkawi | Front-end lead | <!-- TODO: contributions --> |
+| Ibrahim Elkhatib | Back-end lead | <!-- TODO: contributions --> |
+| Varun Gandhi| Business lead | <!-- TODO: contributions --> |
 
 We are always open to feedback and ideas. Come and say hi on GitHub: **[@tomas-trls](https://www.github.com/tomas-trls)** <!-- TODO: add a contact email -->
 
