@@ -11,6 +11,7 @@ import Screen from '../components/Screen.jsx'
 import StepHeader from '../components/StepHeader.jsx'
 import { PrimaryButton } from '../components/ui.jsx'
 import { RATING_LABELS, TOP_VALUES, WORK_VALUES } from '../data/careerData.js'
+import { saveWorkValues } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 
 export default function WorkValues() {
@@ -247,7 +248,14 @@ export default function WorkValues() {
                 <span>·</span>
                 <span>{allRated ? 'All set' : `${top.length - rated} left to rate`}</span>
               </div>
-              <PrimaryButton disabled={!allRated} onClick={() => navigate('/areas')}>
+              <PrimaryButton
+                disabled={!allRated}
+                onClick={() => {
+                  // Send the picks to the back end, most important (highest rating) first.
+                  saveWorkValues([...topValues].sort((a, b) => (ratings[b.key] ?? 0) - (ratings[a.key] ?? 0)).map((v) => v.title))
+                  navigate('/areas')
+                }}
+              >
                 See my suggested routes
               </PrimaryButton>
             </>

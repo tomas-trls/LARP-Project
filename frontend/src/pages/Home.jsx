@@ -11,6 +11,8 @@
 // and the bell opens the notifications panel (components/home/NotificationsSheet.jsx).
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { api } from '../api.js'
+import { adaptHome, tell, useLive } from '../live.js'
 import CommentsSheet from '../components/feed/CommentsSheet.jsx'
 import { Face, JoinButton } from '../components/feed/parts.jsx'
 import PostGroupSheet from '../components/feed/PostGroupSheet.jsx'
@@ -80,7 +82,9 @@ export default function Home() {
 
   const today = todayISO()
   // useMemo: only rebuild the event list when the profile changes (it reads ~1,000 events).
-  const events = useMemo(() => buildFeed(profile, today), [profile, today])
+  // The real feed from the back end (ranked for the student's route); the sample feed if it cannot be reached.
+  const { data: liveHome, live } = useLive('/home', adaptHome, null)
+  const events = useMemo(() => (live ? liveHome.events : buildFeed(profile, today)), [profile, today, live, liveHome])
   const weekEnd = addDays(today, 6)
   const thisWeek = events.filter((e) => e.date <= weekEnd).length
 
@@ -89,11 +93,11 @@ export default function Home() {
     filter === 'foryou' || filter === 'create' || (filter === 'popular' && item.pop) || (filter === 'groups' && item.group)
 
   // Recommended actions (real UCL Careers appointment types)
-  const actions = recommendedActions(profile, today).filter(pass)
+  const actions = (live ? liveHome.actions : recommendedActions(profile, today)).filter(pass)
 
   // Featured this week: the design's three picks, matched to real events
   const groupsFor = (ev) => feed.groups.filter((g) => g.ev.id === ev.id)
-  const featured = HOME_FEATURED.map((f) => ({ ...f, ev: feed.events[f.ev] }))
+  const featured = (live ? liveHome.featured : HOME_FEATURED.map((f) => ({ ...f, ev: feed.events[f.ev] })))
     .filter((f) => f.ev)
     .map((f) => ({ ...f, group: groupsFor(f.ev).length > 0 }))
     .filter(pass)
@@ -108,7 +112,12 @@ export default function Home() {
     .filter(pass)
   const visible = upcoming.slice(0, shown)
 
-  const toggleGoing = (id) => update('going', profile.going.includes(id) ? profile.going.filter((x) => x !== id) : [...profile.going, id])
+  const toggleGoing = (id) => {
+    const nowGoing = !profile.going.includes(id)
+    update('going', nowGoing ? [...profile.going, id] : profile.going.filter((x) => x !== id))
+    // Real events are saved in the back end (RSVP) so they count towards badges and the digest.
+    if (live) tell(() => (nowGoing ? api.put(`/events/${id}/rsvp`, {}) : api.delete(`/events/${id}/rsvp`)))
+  }
 
   // "How was ...?": the last event you said you'd go to that has now happened (or the design's example).
   const allEvents = [...careerEvents, ...suEvents]

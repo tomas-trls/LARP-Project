@@ -47,6 +47,19 @@
 }
 
 /*
+  How wide the app column can get. Every screen, tab bar and pop-up sheet uses it (max-w-(--app-w)).
+  Phones and small tablets: the whole screen width. Laptops (768px and up): a wider column in the middle.
+*/
+:root {
+  --app-w: 100%;
+}
+@media (min-width: 768px) {
+  :root {
+    --app-w: 720px;
+  }
+}
+
+/*
   Tailwind turns each name below into classes, so components can write
   bg-sf, text-mute, bg-acc text-acc-ink, border-line, font-display, and so on.
 */

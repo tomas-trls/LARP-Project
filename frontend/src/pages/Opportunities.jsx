@@ -2,12 +2,14 @@
 // Job adverts ranked by fit to the student's route, each with the reason it was picked.
 // Filters: Best fit, Closing soon, Graduate schemes, Saved. The bookmark saves a job.
 // "Apply" never sends anything: it shows where to apply and lets the student mark it as applied.
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { api } from '../api.js'
 import BottomSheet from '../components/BottomSheet.jsx'
 import Icon from '../components/Icon.jsx'
 import Screen from '../components/Screen.jsx'
 import { FitRing, PrimaryButton, WhyLine } from '../components/ui.jsx'
-import jobs from '../data/jobs.js'
+import sampleJobs from '../data/jobs.js'
+import { adaptJobs, tell, useLive } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 import { todayISO } from '../sampleData.js'
 
@@ -18,13 +20,19 @@ function dayMonth(iso) {
 
 export default function Opportunities() {
   const { profile, update } = useProfile()
+  // Real ranked jobs from the back end; the sample list if the back end cannot be reached.
+  const { data: jobs, live } = useLive('/opportunities/jobs?limit=60', adaptJobs, sampleJobs)
+  const [liveSaved, setLiveSaved] = useState([]) // ids of real jobs the student has saved
+  useEffect(() => {
+    if (live) setLiveSaved(jobs.filter((j) => j.saved).map((j) => j.id))
+  }, [live, jobs])
   const [filter, setFilter] = useState('Best fit')
   const [applied, setApplied] = useState([]) // ids marked as applied during this visit
   const [openJob, setOpenJob] = useState(null) // the job whose Apply sheet is open
   const [notify, setNotify] = useState(true)
 
   const today = todayISO()
-  const saved = profile.savedJobs
+  const saved = live ? liveSaved : profile.savedJobs
   const open = jobs.filter((j) => j.closes >= today) // hide adverts that have already closed
 
   // Each filter is a different slice or order of the same list.
@@ -34,7 +42,16 @@ export default function Opportunities() {
   else if (filter === 'Saved') list = jobs.filter((j) => saved.includes(j.id)).sort((a, b) => b.fit - a.fit)
   else list = [...open].sort((a, b) => b.fit - a.fit)
 
-  const toggleSave = (id) => update('savedJobs', saved.includes(id) ? saved.filter((x) => x !== id) : [...saved, id])
+  const toggleSave = (id) => {
+    const next = saved.includes(id) ? saved.filter((x) => x !== id) : [...saved, id]
+    if (live) {
+      setLiveSaved(next)
+      // Tell the back end too, so the save is still there after a refresh.
+      tell(() => (next.includes(id) ? api.post(`/opportunities/jobs/${id}/save`, { status: 'saved' }) : api.delete(`/opportunities/jobs/${id}/save`)))
+    } else {
+      update('savedJobs', next)
+    }
+  }
 
   const filters = ['Best fit', 'Closing soon', 'Graduate schemes', 'Saved']
 
@@ -70,7 +87,7 @@ export default function Opportunities() {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-none flex-col gap-3">
+      <div className="mt-4 grid flex-none gap-3 lg:grid-cols-2">
         {list.map((job) => {
           const isSaved = saved.includes(job.id)
           const isApplied = applied.includes(job.id)

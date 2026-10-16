@@ -20,6 +20,7 @@ import { ApplySheet, JoinSheet, ManageSheet, StartSheet, VoteSheet } from '../co
 import { OwnCard, Pill, RankedRow, RoleCard, SectionHead, SlideCard, SnapRow, WeekRow } from '../components/societies/parts.jsx'
 import { DEFAULT_PHOTO } from '../components/messages/avatar.js'
 import { CANDIDATES, OTHER_MEMBERSHIPS, ROLES, SOCIETIES, THIS_WEEK, personColor, personName } from '../data/societies14.js'
+import { syncSociety } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 import { societies as ALL_GROUPS } from '../sampleData.js'
 
@@ -75,6 +76,7 @@ export default function Societies() {
   const addName = (name) => {
     update('societies', myNames.includes(name) ? myNames : [...myNames, name])
     update('societiesChanged', true)
+    syncSociety(name, true) // also save it in the back end (for the societies it tracks)
   }
 
   // ---- Actions ----

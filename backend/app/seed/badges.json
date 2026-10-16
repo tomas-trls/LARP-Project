@@ -1,13 +1,13 @@
 [
  {
-  "code": "data-science-soc",
-  "name": "Data Science Soc",
-  "how_earned": "Join the Data Science Society"
+  "code": "society-member",
+  "name": "Society member",
+  "how_earned": "Say you are in a UCL society"
  },
  {
-  "code": "entrepreneurs",
-  "name": "Entrepreneurs",
-  "how_earned": "Join the Entrepreneurs Society"
+  "code": "group-goer",
+  "name": "Group goer",
+  "how_earned": "Join your first Event Group"
  },
  {
   "code": "quiz-regular",

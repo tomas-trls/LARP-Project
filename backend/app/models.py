@@ -160,7 +160,7 @@ class Group(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     created_at: datetime = Field(default_factory=now)
     first_event_id: Optional[int] = Field(default=None, foreign_key="event.id")
-    kind: str = "auto"  # auto (auto-paired group), event (people going to one event)
+    kind: str = "auto"  # auto (old auto-paired group), event (people who booked one event: first_event_id is that event)
     status: str = "forming"  # forming, open (3 or more, chat is open), closed (matching shut 24h before the event)
 
 
@@ -281,7 +281,7 @@ class UserSkill(SQLModel, table=True):
 
     user_id: int = Field(foreign_key="user.id", primary_key=True)
     skill_id: int = Field(foreign_key="skill.id", primary_key=True)
-    source: str = "manual"  # cv, manual
+    source: str = "manual"  # manual (the student typed it), detected (spotted in their degrees and roles)
 
 
 class Role(SQLModel, table=True):
@@ -434,6 +434,14 @@ class EventPair(SQLModel, table=True):
     user_id: int = Field(foreign_key="user.id")  # who asked
     partner_id: int = Field(foreign_key="user.id")
     status: str = "pending"  # pending, accepted, declined
+
+
+class NoShowFlag(SQLModel, table=True):
+    """One group member saying another did not turn up. One flag per pair, so nobody can pile on."""
+
+    group_id: int = Field(foreign_key="group.id", primary_key=True)
+    flagger_id: int = Field(foreign_key="user.id", primary_key=True)
+    flagged_id: int = Field(foreign_key="user.id", primary_key=True)
 
 
 # --- Societies -----------------------------------------------------------------

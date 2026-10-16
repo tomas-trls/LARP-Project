@@ -19,7 +19,7 @@ function DarkPanel({ children, onPointerDown, onPointerUp }) {
     <div
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
-      className="fixed inset-0 z-[60] mx-auto flex w-full max-w-[402px] flex-col bg-[#0B0414] pt-[max(20px,env(safe-area-inset-top))] pb-[30px] text-[#FAFAFA] select-none"
+      className="fixed inset-0 z-[60] mx-auto flex w-full max-w-(--app-w) flex-col bg-[#0B0414] pt-[max(20px,env(safe-area-inset-top))] pb-[30px] text-[#FAFAFA] select-none"
       style={{ animation: 'larpIn .25s both', touchAction: 'pan-y' }}
     >
       {children}
@@ -30,9 +30,9 @@ function DarkPanel({ children, onPointerDown, onPointerUp }) {
 // An iOS-style action sheet: a list of choices and a Cancel button, floating at the bottom.
 export function ActionSheet({ options, onCancel }) {
   return (
-    <div className="fixed inset-0 z-[65] mx-auto max-w-[402px]">
+    <div className="fixed inset-0 z-[65]">
       <div className="absolute inset-0 bg-[rgba(20,8,40,.55)]" onClick={onCancel} />
-      <div className="absolute right-3 bottom-6 left-3 flex flex-col gap-2" style={{ animation: 'larpIn .25s both' }}>
+      <div className="absolute right-3 bottom-6 left-3 mx-auto flex max-w-(--app-w) flex-col gap-2" style={{ animation: 'larpIn .25s both' }}>
         <div className="overflow-hidden rounded-[20px] bg-sf text-center text-[16px] text-ink shadow-ring">
           {options.map((o, i) => (
             <button
@@ -97,7 +97,7 @@ export function PhotoPicker({ onDone, onCancel }) {
 
   if (stage === 'library')
     return (
-      <div className="fixed inset-0 z-[60] mx-auto flex w-full max-w-[402px] flex-col bg-bg px-4 pt-[max(20px,env(safe-area-inset-top))] pb-[30px] text-ink" style={{ animation: 'larpIn .25s both' }}>
+      <div className="fixed inset-0 z-[60] mx-auto flex w-full max-w-(--app-w) flex-col bg-bg px-4 pt-[max(20px,env(safe-area-inset-top))] pb-[30px] text-ink" style={{ animation: 'larpIn .25s both' }}>
         <div className="flex h-11 items-center justify-between">
           <button type="button" onClick={onCancel} className="text-[15px] font-semibold text-acc">
             Cancel

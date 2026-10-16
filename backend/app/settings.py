@@ -57,3 +57,14 @@ EVENT_TAG_MODEL = os.getenv("EVENT_TAG_MODEL", "claude-haiku-5-5")
 # Who to name in the User-Agent when we visit other people's websites, so they can contact us.
 # Set SCRAPER_CONTACT in .env (an email or a web page). We never put your email in anywhere on our own.
 SCRAPER_CONTACT = os.getenv("SCRAPER_CONTACT", "").strip()
+
+# --- Profile (CV reading) ---
+
+# The Claude model that reads CVs when there is a key and DEMO_MODE is false.
+CV_MODEL = os.getenv("CV_MODEL", "claude-sonnet-5-5")
+
+# --- Career engine ---
+
+# The Claude model that matches typed role titles and writes the "why this role" lines.
+CAREER_MODEL = os.getenv("CAREER_MODEL", "claude-haiku-5-5")
+

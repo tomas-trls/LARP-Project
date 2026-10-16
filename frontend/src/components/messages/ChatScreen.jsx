@@ -204,7 +204,7 @@ export default function ChatScreen({ chat, state, actions, myPhoto }) {
 
   return (
     // "fixed" so it covers the list and the tab bar, inside the phone-width column.
-    <div className="fixed inset-0 z-40 mx-auto flex w-full max-w-[402px] flex-col bg-bg pt-[max(20px,env(safe-area-inset-top))] text-ink" style={{ animation: 'larpIn .2s both' }} onClick={actions.clearReact}>
+    <div className="fixed inset-0 z-40 mx-auto flex w-full max-w-(--app-w) flex-col bg-bg pt-[max(20px,env(safe-area-inset-top))] text-ink" style={{ animation: 'larpIn .2s both' }} onClick={actions.clearReact}>
       {/* Header */}
       {isSociety && !channel ? (
         <div className="flex flex-none items-center gap-2.5 px-4 pt-1 pb-2.5">

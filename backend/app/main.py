@@ -17,12 +17,23 @@ from app import settings
 from app.database import create_db_and_tables, engine, get_session
 from app.models import Tag
 from app.routes_admin import router as admin_router
+from app.routes_career import router as career_router
 from app.routes_dev import router as dev_router
+from app.routes_event_groups import router as event_groups_router
 from app.routes_events import router as events_router
+from app.routes_messages import router as messages_router
+from app.routes_people import router as people_router
+from app.routes_societies import router as societies_router
+from app.routes_summary import router as summary_router
+from app.routes_home import router as home_router
+from app.routes_opportunities import router as opportunities_router
 from app.routes_linkedin import router as linkedin_router
 from app.routes_pairing import router as pairing_router
+from app.routes_profile import router as profile_router
 from app.routes_users import router as users_router
+from app.pipeline.store import backfill_event_data
 from app.seed_career import load_career_data
+from app.seed_societies import load_societies
 from app.seed_tags import load_tags
 
 
@@ -33,6 +44,8 @@ async def lifespan(app: FastAPI):
     with Session(engine) as session:
         load_tags(session)
         load_career_data(session)  # skills, roles, work values and badges
+        load_societies(session)  # the society directory
+        backfill_event_data(session)  # category and skills for events saved before they existed
     yield
 
 
@@ -52,11 +65,38 @@ app.add_middleware(
 # Account routes: register, login, /me, /me/preferences.
 app.include_router(users_router)
 
+# Profile: CV upload, review and save, details, personality, hobbies (/api/profile/...).
+app.include_router(profile_router)
+
+# Career engine: roles, work values, suggested routes, saved routes and the gap summary.
+app.include_router(career_router)
+
 # Matches and groups: /api/matches, /api/pair/auto, /api/group.
 app.include_router(pairing_router)
 
 # Things to do: /api/events and /api/venues.
 app.include_router(events_router)
+
+# Home screen: /api/home, plus saving / going / "I went" on events.
+app.include_router(home_router)
+
+# Opportunities tab: career events and jobs, ranked for the active route (/api/opportunities/...).
+app.include_router(opportunities_router)
+
+# People tab: career and social lists, connections, follows, block and report.
+app.include_router(people_router)
+
+# Profile tab summary: stats, badges, routes, settings (/api/profile/summary).
+app.include_router(summary_router)
+
+# Societies tab: directory, society events, joining, rep roles, announcements.
+app.include_router(societies_router)
+
+# Messages and notifications: chats between connections and in Event Groups, alerts and their settings.
+app.include_router(messages_router)
+
+# Event Groups: book an event, then join a group of 3 to 5 going to it.
+app.include_router(event_groups_router)
 
 # LinkedIn Max: /api/linkedin-max (links people choose to share; we never contact LinkedIn).
 app.include_router(linkedin_router)

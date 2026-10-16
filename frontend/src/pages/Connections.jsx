@@ -8,7 +8,8 @@ import Screen from '../components/Screen.jsx'
 import { FollowButton, KindTag, RoundButton } from '../components/people/parts.jsx'
 import { BackButton } from '../components/StepHeader.jsx'
 import { ChipRow } from '../components/ui.jsx'
-import { CONNECTIONS, CONNECTION_TOTAL, PENDING } from '../data/people.js'
+import { CONNECTIONS as SAMPLE_CONNECTIONS, CONNECTION_TOTAL, PENDING as SAMPLE_PENDING } from '../data/people.js'
+import { adaptConnections, answerConnection, useLive } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 
 const FILTERS = ['All', 'Career', 'Social', 'Following', 'Pending']
@@ -21,10 +22,14 @@ export default function Connections() {
   const [query, setQuery] = useState('')
 
   // People you accepted from Pending move up into your connections (saved in the profile).
+  // The real connections and requests from the back end (the sample ones if it cannot be reached).
+  const { data: real, live } = useLive('/connections', adaptConnections, null)
+  const CONNECTIONS = live ? real.connections : SAMPLE_CONNECTIONS
+  const PENDING = live ? real.pending : SAMPLE_PENDING
   const accepted = profile.accepted ?? []
   const people = [...PENDING.filter((p) => accepted.includes(p.id)).map((p) => ({ ...p, note: 'New connection' })), ...CONNECTIONS]
   const pending = PENDING.filter((p) => !accepted.includes(p.id))
-  const total = CONNECTION_TOTAL + accepted.length
+  const total = (live ? CONNECTIONS.length : CONNECTION_TOTAL) + accepted.length
 
   // Apply the filter chip and the search box.
   const q = query.trim().toLowerCase()
@@ -109,7 +114,10 @@ export default function Connections() {
                 ) : (
                   <button
                     type="button"
-                    onClick={() => update('accepted', [...accepted, p.id])}
+                    onClick={() => {
+                      update('accepted', [...accepted, p.id])
+                      if (live && p.connectionId) answerConnection(p.connectionId, 'accept')
+                    }}
                     className="flex h-[34px] flex-none items-center rounded-full bg-acc px-3.5 text-[13px] font-semibold text-acc-ink"
                   >
                     Accept

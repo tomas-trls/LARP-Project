@@ -145,3 +145,159 @@ Push order: **P0 docs** → **P1a tables + seeds** → **P1b profile + CV** → 
 - `py -m pytest` from `backend/` after each phase; new tests per feature as listed.
 - Run `uvicorn app.main:app --reload`, walk the journey in `/docs`: register → upload fixture CV → review profile → set values → suggest routes → open `/gap` (5 scores) → jobs → people → societies → messages.
 - Run with `DEMO_MODE=true` to prove no live Claude or scraping is needed.
+
+## Build log
+
+### P1b – Profile and CV (done)
+All routes need a login token and start with `/api/profile`.
+
+| Route | What it does |
+|---|---|
+| `GET /api/profile` | The whole profile: education, experience, skills, languages, hobbies, Big Five, settings |
+| `POST /api/profile/cv` | Upload a PDF or DOCX (max 5 MB). Returns a **draft**; nothing is saved to the profile. The file and its text are dropped, never stored |
+| `PUT /api/profile` | Save the reviewed profile (from the draft, or typed by hand). Replaces education, experience, skills and languages. Skills hidden in degrees and job descriptions are added as "detected" |
+| `PUT /api/profile/details` | Bio, hometown, theme, visa setting, hidden fields, connection style, onboarding step |
+| `GET` / `PUT /api/profile/personality` | The 10 optional Big Five statements and scoring |
+| `PUT /api/profile/hobbies` | Up to 8 interest tags (social matching only) |
+| `GET /api/profile/skills/search?q=` | Skill suggestions as the student types (matches synonyms) |
+
+How the CV is read: with an API key and `DEMO_MODE=false` Claude reads it (`CV_MODEL` in `.env`, default `claude-sonnet-5-5`). Otherwise, or if Claude fails, a simple offline reader looks for headings such as Education and Experience.
+
+Skill matching (`app/skills.py`): exact name or synonym, then a whole-word scan of longer text, then a fuzzy match for typos. A skill nobody has heard of is kept as a custom skill in the "skills" category.
+
+
+### P1c – Career engine (done)
+Routes start with `/api`. Everything needs a login token except role search.
+
+| Route | What it does |
+|---|---|
+| `GET /roles?q=` | Search the career paths by name, sector or a known alternative title. No search text gives the most popular roles |
+| `POST /roles/resolve` | Turn any typed title into one of our roles (exact, alias, close spelling, Claude if live, else a new custom role) |
+| `GET` / `POST` / `PUT /work-values` | The UCL values list; add a value of your own; pick your top 3 to 5 in order |
+| `POST /routes/suggest` | 1 to 5 suggested roles from the profile (60%) and work values (40%), or roles adjacent to a chosen role. Each has a "why" |
+| `GET` / `POST /routes` | List saved routes (with average fit) / save one. The first becomes active; up to 8 |
+| `PUT /routes/{id}/activate`, `DELETE /routes/{id}` | Switch the active route / remove one |
+| `GET /routes/{id}/gap` | The gap summary: five category scores vs the alumni benchmark, the biggest gap, and every missing skill ranked by impact |
+
+**The maths** (`app/fit.py`): category score = importance of the role's skills you have in that category ÷ importance of all the role's skills in it × 100. So 4 of 5 equal leadership skills scores 80. The overall fit is the average of the five. The alumni benchmark is an **estimate** (alumni are assumed to hold the role's core skills, importance 0.6 or more) until we have alumni profiles.
+
+**Data rules** (from `DESIGN_DECISIONS.md`): a role built from real adverts needs 20 or more, otherwise it is "not enough data" and the closest common roles are offered. Our seeded roles are marked `estimate` until job adverts replace them (P2a).
+
+**Also changed:** saving a profile now works out experience skills from internships, jobs and societies (a "Product Intern" earns Tech internship; a society treasurer earns Society committee role).
+
+### P2a – Opportunities: career events and jobs (done)
+All routes need a login token. The Opportunities tab holds **career events** and **jobs**; both are ranked for the student's active route and every item says why.
+
+| Route | What it does |
+|---|---|
+| `GET /api/opportunities` | Counts for the tab header: events, open jobs, closing soon, saved |
+| `GET /api/opportunities/events` | Career events. Each skill the student lacks for their route is weighted by how often the role asks for it; an event scores the sum of the weights it builds ("Builds SQL - a gap on your Data Analyst route") |
+| `GET /api/opportunities/jobs` | Jobs with filters (`level`, `location`, `work_mode`, `q`, `saved_only`, `closing_soon`, `hide_no_sponsorship`) and sort (`best`, `closing`, `newest`) |
+| `GET /api/opportunities/jobs/{id}` | One job, with the skills you have and the skills to build |
+| `POST` / `DELETE /api/opportunities/jobs/{id}/save` | Save, mark applied, or un-save a job |
+| `POST /api/admin/refresh-jobs` | (admin key) load jobs. Demo mode: the invented demo jobs only. `DEMO_MODE=false`: the Gradcracker scraper too |
+
+**Where jobs come from**
+- **Demo jobs** (`seed/jobs_seed.json`, 39 jobs): invented, with fictional employers, marked `source="demo"` and `is_demo: true` in the API so the front end can label them. They never count as real adverts.
+- **Gradcracker** (live scraper, `pipeline/job_scraper.py`): its `robots.txt` allows its job listing pages (checked 15 Oct 2026). It uses the polite fetcher (reads robots.txt, waits 2 seconds between requests, names a contact) and reads at most 3 pages. It only runs when `DEMO_MODE=false`.
+- **Not scraped:** LinkedIn (`CLAUDE.md` forbids it) and Indeed (its terms forbid it). Check a site's robots.txt and terms before adding one. Robots.txt alone does not settle whether scraping is allowed.
+
+**Role data from adverts** (`app/jobs.py`): a role with 20 or more real adverts is rebuilt from them (a skill asked for in 70% of adverts gets importance 0.7, skills under 10% are dropped), then marked `data_source="adverts"`. The result is cached for a week. Under 20, the starter estimate is kept. Students whose active route matches a brand new real job get a "role" notification, unless they switched role alerts off.
+
+**Also changed:** events now have a `category` (career events are `opportunity`, the rest `social`) and are tagged with the skills they build. This is filled in on startup for older events (`backfill_event_data`) and whenever events are saved.
+
+### P2b – Home (done)
+All routes need a login token.
+
+| Route | What it does |
+|---|---|
+| `GET /api/home?filter=` | Everything on the Home screen in one answer (`filter` is `all`, `careers`, `social` or `societies`) |
+| `PUT` / `DELETE /api/events/{id}/rsvp` | Mark an event `saved`, `going` or `attended` ("I went"), or remove the mark |
+| `POST /api/profile/skills` | Add skills to the profile without replacing anything (used after "I went") |
+
+What `GET /api/home` returns:
+- **greeting:** first name, part of the day (London time), date and how many events are coming up.
+- **actions:** up to three recommended actions. The first is the action of the day. Rules, in priority order: add a profile (no skills yet), choose a career path (no active route), finish a saved job that closes within 7 days, go to the event that builds most of the route's gap, look at the best job on the route. If none apply: explore.
+- **featured:** the career event that builds the most of the gap and starts within 14 days; otherwise the soonest event.
+- **feed:** every upcoming event, soonest first, each with a `why` line, a button label (`Book` for career events, `Join` for the rest), how many connections are going, and the student's own saved status. Events ruled out by the student's preferences (for example alcohol) are left out.
+- **filters:** how many events each chip shows. The counts ignore the current filter.
+- **this_week:** the weekly digest section: new jobs and events that build the gap. (The Monday email itself is not built yet.)
+
+"I went": only works once the event has started. The answer suggests the skills the event builds; the student confirms the ones they want and they are added with `POST /api/profile/skills`, so progress follows the profile and not attendance counts.
+
+Not built yet: groups forming for the student (Event Groups), and society events (they need the Societies push; the filter is ready and shows 0 until then).
+
+### P2c – People and Event Groups (done)
+All routes need a login token (the moderator routes need the admin key instead).
+
+| Route | What it does |
+|---|---|
+| `GET /api/people/career` | Alumni who hold or held the active route's role, then students further along the same route, each with a reason |
+| `GET /api/people/social` | People ranked by shared hobbies, similar personality (if both took the Big Five check) and shared societies |
+| `POST /api/connections` | Ask to connect (`kind` career or social, optional note). If that person already asked you, it accepts |
+| `GET /api/connections` | `connections` (accepted), `incoming` (waiting for my answer), `outgoing` (I asked) |
+| `PUT /api/connections/{id}` | The receiver accepts or declines |
+| `DELETE /api/connections/{id}` | Withdraw a request or remove a connection |
+| `GET` / `PUT` / `DELETE /api/follows[/{user_id}]` | One-way follow |
+| `GET` / `PUT` / `DELETE /api/blocks[/{user_id}]` | Block (works both ways, removes any connection or follow) |
+| `POST /api/reports` | Report a person or a group you are in |
+| `GET /api/admin/reports`, `PUT /api/admin/reports/{id}` | The moderator's inbox and decision (`dismiss`, `warn`, `suspend`, `ban`). Needs `X-Admin-Key` |
+| `POST` / `GET` / `DELETE /api/events/{id}/group` | Event Groups: "I've booked" (join), see my group, leave |
+| `GET /api/event-groups` | My groups for events that have not ended |
+| `POST /api/groups/{id}/members/{user_id}/no-show` | Flag a member who did not turn up (after the event starts, once each) |
+
+**Career and social are kept apart** (design decisions, section 8). The career list uses only experience, skills and routes. The social list uses only hobbies, personality and societies, and shows no course, year or job. A field a student hides is never used or shown, so someone who hides their hobbies is left out of other people's social list.
+
+**Connections:** both people must agree. A request someone declined still shows as "requested" to the sender, so nobody is told no. Alumni can set `max_alumni_requests_per_month`: once that many requests have arrived this month (any answer), new requests get a polite 409 until next month. Accepting someone who asked first is never blocked by the limit. Messaging between connections arrives with the Messages stage.
+
+**Event Groups (book first):** the student books the event on its own site, then presses "I've booked" (`booked` must be `true`). They are put in the group with room (max 5) that suits them best on the social score, or start a new one. 1-2 members = `forming`; 3 or more = `open` and the chat can open (members get a notification); less than 24 hours before the event = `closed` (nobody new can join, people can still leave). The status follows the clock. If a group drops below 3 it merges into another group for the same event when everyone fits, otherwise it stays `forming` so new people can join it. Blocked people are never put in the same group. These groups are `group.kind = "event"` rows, so the old `/api/pair/auto` groups are unaffected.
+
+**Safety:** a suspended or banned account gets 403 on every route. Blocking does not remove either person from a group they already share (they leave it themselves).
+
+**Also added:** `notifications.py` (a small helper that respects each student's alert settings; the full notification routes come with Messages) and the `noshowflag` table. No existing columns changed, so no `reset_db` is needed (the new table is created on startup).
+
+Not built yet: group chat messages (Messages stage), the Claude conversation starter, "pair up" via `EventPair` (replaced by Event Groups, to be removed), and recommended societies in People -> Social (Societies stage).
+
+### P3 – Societies, Messages and Profile summary (done, built in one push)
+All routes need a login token unless marked admin.
+
+**Societies (a read-only view)**
+
+LARP does not create or run societies. The Societies tab shows the societies that appear in the real events taken from the Students' Union website, and the events linked to the ones a student says they are in.
+
+| Route | What it does |
+|---|---|
+| `GET /api/societies` | The societies LARP knows about (mine first), with member count and how many events are coming up |
+| `GET /api/societies/events?scope=` | Upcoming events from the societies I am in (`scope=mine`, the default) or from all of them (`scope=all`). Each has a why line |
+| `GET /api/societies/{id}` | One society and its upcoming events |
+| `PUT` / `DELETE /api/societies/{id}/membership` | Say "I'm in this society" (self-reported: LARP cannot see the Students' Union member lists) |
+
+The society list (`seed/societies.json`) holds only names that appear in the real event titles, plus the words used to spot them (for example "gaming soc"). Nothing else about a society is invented: no descriptions, prices or links. An event whose title contains one of those words is linked to the society. Social events become `society` events; career events (panels, fairs) stay career events but also show on the society's page. An event run by several societies is linked to the first one in the list. This happens on startup, in `reset_db`, and after `POST /api/admin/refresh-events`, so Home's Societies filter works.
+
+An earlier version of this push had society roles, applications, announcements, committee members and recommendations. They were removed because LARP is not running societies. The tables for them (`societyrole`, `societyroleapplication`, `societyannouncement`, `societytag`, `societyskill`, `societyworkvalue`) still exist but nothing uses them: they are on the clean-up list.
+
+**Messages and notifications**
+
+| Route | What it does |
+|---|---|
+| `GET /api/conversations` | My chats, latest first, with `unread` per chat and `unread_total` for the tab badge |
+| `POST /api/conversations` | Open the one-to-one chat with a **connection** (anyone else gets 403) |
+| `GET /api/conversations/{id}/messages?after=` | Messages oldest first. The front end polls with `after=<last message id>`. Reading marks the chat read |
+| `POST /api/conversations/{id}/messages` | Send (1 to 1000 characters) |
+| `PUT /api/conversations/{id}` | Mute or unmute |
+| `GET /api/notifications`, `PUT /api/notifications/{id}/read`, `POST /api/notifications/read-all` | The alerts list and marking read |
+| `GET` / `PUT /api/notifications/preferences` | Switch each kind (`match`, `message`, `event`, `role`) on or off |
+
+Rules (design decisions, section 6): only chats between mutual connections and Event Group chats. A group chat appears once the group has 3 people; who may read it is decided by the group as it is now, so leaving removes access at once; below 3 people it can be read but not written to. Removing a connection or blocking stops new messages (blocking also hides the chat). A new message makes one alert per chat until the chat is read; muted chats and switched-off kinds make no alert. A message can be reported with `POST /api/reports {message_id}`; the report is about the sender.
+
+**People profile view and conversation starters:** `GET /api/people/{user_id}?view=career|social` shows another student's profile. The career view has experience, education and skills; the social view has bio, hometown, hobbies, personality and societies. The two never mix, fields the person hides are left out, and contact details are never shown. Each includes a `starter`: one friendly opening line built only from what the two share (hobbies and societies for social; their role and shared skills for career). With an API key and `DEMO_MODE=false` Claude words it (only first names and those facts are sent, and the answer is saved so each pair is asked once); otherwise a template is used.
+
+**Profile summary:** `GET /api/profile/summary` returns the user header, stats (events attended, connections, societies, event groups), **`connections`: who you are connected with** (name, headline, kind, when you connected) and `requests_waiting`, badges (earned, locked with progress, `newly_earned`), the active route with its five category scores, saved routes, settings (theme, connection style, hidden fields, visa flag, alert settings) and profile progress. Badges are worked out from what the student has really done (`badges.py`) and saved the first time the rule is met, with a notification; they are checked when the summary is opened.
+
+Badges: the two society badges from the first design (Data Science Soc, Entrepreneurs) were replaced by **Society member** (say you are in a society) and **Group goer** (join an Event Group), because those societies do not exist in the real events.
+
+**The invented people were updated** (`seed/people_extra.json`, loaded by `seed_people.py` in `reset_db`): every student now has a bio, hometown, education, experience, skills, a Big Five result, the societies they are in and saved career routes (the first is active, with its five scores); a few hide a field or need visa sponsorship. There are ten invented alumni with jobs in popular roles and a monthly request limit (one allows only 1 request, so the limit can be demonstrated), plus 19 connections (accepted and pending) and a few follows. The demo account `demo.main@ucl.ac.uk` is connected with two students and an alumnus, has two requests waiting and two sent, and `demo.canary@ucl.ac.uk` has a social circle. Everyone uses the password `demo1234`.
+
+No table changed, so no migration is needed, but run `reset_db` once to load the societies and the updated people.
+
+Still to do after the roadmap: delete `UserNeed`, `EventPair` and the old `User` columns, retire LinkedIn Max, the Monday digest email, and update the README's "Not yet reflected" items.

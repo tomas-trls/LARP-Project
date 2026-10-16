@@ -14,12 +14,12 @@ export default function BottomSheet({ open, title, subtitle, onClose, children, 
 
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 mx-auto flex max-w-[402px] flex-col justify-end">
+    <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <div className="absolute inset-0 bg-[rgba(20,8,40,.55)]" onClick={onClose} />
       <div
         role="dialog"
         aria-label={title}
-        className="relative flex max-h-[85dvh] flex-col rounded-t-[28px] bg-bg px-5 pt-3 pb-[max(20px,env(safe-area-inset-bottom))] shadow-ring"
+        className="relative mx-auto flex w-full max-w-(--app-w) max-h-[85dvh] flex-col rounded-t-[28px] bg-bg px-5 pt-3 pb-[max(20px,env(safe-area-inset-bottom))] shadow-ring"
         style={{ animation: 'sheetUp .25s cubic-bezier(.2,.7,.2,1)' }}
       >
         <div className="mx-auto mb-3 h-1 w-10 flex-none rounded-full bg-sf2" />
