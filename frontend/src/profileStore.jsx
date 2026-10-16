@@ -47,13 +47,15 @@ export const DEFAULT_PROFILE = {
     rel: 0,
     drink: 0,
     note: '',
+    custom: {}, // hobbies the student added themselves, by category
   },
 
   // 07a: up to 3 roles the student has in mind. custom = roles they typed themselves.
   roles: { sel: ['Product Manager'], custom: [] },
 
   // 07b: work values. ratings = { valueKey: 1..5 }. custom = values they added.
-  values: { ratings: { 0: 5, 1: 4, 2: 3 }, custom: [] },
+  // top = the 5 values the student picked to rate (keys as strings).
+  values: { ratings: { 0: 5, 1: 4, 2: 3 }, custom: [], top: ['0', '1', '2'] },
 
   // 08-09: career areas. on = ids of the picked areas. custom = areas they added.
   areas: { on: ['prod', 'anal'], custom: [] },
@@ -72,6 +74,17 @@ export const DEFAULT_PROFILE = {
   societies: [], // names of joined societies, from src/data/societies.json
   going: [], // ids of events the student said they're going to
   connectionStyle: 'Requests',
+
+  // Home and People feeds (group posts, comments, the swipe deck)
+  groupsJoined: [], // ids of group posts the student joined
+  waitlist: [], // ids of full groups the student is waiting for
+  myGroups: [], // group posts the student created
+  myComments: {}, // comments the student wrote, by post id
+  likedComments: [],
+  passedPeople: [], // people swiped away on People › Career
+  savedPeople: [], // people saved with the bookmark
+  actionsRequested: [], // recommended actions the student pressed
+  memPromptDismissed: false,
 }
 
 const ProfileContext = createContext(null)

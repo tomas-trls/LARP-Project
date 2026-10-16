@@ -1,124 +1,57 @@
 // Made-up people for the People, Connections and Profile screens.
-// The names and lines come from the design (UI Design/LARP App Screens.dc.html, screens 12, 13 and 13b).
-// A few extra career suggestions were added so "Not now" has someone to move on to.
+// The names and lines come from the design (UI Design/Project LARP screen v2/LARP App Screens.dc.html,
+// screens 12, 13 and 13b).
 //
 // Two sides, kept apart on purpose (docs/DESIGN_DECISIONS.md, section 8):
 //   career = matched on the Future Me route, CV and programme
 //   social = matched on hobbies and personality only, never the CV
 
-// People › Career: one suggestion at a time. "match" is the fit score shown as "88% match".
+// People › Career: the swipe deck, one person at a time (design screen 12).
+// match = the fit score shown as "88% match". hook = how your note introduces you to them.
+// color = the round avatar colour until real photos exist.
 export const CAREER_SUGGESTIONS = [
-  {
-    id: 'priya-raman',
-    name: 'Priya Raman',
-    kind: 'Alumni',
-    match: 88,
-    headline: "Data Analyst at Deloitte · MSc Business Analytics '24",
-    tags: ['Same programme', 'Product route', 'Bouldering', 'Open to coffee'],
-    why: "two years ahead of you on the same route, and she joined Deloitte through the event you're going to tonight.",
-  },
-  {
-    id: 'daniel-hughes',
-    name: 'Daniel Hughes',
-    kind: 'Alumni',
-    match: 84,
-    headline: "Product Manager at Monzo · BSc Computer Science '22",
-    tags: ['Monzo', 'Product route', 'Computer Science', 'Open to calls'],
-    why: 'he moved from Monzo analytics into product, the exact step your gap summary points to.',
-  },
-  {
-    id: 'chloe-bennett',
-    name: 'Chloe Bennett',
-    kind: 'Alumni',
-    match: 81,
-    headline: "Associate Product Manager at Expedia · MSc Management '23",
-    tags: ['APM programme', 'Product route', 'Marketplaces'],
-    why: 'she runs the Expedia insight day on 15 Oct and reviews APM applications from UCL.',
-  },
-  {
-    id: 'hannah-clarke',
-    name: 'Hannah Clarke',
-    kind: 'Student',
-    match: 79,
-    headline: 'MSc Business Analytics · your course mate',
-    tags: ['Same programme', 'Case prep', 'Analytics route'],
-    why: 'same programme and also applying to product roles; she runs a case prep group on Mondays.',
-  },
-  {
-    id: 'james-okoro',
-    name: 'James Okoro',
-    kind: 'Alumni',
-    match: 77,
-    headline: "Product Analyst at Wise · MSc Business Analytics '24",
-    tags: ['Fintech', 'SQL + Tableau', 'Analytics route'],
-    why: 'analyst-to-product at a fintech, and his team uses the same SQL and Tableau stack as you.',
-  },
-  {
-    id: 'omar-farouk',
-    name: 'Omar Farouk',
-    kind: 'Alumni',
-    match: 74,
-    headline: "Graduate PM at Deloitte · MSc Management '25",
-    tags: ['Deloitte', 'Graduate scheme', 'Product route'],
-    why: 'he joined the Deloitte graduate product scheme last year, the role closing on 20 Oct.',
-  },
+  { id: 'priya-raman', name: 'Priya Raman', first: 'Priya', role: "Data Analyst at Deloitte · MSc Business Analytics '24", match: 88, alumni: true, color: '#BA82FF', tags: ['Same programme', 'Product route', 'Bouldering', 'Open to coffee'], why: "Two years ahead of you on the same route, and she joined Deloitte through the employer pop-up you're booked on.", hook: 'on the same MSc and looking at Product routes' },
+  { id: 'omar-haddad', name: 'Omar Haddad', first: 'Omar', role: "Associate PM at Monzo · MSc Business Analytics '23", match: 84, alumni: true, color: '#993BFF', tags: ['Monzo', 'Product route', 'Open to coffee'], why: 'Did the same Monzo internship two years before you, and converted it into an APM offer.', hook: 'about to finish the Monzo internship you did and aiming for APM roles' },
+  { id: 'hana-sato', name: 'Hana Sato', first: 'Hana', role: 'MSc Business Analytics · 2nd year · runs SoM Case Club', match: 81, alumni: false, color: '#A66BFF', tags: ['Same programme', 'Analytics route', 'Case club'], why: 'Runs the case club that covers the interview gap flagged on your route.', hook: 'on your programme and working on case interviews' },
+  { id: 'felix-brandt', name: 'Felix Brandt', first: 'Felix', role: "Strategy Analyst at BCG · BSc Economics '22", match: 79, alumni: true, color: '#8D5BD9', tags: ['Consulting route', 'Open to coffee'], why: 'Went from a UCL analytics MSc into strategy consulting, the route you shortlisted.', hook: 'exploring the Consulting route from an analytics background' },
+  { id: 'grace-obi', name: 'Grace Obi', first: 'Grace', role: "Product Analyst at Deliveroo · MSc Business Analytics '24", match: 77, alumni: true, color: '#DDBDFF', tags: ['Deliveroo', 'Analytics route'], why: 'Turned a marketplace placement into a product analyst role.', hook: 'looking at product analyst roles at marketplaces' },
+  { id: 'leo-marchetti', name: 'Leo Marchetti', first: 'Leo', role: 'MSc Management · 1st year · Consulting Society', match: 73, alumni: false, color: '#56338A', tags: ['Consulting route', 'Case practice'], why: 'Looking for a case-practice partner on the same route.', hook: 'looking for a case-practice partner' },
+  { id: 'mei-lin', name: 'Mei Lin', first: 'Mei', role: "Business Analyst at Accenture · MSc Business Analytics '23", match: 71, alumni: true, color: '#C4A3F0', tags: ['Analytics route', 'Open to coffee'], why: 'Analytics MSc into consulting-flavoured business analyst work.', hook: 'weighing analyst roles in consulting' },
+  { id: 'arjun-mehta', name: 'Arjun Mehta', first: 'Arjun', role: "Growth Analyst at Monzo · BSc Computer Science '23", match: 69, alumni: true, color: '#7A4FB5', tags: ['Monzo', 'Analytics route'], why: 'Same BSc subject, and the same employer as on your CV.', hook: 'also ex-Monzo and interested in growth analytics' },
 ]
 
-// People › Social: who you could go to an event with.
-// "likes" are hobbies (compared with yours), "eventWords" pick a real upcoming SU event for the pair.
-export const SOCIAL_PAIRS = [
-  {
-    id: 'marco-bellini',
-    name: 'Marco Bellini',
-    line: 'BSc Physics · 2nd year · also likes quiz nights',
-    tags: ['Board games', 'Bouldering', 'Ambivert'],
-    likes: ['board games', 'bouldering', 'quiz'],
-    eventWords: ['quiz'],
-  },
-  {
-    id: 'aisha-khan',
-    name: 'Aisha Khan',
-    line: 'MSc Data Science · 1st year · climbs twice a week',
-    tags: ['Bouldering', 'Film', 'Introvert'],
-    likes: ['bouldering', 'film'],
-    eventWords: ['climb', 'boulder', 'film', 'screening'],
-  },
-  {
-    id: 'leila-haddad',
-    name: 'Leila Haddad',
-    line: 'MA Education · Mahjong Society regular',
-    tags: ['Mahjong', 'Bouldering', 'Ambivert'],
-    likes: ['mahjong', 'bouldering', 'board games'],
-    eventWords: ['mahjong'],
-  },
-  {
-    id: 'tom-reynolds',
-    name: 'Tom Reynolds',
-    line: 'MEng Civil Eng · 3rd year · goes to every gig',
-    tags: ['Live music', 'Techno', 'Extrovert'],
-    likes: ['live music', 'techno', 'clubbing'],
-    eventWords: ['dj', 'jazz', 'live', 'music'],
-  },
-  {
-    id: 'sophie-marsh',
-    name: 'Sophie Marsh',
-    line: 'BA History · 2nd year · Hiking Club',
-    tags: ['Hiking', 'Running', 'Ambivert'],
-    likes: ['hiking', 'running'],
-    eventWords: ['hike', 'walk'],
-  },
-]
+// Coffee chat times offered in the sheet ("free in both calendars").
+export const COFFEE_SLOTS = ['Thu 22 Oct · 13:00–13:20', 'Fri 23 Oct · 10:30–10:50', 'Mon 26 Oct · 16:00–16:20']
 
-// "People who share your hobbies" list on People › Social.
-export const HOBBY_MATCHES = [
-  { id: 'aisha-khan', name: 'Aisha K.', line: 'Bouldering · Film · MSc Data Science' },
-  { id: 'priya-n', name: 'Priya N.', line: 'Hiking · Catan · BSc Economics' },
-  { id: 'tom-reynolds', name: 'Tom R.', line: 'Live music · Film · MEng Civil Eng' },
-  { id: 'leila-haddad', name: 'Leila H.', line: 'Bouldering · Mahjong · MA Education' },
-  { id: 'sam-o', name: 'Sam O.', line: 'Board games · Running · BSc Computer Science' },
-  { id: 'yuki-tanaka', name: 'Yuki T.', line: 'Film · Galleries · MSc Urban Planning' },
-  { id: 'dan-m', name: 'Dan M.', line: 'Karaoke · Hiking · LLB Law' },
-]
+// Students who post groups and comment on People › Social (design screen 13).
+// key: { name, color, tag, bio, followId }. tag = why they show up for you.
+// followId links to the same person in profile.following, where one exists.
+export const SOCIAL_PEOPLE = {
+  marco: { name: 'Marco B.', color: '#DDBDFF', tag: 'Connection', bio: 'Board games · Bouldering · BSc Physics', followId: 'marco-bellini' },
+  priya: { name: 'Priya N.', color: '#BA82FF', tag: 'Connection', bio: 'Hiking · Catan · BSc Economics', followId: 'priya-n' },
+  aisha: { name: 'Aisha K.', color: '#993BFF', tag: 'Connection', bio: 'Bouldering · Film · MSc Data Science', followId: 'aisha-khan' },
+  leila: { name: 'Leila H.', color: '#56338A', tag: 'Connection', bio: 'Bouldering · Mahjong · MA Education', followId: 'leila-haddad' },
+  sam: { name: 'Sam O.', color: '#C4A3F0', tag: 'Shares 2 hobbies', bio: 'Board games · Running · BSc Computer Science', followId: 'sam-o' },
+  tom: { name: 'Tom R.', color: '#7A4FB5', tag: 'Shares 2 hobbies', bio: 'Live music · Film · MEng Civil Eng', followId: 'tom-reynolds' },
+  yuki: { name: 'Yuki T.', color: '#E3C8FF', tag: 'Shares 2 hobbies', bio: 'Film · Galleries · MSc Urban Planning', followId: 'yuki-tanaka' },
+  dan: { name: 'Dan M.', color: '#9C6BD6', tag: 'Shares 1 hobby', bio: 'Karaoke · Hiking · LLB Law', followId: 'dan-m' },
+  noor: { name: 'Noor A.', color: '#B48BE8', tag: 'Shares 2 hobbies', bio: 'Running · Board games · MSc Management', followId: 'noor-a' },
+  jonas: { name: 'Jonas W.', color: '#6E3FA8', tag: 'Shares 1 hobby', bio: 'Catan · Chess · BSc Maths', followId: 'jonas-w' },
+  chen: { name: 'Chen L.', color: '#D1B3FF', tag: 'Shares 2 hobbies', bio: 'Galleries · Dance · MA Fine Art', followId: 'chen-l' },
+  hana: { name: 'Hana S.', color: '#A66BFF', tag: 'Same route', bio: 'MSc Business Analytics · Case club', followId: 'hana-sato', alumni: false },
+  felix: { name: 'Felix B.', color: '#8D5BD9', tag: 'Alumni', bio: 'Strategy Analyst at BCG', followId: 'felix-brandt', alumni: true },
+}
+
+// "People who share your hobbies" row on People › Social, in the design's order.
+export const HOBBY_MATCHES = ['aisha', 'priya', 'tom', 'leila', 'sam', 'yuki', 'dan']
+
+// People already in the "Saved people" bookmark before you save anyone from the deck.
+export const SAVED_BEFORE = ['aisha', 'tom', 'marco', 'leila', 'noor', 'chen']
+
+// How many people are in the bookmark (the badge on People's header).
+export function savedCount(profile) {
+  return SAVED_BEFORE.length + (profile.savedPeople ?? []).length
+}
 
 // 13b Connections. kind = 'career' or 'social'. linkedin / link = which small round icons show.
 // "note" is the last thing you did together.

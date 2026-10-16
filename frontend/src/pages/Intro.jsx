@@ -8,6 +8,9 @@ export default function Intro() {
   return (
     <Screen>
       <div className="flex flex-1 flex-col items-center px-3">
+        {/* The LARP wordmark at the top */}
+        <div className="pt-4 font-display text-[30px] font-medium tracking-[.14em] text-ink">LARP</div>
+
         {/* The middle of the screen: mascots, headline, typed line */}
         <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center gap-8 pt-6">
           <IntroMascots />
