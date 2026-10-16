@@ -79,11 +79,24 @@ export const ROLES = ROLE_TEXT.split(';').map((entry) => {
   return { name, sector, alumni: Number(alumni), sal: Number(sal) }
 })
 
-// Shown before the student types anything.
+// Shown before the student types anything (the screen lists the first 3).
 export const POPULAR = ['Product Manager', 'Management Consultant', 'Investment Banking Analyst', 'Software Engineer', 'Data Analyst']
+export const POPULAR_SHOWN = 3
 
 // How many roles a student can pick.
 export const MAX_ROLES = 3
+
+// "Not sure yet? Suggest routes for me": the roles the agent proposes, best fit first.
+// In the real app Claude would choose these from the student's CV and values; for now they are
+// fixed examples written for the demo student (Maya: MSc Business Analytics, Monzo internship).
+export const AI_SUGGESTIONS = [
+  { name: 'Data Product Analyst', sector: 'Tech', alumni: 180, sal: 40, fit: 86, why: 'SQL/Python + your Monzo analysis work.' },
+  { name: 'Business Analyst', sector: 'Consulting', alumni: 760, sal: 38, fit: 82, why: 'MSc Business Analytics + stakeholder work at Monzo.' },
+  { name: 'Product Manager', sector: 'Tech', alumni: 1240, sal: 48, fit: 79, why: 'Monzo internship + your marketplace interest.' },
+  { name: 'Strategy Analyst', sector: 'Consulting', alumni: 410, sal: 42, fit: 77, why: 'You rank Development highest — strategy rotations score it.' },
+  { name: 'Growth Analyst', sector: 'Tech', alumni: 150, sal: 37, fit: 74, why: 'Growth experiments at Monzo + Python.' },
+  { name: 'Analytics Consultant', sector: 'Consulting', alumni: 390, sal: 41, fit: 71, why: 'BSc Computer Science + “Using your abilities”.' },
+]
 
 // ── 07b · Work values (from the UCL Careers values activity) ──
 // [title, description]. A value's key is its position in this list ('0', '1', ...).
@@ -103,6 +116,9 @@ export const WORK_VALUES = [
   ['Prestige environment', 'Where you work is seen as a major player in its field.'],
   ['Fun', 'You can be light-hearted. Not serious all the time.'],
 ]
+
+// How many values the student picks before rating them.
+export const TOP_VALUES = 5
 
 // The labels above the 1-5 circles.
 export const RATING_LABELS = ['Not at all', 'A little', 'Somewhat', 'Very', 'Essential']
