@@ -6,8 +6,8 @@
 //   - The gear opens Settings (17), where Appearance, Sign out and Reset demo now live
 //
 // /profile?memory=m2 opens that memory straight away (used by the "How was it?" prompts).
-import { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import Screen from '../components/Screen.jsx'
 import { BackButton } from '../components/StepHeader.jsx'
@@ -35,6 +35,12 @@ export default function Profile() {
   const xp = profile.xp ?? 340
 
   const [view, setView] = useState(null) // null | 'plans' | 'mems' | 'progress'
+
+  // Home's "How was …? Add" button links to /profile#memories: scroll down to the Memories row.
+  const { hash } = useLocation()
+  useEffect(() => {
+    if (hash === '#memories') document.getElementById('memories')?.scrollIntoView({ behavior: 'smooth' })
+  }, [hash])
   const [memIndex, setMemIndex] = useState(0) // which polaroid is on top
   const [badgesOpen, setBadgesOpen] = useState(false)
   const [toast, setToast] = useState('')
@@ -177,6 +183,7 @@ export default function Profile() {
       </div>
 
       {/* Memories */}
+      <div id="memories" className="scroll-mt-4" />
       <RowHeading title="Memories" sub="past events" onOpen={() => setView('mems')} />
       {!saved.promptDone && (
         <div className="mt-3 flex flex-none items-center gap-3 rounded-[18px] bg-sf2 px-3.5 py-3">
