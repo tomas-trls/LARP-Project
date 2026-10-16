@@ -10,7 +10,8 @@ import Icon from '../components/Icon.jsx'
 import Screen from '../components/Screen.jsx'
 import { BackButton } from '../components/StepHeader.jsx'
 import { PrimaryButton } from '../components/ui.jsx'
-import { AREAS, CATEGORIES, MY_SCORES, gapFor, worstCategory } from '../data/careerData.js'
+import { AREAS, CATEGORIES, MY_SCORES as SAMPLE_SCORES, gapFor, worstCategory } from '../data/careerData.js'
+import { useRouteGaps } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 
 export default function Gaps() {
@@ -19,12 +20,19 @@ export default function Gaps() {
   const [focus, setFocus] = useState(null) // the area highlighted on the chart (tap a card)
 
   // The picked areas, each with its gap details.
-  const picked = [...AREAS, ...custom]
+  // Real gaps for the student's saved routes if the back end has them; otherwise the sample areas.
+  const realRoutes = useRouteGaps()
+  const samplePicked = [...AREAS, ...custom]
     .filter((a) => profile.areas.on.includes(a.id))
     .map((area) => {
       const gap = gapFor(area, Math.max(0, custom.findIndex((c) => c.id === area.id)))
       return { area, gap, worst: worstCategory(gap.al) }
     })
+  const picked = realRoutes ?? samplePicked
+  // "You" on the chart: the average of the student's scores across the routes (or the sample scores).
+  const MY_SCORES = realRoutes
+    ? CATEGORIES.map((_, i) => Math.round(realRoutes.reduce((n, r) => n + r.mine[i], 0) / realRoutes.length))
+    : SAMPLE_SCORES
   const avgFit = picked.length ? Math.round(picked.reduce((n, x) => n + x.gap.fit, 0) / picked.length) : 0
   const ranked = [...picked].sort((x, y) => x.gap.fit - y.gap.fit) // lowest fit = biggest impact first
   const fade = (key) => (focus && focus !== key ? 0.4 : 1)

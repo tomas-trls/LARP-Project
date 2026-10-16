@@ -8,6 +8,7 @@ import ReviewSheet from '../components/onboarding/ReviewSheet.jsx'
 import Screen from '../components/Screen.jsx'
 import StepHeader from '../components/StepHeader.jsx'
 import { PrimaryButton } from '../components/ui.jsx'
+import { saveCvProfile } from '../live.js'
 import { DEFAULT_PROFILE, useProfile } from '../profileStore.jsx'
 
 // Which list in the profile each kind of entry lives in.
@@ -213,7 +214,14 @@ export default function Review() {
 
         {/* The main button stays at the bottom of the screen while the cards scroll */}
         <div className="sticky bottom-0 mt-auto bg-bg pt-3.5 pb-2">
-          <PrimaryButton onClick={() => navigate('/onboarding/personality')}>Looks right</PrimaryButton>
+          <PrimaryButton
+            onClick={() => {
+              saveCvProfile(profile.cv) // saves the reviewed CV, so its skills count towards fit scores and job matches
+              navigate('/onboarding/personality')
+            }}
+          >
+            Looks right
+          </PrimaryButton>
         </div>
       </div>
 

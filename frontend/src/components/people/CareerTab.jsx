@@ -3,7 +3,8 @@
 // (group posts for careers events), then everyone on your routes in a list.
 // Matched on your route, programme and employers only, never on your social answers.
 import { useState } from 'react'
-import { CAREER_SUGGESTIONS, SAVED_BEFORE, SOCIAL_PEOPLE } from '../../data/people.js'
+import { CAREER_SUGGESTIONS as SAMPLE_PEOPLE, SAVED_BEFORE, SOCIAL_PEOPLE } from '../../data/people.js'
+import { adaptPeople, requestConnection, useLive } from '../../live.js'
 import { useProfile } from '../../profileStore.jsx'
 import CommentsSheet from '../feed/CommentsSheet.jsx'
 import GroupPostCard from '../feed/GroupPostCard.jsx'
@@ -43,6 +44,8 @@ function passes(filter, g) {
 export default function CareerTab({ savedOpen, onCloseSaved }) {
   const { profile, update } = useProfile()
   const feed = useFeed()
+  // Real people on the student's route from the back end (the sample people if it cannot be reached).
+  const { data: CAREER_SUGGESTIONS } = useLive('/people/career', adaptPeople, SAMPLE_PEOPLE)
   const [coffeeWith, setCoffeeWith] = useState(null) // the person whose coffee sheet is open
   const [toast, setToast] = useState('')
   const [filter, setFilter] = useState(null)
@@ -59,7 +62,8 @@ export default function CareerTab({ savedOpen, onCloseSaved }) {
     setTimeout(() => setToast(''), 2000)
   }
 
-  const sendInvite = () => {
+  const sendInvite = (details) => {
+    requestConnection(coffeeWith, details?.note) // also saves a real request in the back end
     // Saved inside LARP only. The other person sees it when they open the app.
     update('requested', [...invited, coffeeWith.id])
     showToast(`Invite sent to ${coffeeWith.first} ☕`)
@@ -73,10 +77,10 @@ export default function CareerTab({ savedOpen, onCloseSaved }) {
       const person = { id: k, first: p.name.split(' ')[0], name: p.name, color: p.color, role: p.bio, hook: 'a UCL student on LARP' }
       return { id: k, name: p.name, color: p.color, bio: p.bio, coffee: () => setCoffeeWith(person) }
     }),
-    ...saved.map((id) => {
-      const p = CAREER_SUGGESTIONS.find((x) => x.id === id)
-      return { id, name: p.name, color: p.color, bio: p.role, coffee: () => setCoffeeWith(p) }
-    }),
+    ...saved
+      .map((id) => CAREER_SUGGESTIONS.find((x) => x.id === id))
+      .filter(Boolean) // ignore ids saved from the sample list when the real list is showing
+      .map((p) => ({ id: p.id, name: p.name, color: p.color, bio: p.role, coffee: () => setCoffeeWith(p) })),
   ]
 
   const posts = feed.groups.filter((g) => g.ev.careers && passes(filter, g))

@@ -62,4 +62,6 @@ def get_current_user(
     user = session.get(User, int(payload["sub"]))
     if user is None:
         raise HTTPException(status_code=401, detail="This account no longer exists.")
+    if user.account_status in ("suspended", "banned"):  # the moderator's warning > suspension > ban ladder
+        raise HTTPException(status_code=403, detail=f"This account is {user.account_status}. Contact the LARP moderator.")
     return user

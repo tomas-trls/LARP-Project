@@ -2,24 +2,31 @@
 //
 // There is no CV reader yet, so whichever file is picked we keep its name and show the example
 // profile on the next screen. The file itself never leaves the browser.
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import Mascot from '../components/Mascot.jsx'
 import Screen from '../components/Screen.jsx'
 import StepHeader from '../components/StepHeader.jsx'
+import { uploadCv } from '../live.js'
 import { DEFAULT_PROFILE, useProfile } from '../profileStore.jsx'
 
 export default function ProfileCreator() {
   const navigate = useNavigate()
   const { update } = useProfile()
+  const [reading, setReading] = useState(false) // true while the back end is reading the CV
   const fileInput = useRef(null) // the hidden file picker that "Choose file" opens
 
   // A file was chosen: keep its name, fill in the example profile, go to the review screen.
-  function onFile(e) {
+  // The back end reads the CV (in memory only, the file is never stored) and sends back a draft.
+  // If it cannot be read, we fall back to the example profile so the demo never gets stuck.
+  async function onFile(e) {
     const file = e.target.files?.[0]
     if (!file) return
-    update('cv', { ...DEFAULT_PROFILE.cv, file: file.name })
+    setReading(true)
+    const draft = await uploadCv(file)
+    setReading(false)
+    update('cv', draft ?? { ...DEFAULT_PROFILE.cv, file: file.name })
     navigate('/onboarding/review')
   }
 
@@ -46,7 +53,7 @@ export default function ProfileCreator() {
             onClick={() => fileInput.current.click()}
             className="mt-[18px] inline-flex h-10 items-center gap-2 rounded-full bg-white px-[18px] text-[14px] font-semibold text-plum hover:opacity-90"
           >
-            Choose file
+            {reading ? 'Reading your CV…' : 'Choose file'}
           </button>
           <input ref={fileInput} type="file" accept=".pdf,.docx" onChange={onFile} className="hidden" />
           <div className="absolute top-3.5 right-[18px]">
