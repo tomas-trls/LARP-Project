@@ -7,6 +7,10 @@
 // Left empty, requests stay relative ("/api/...") and the dev proxy handles them.
 const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
 
+// A picture address from the back end (like /api/avatars/7.svg) made ready for an <img> or a CSS url().
+// Hosted on Render, the back end lives at a different address, so add it in front.
+export const assetUrl = (path) => (path ? (/^https?:/.test(path) ? path : `${API_URL}${path}`) : null)
+
 async function request(path, options = {}) {
   // After login (Step 9) the token is kept in localStorage and sent on every request.
   const token = localStorage.getItem('token')

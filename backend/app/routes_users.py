@@ -8,6 +8,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, select
 
+from app.avatars import avatar_address
 from app.auth import create_token, get_current_user, hash_password, verify_password
 from app.database import get_session
 from app.match_cache import add_user_to_cache, rebuild_match_cache
@@ -82,6 +83,7 @@ def register(data: RegisterIn, session: Session = Depends(get_session)):
     except IntegrityError:  # two sign-ups with the same email at the same moment
         session.rollback()
         raise HTTPException(status_code=409, detail="An account with this email already exists. Try logging in.")
+    user.avatar_url = avatar_address(user.id)  # a cartoon profile picture until they choose their own
 
     for tag_id in tag_ids:
         session.add(UserTag(user_id=user.id, tag_id=tag_id))

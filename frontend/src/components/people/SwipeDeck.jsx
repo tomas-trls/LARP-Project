@@ -97,8 +97,9 @@ export default function SwipeDeck({ deck, onPass, onSave, onCoffee }) {
             className="absolute inset-x-0 top-0 z-[5] box-border touch-none overflow-hidden rounded-[28px] bg-sf shadow-ring select-none"
             style={{ transform, opacity, transition, transformOrigin: '50% 100%', cursor: drag ? 'grabbing' : 'grab' }}
           >
-            <div className="relative h-[150px]" style={{ background: 'repeating-linear-gradient(135deg,var(--sf2) 0 6px,var(--sf) 6px 12px)' }}>
-              <span className="absolute bottom-3 left-3.5 rounded-md bg-sf px-2 py-[3px] font-mono text-[11px] text-mute">profile photo</span>
+            {/* A real person has a face picture (top.color is a CSS url(...)); sample people keep the striped placeholder. */}
+            <div className="relative h-[150px]" style={{ background: top.color?.startsWith('url(') ? top.color : 'repeating-linear-gradient(135deg,var(--sf2) 0 6px,var(--sf) 6px 12px)' }}>
+              {!top.color?.startsWith('url(') && <span className="absolute bottom-3 left-3.5 rounded-md bg-sf px-2 py-[3px] font-mono text-[11px] text-mute">profile photo</span>}
               {top.alumni && (
                 <div className="absolute top-3.5 right-3.5 flex items-center gap-1.5 rounded-full bg-bg px-3 py-1.5 text-[12px] font-semibold">
                   <span className="h-2 w-2 rounded-full bg-blue" />
