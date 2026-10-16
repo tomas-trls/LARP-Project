@@ -4,20 +4,24 @@
 export const LEVELS = ['Basic', 'Conversational', 'Professional', 'Fluent', 'Native']
 export const LANGUAGES = ['English', 'French', 'Spanish', 'German', 'Arabic', 'Mandarin', 'Cantonese', 'Hindi', 'Urdu', 'Bengali', 'Punjabi', 'Tamil', 'Gujarati', 'Portuguese', 'Italian', 'Japanese', 'Korean', 'Russian', 'Ukrainian', 'Polish', 'Dutch', 'Swedish', 'Norwegian', 'Danish', 'Finnish', 'Greek', 'Turkish', 'Hebrew', 'Persian', 'Swahili', 'Yoruba', 'Igbo', 'Amharic', 'Vietnamese', 'Thai', 'Indonesian', 'Malay', 'Tagalog', 'Czech', 'Hungarian', 'Romanian', 'Welsh', 'Irish', 'British Sign Language']
 
-// 05 Personality: the 8 statements. w = which way agreeing pushes you:
-// +1 towards extrovert, -1 towards introvert, 0 neither.
+// 05 Personality: the 8 statements of the "Help me figure it out" quiz, one at a time.
+// Only statements 4 to 8 count towards the result (see scoreVert in Personality.jsx).
 export const STATEMENTS = [
-  { t: "I'm funny", w: 1 },
-  { t: "I'm more logical than emotional", w: 0 },
-  { t: 'I plan more than I improvise', w: -1 },
-  { t: 'I recharge by being around people', w: 1 },
-  { t: "I'd rather message than call", w: -1 },
-  { t: 'I think out loud', w: 1 },
-  { t: 'Big events drain me, even fun ones', w: -1 },
-  { t: "I'm happy taking the lead in group work", w: 1 },
+  "I'm funny",
+  "I'm more logical than emotional",
+  'I plan more than I improvise',
+  'I recharge by spending time alone',
+  'I enjoy meeting new people at events',
+  "I'd rather go deep with a few friends than know lots of people",
+  'I think out loud',
+  "I'm comfortable being the centre of attention",
 ]
-// The statements are shown 3, 3 and 2 at a time.
-export const STATEMENT_PAGES = [[0, 1, 2], [3, 4, 5], [6, 7]]
+// The one-line result shown after the quiz, for Introvert, Ambivert and Extrovert.
+export const VERT_RESULTS = [
+  'Introvert: you recharge on your own and go deep with a few people.',
+  'Ambivert: you like people, but you need your own time too.',
+  'Extrovert: you get your energy from being around people.',
+]
 export const VERT_LABELS = ['Introvert', 'Ambivert', 'Extrovert']
 
 // 06 Interests: the three optional questions.

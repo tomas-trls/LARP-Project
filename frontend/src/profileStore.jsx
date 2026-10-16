@@ -85,6 +85,10 @@ export const DEFAULT_PROFILE = {
   savedPeople: [], // people saved with the bookmark
   actionsRequested: [], // recommended actions the student pressed
   memPromptDismissed: false,
+
+  // Home search and notifications (design v3)
+  recentSearches: undefined, // undefined = show the starter list in Home.jsx
+  notifications: undefined, // which notifications were read, dismissed or acted on (see Home.jsx)
 }
 
 const ProfileContext = createContext(null)
