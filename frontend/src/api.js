@@ -10,7 +10,9 @@ const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
 async function request(path, options = {}) {
   // After login (Step 9) the token is kept in localStorage and sent on every request.
   const token = localStorage.getItem('token')
-  const headers = { 'Content-Type': 'application/json', ...options.headers }
+  // A file upload (FormData) sets its own Content-Type, so only JSON requests get the JSON one.
+  const isUpload = options.body instanceof FormData
+  const headers = { ...(isUpload ? {} : { 'Content-Type': 'application/json' }), ...options.headers }
   if (token) headers.Authorization = `Bearer ${token}`
 
   const response = await fetch(`${API_URL}/api${path}`, { ...options, headers })
@@ -33,4 +35,6 @@ export const api = {
   get: (path) => request(path),
   post: (path, body) => request(path, { method: 'POST', body: JSON.stringify(body) }),
   put: (path, body) => request(path, { method: 'PUT', body: JSON.stringify(body) }),
+  delete: (path) => request(path, { method: 'DELETE' }),
+  upload: (path, formData) => request(path, { method: 'POST', body: formData }),
 }

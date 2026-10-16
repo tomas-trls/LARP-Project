@@ -9,6 +9,7 @@ import CareerTab from '../components/people/CareerTab.jsx'
 import { ConnectionsPill, RoundButton } from '../components/people/parts.jsx'
 import SocialTab from '../components/people/SocialTab.jsx'
 import { CONNECTION_TOTAL, savedCount } from '../data/people.js'
+import { adaptConnections, useLive } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 
 export default function People() {
@@ -16,7 +17,8 @@ export default function People() {
   const tab = params.get('tab') === 'social' ? 'social' : 'career'
   const { profile } = useProfile()
   const [savedOpen, setSavedOpen] = useState(false)
-  const total = CONNECTION_TOTAL + (profile.accepted ?? []).length
+  const { data: real, live } = useLive('/connections', adaptConnections, null)
+  const total = (live ? real.connections.length : CONNECTION_TOTAL) + (profile.accepted ?? []).length
 
   return (
     <Screen tabs>

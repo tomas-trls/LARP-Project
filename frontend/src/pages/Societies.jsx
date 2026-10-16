@@ -13,6 +13,7 @@ import Icon from '../components/Icon.jsx'
 import Screen from '../components/Screen.jsx'
 import { ChipRow } from '../components/ui.jsx'
 import { joinedList, plainHobby } from '../data/people.js'
+import { syncSociety } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 import { societies } from '../sampleData.js'
 
@@ -109,8 +110,10 @@ export default function Societies() {
 
   const joined = joinedList(profile)
   const toggleJoin = (name) => {
-    update('societies', joined.includes(name) ? joined.filter((n) => n !== name) : [...joined, name])
+    const joining = !joined.includes(name)
+    update('societies', joining ? [...joined, name] : joined.filter((n) => n !== name))
     update('societiesChanged', true)
+    syncSociety(name, joining) // also save it in the back end (for the societies it tracks)
   }
 
   // Category chips: "For you", the career-friendly ones, then the rest by how many groups they have.

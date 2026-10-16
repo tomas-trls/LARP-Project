@@ -11,6 +11,7 @@ import Screen from '../components/Screen.jsx'
 import StepHeader from '../components/StepHeader.jsx'
 import { PrimaryButton } from '../components/ui.jsx'
 import { AI_SUGGESTIONS, MAX_ROLES, POPULAR, POPULAR_SHOWN, ROLES, WORK_VALUES } from '../data/careerData.js'
+import { saveRoutes } from '../live.js'
 import { useProfile } from '../profileStore.jsx'
 
 const PAGE_SIZE = 8 // how many results show before "Show more"
@@ -112,6 +113,7 @@ export default function CareerPath() {
 
   const onContinue = () => {
     update('activeRoute', selected[0]) // the first role becomes the active Future Me route
+    saveRoutes(selected) // also save them in the back end, where the fit scores and gaps are worked out
     navigate('/onboarding/values')
   }
 

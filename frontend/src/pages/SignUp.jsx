@@ -1,15 +1,22 @@
 // 02 · Sign up (and Sign in for returning students).
 //
-// There is no back end for this yet, so signing in is simulated: we check the email looks like a
-// UCL address, wait a moment (as a real server would), then remember the student in the profile.
-// The password is only checked for length and is never saved anywhere.
+// This talks to the real back end:
+//   Sign in  -> POST /api/login     (checks the password against the saved hash, returns a token)
+//   Sign up  -> POST /api/register  (creates the account, returns a token)
+// The token is kept in localStorage (auth.js) and api.js sends it with every later request.
+// The password goes to the back end only; the front end never stores it.
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { api } from '../api.js'
+import { saveToken } from '../auth.js'
+import { loadServerProfile } from '../live.js'
 import { BackButton } from '../components/StepHeader.jsx'
 import Screen from '../components/Screen.jsx'
 import { namesFromEmail, useProfile } from '../profileStore.jsx'
 
-const DEMO_EMAIL = 'maya.whitfield.26@ucl.ac.uk'
+// The seeded demo account (see backend/app/seed_profiles.py). "Continue with UCL SSO" signs in as this one.
+const DEMO_EMAIL = 'demo.main@ucl.ac.uk'
+const DEMO_PASSWORD = 'demo1234'
 const isUclEmail = (email) => /@(.*\.)?ucl\.ac\.uk$/.test(email)
 
 // The little purple square that stands in for the UCL logo on the SSO button.
@@ -37,6 +44,7 @@ export default function SignUp() {
   const [localPart, setLocalPart] = useState('') // the bit before @ucl.ac.uk on the sign-up screen
   const [email, setEmail] = useState('') // the full email on the sign-in screen
   const [password, setPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('') // the password chosen on the sign-up screen
   const [showPassword, setShowPassword] = useState(false)
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState(false)
@@ -46,20 +54,51 @@ export default function SignUp() {
   // Stop any waiting timer if the student leaves the page.
   useEffect(() => () => clearTimeout(timer.current), [])
 
-  // Pretend to talk to the server, then save who signed in and move on.
-  function finish(address, nextPage) {
+  // Talk to the back end. `create` true = make a new account, false = sign in to an existing one.
+  async function finish(address, pw, nextPage, create = false) {
     setBusy(true)
     setError('')
-    timer.current = setTimeout(() => {
+    const names = namesFromEmail(address)
+    try {
+      let answer
+      if (create) {
+        // The new design asks fewer questions than the old questionnaire, so the rest get neutral defaults.
+        answer = await api.post('/register', {
+          name: [names.firstName, names.lastName].filter(Boolean).join(' '),
+          ucl_email: address,
+          password: pw,
+          campus: 'main',
+          alcohol_pref: 'bars_no_drink',
+          goal: 'both',
+        })
+      } else {
+        answer = await api.post('/login', { ucl_email: address, password: pw })
+      }
+      saveToken(answer.token)
+    } catch (e) {
       setBusy(false)
-      setDone(true)
-      update('email', address)
-      update('signedIn', true)
-      const names = namesFromEmail(address)
+      // 409 = that email already has an account; the back end's message says so.
+      setError(e.status === undefined ? 'Cannot reach the LARP server. Is the back end running?' : e.message)
+      return
+    }
+    // A returning student: load their saved CV, routes and name so Profile and the career screens show them.
+    const server = create ? null : await loadServerProfile()
+    setBusy(false)
+    setDone(true)
+    update('email', address)
+    update('signedIn', true)
+    if (server) {
+      const [first, ...rest] = server.name.split(' ')
+      update('firstName', first)
+      update('lastName', rest.join(' '))
+      update('cv', server.cv)
+      if (server.activeRoute) update('activeRoute', server.activeRoute)
+      if (server.roles.length) update('roles', { sel: server.roles })
+    } else {
       update('firstName', names.firstName)
       if (names.lastName) update('lastName', names.lastName)
-      timer.current = setTimeout(() => navigate(nextPage), 600)
-    }, 1200)
+    }
+    timer.current = setTimeout(() => navigate(nextPage), 600)
   }
 
   function switchMode(next) {
@@ -68,21 +107,22 @@ export default function SignUp() {
     setDone(false)
   }
 
-  // Sign up with UCL SSO: no typing needed, so we use the email if one is typed, or the demo student.
+  // UCL SSO is not connected for the demo, so this button signs in as the seeded demo student (already has a CV,
+  // a route and activity) and goes straight to Home.
   function signUpWithSso() {
     if (busy) return
-    const typed = localPart.trim().toLowerCase()
-    finish(typed ? `${typed.replace(/@.*$/, '')}@ucl.ac.uk` : DEMO_EMAIL, '/onboarding/profile')
+    finish(DEMO_EMAIL, DEMO_PASSWORD, '/home')
   }
 
-  // Sign up with an email code. The student may type just "maya.whitfield.26" or the full address.
+  // Create an account. The student may type just "maya.whitfield.26" or the full address.
   function sendCode() {
     if (busy) return
     const typed = localPart.trim().toLowerCase()
     if (!typed) return setError('Enter your UCL email.')
     const address = typed.includes('@') ? typed : `${typed}@ucl.ac.uk`
     if (!isUclEmail(address)) return setError('Use your @ucl.ac.uk address.')
-    finish(address, '/onboarding/profile')
+    if (newPassword.length < 8) return setError('Choose a password of at least 8 characters.')
+    finish(address, newPassword, '/onboarding/profile', true)
   }
 
   // Sign in (returning student). Same rules as the design: UCL email and a 6+ character password.
@@ -92,7 +132,7 @@ export default function SignUp() {
     if (!address) return setError('Enter your UCL email.')
     if (!isUclEmail(address)) return setError('Use your @ucl.ac.uk address.')
     if (password.length < 6) return setError('Password must be at least 6 characters.')
-    finish(address, '/home')
+    finish(address, password, '/home')
   }
 
   if (mode === 'signin') {
@@ -159,7 +199,7 @@ export default function SignUp() {
           {done && <div className="mt-3 text-center text-[13px] text-mute">Taking you to your profile…</div>}
 
           <Divider>or</Divider>
-          <button type="button" onClick={() => !busy && finish(DEMO_EMAIL, '/home')} className={outlineButton}>
+          <button type="button" onClick={() => !busy && finish(DEMO_EMAIL, DEMO_PASSWORD, '/home')} className={outlineButton}>
             <SsoLogo />
             Continue with UCL SSO
           </button>
@@ -219,9 +259,24 @@ export default function SignUp() {
           />
           {!localPart.includes('@') && <span className="text-mute">@ucl.ac.uk</span>}
         </div>
+        <div className={`${inputBox} mt-3 shadow-ring`}>
+          <input
+            type="password"
+            autoComplete="new-password"
+            placeholder="Choose a password (8+ characters)"
+            aria-label="Choose a password"
+            value={newPassword}
+            onChange={(e) => {
+              setNewPassword(e.target.value)
+              setError('')
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && sendCode()}
+            className={inputText}
+          />
+        </div>
         {error && <div className="mt-2.5 px-1 text-[13px] text-[#E5484D]">{error}</div>}
         <button type="button" onClick={sendCode} disabled={busy} className={`${outlineButton} mt-3`}>
-          {busy ? 'Sending…' : 'Send verification code'}
+          {busy ? 'Creating account…' : done ? 'Account created ✓' : 'Create account'}
         </button>
         <p className="mt-4 text-center text-[12px] leading-normal text-mute">Only @ucl.ac.uk and alumni addresses.</p>
 
