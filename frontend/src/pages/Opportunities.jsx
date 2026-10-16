@@ -87,7 +87,7 @@ export default function Opportunities() {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-none flex-col gap-3">
+      <div className="mt-4 grid flex-none gap-3 lg:grid-cols-2">
         {list.map((job) => {
           const isSaved = saved.includes(job.id)
           const isApplied = applied.includes(job.id)

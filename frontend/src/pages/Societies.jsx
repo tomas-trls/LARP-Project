@@ -200,7 +200,7 @@ export default function Societies() {
       <h2 className="mt-4 px-1 font-display text-[20px] font-normal">
         {q ? `${ranked.length} result${ranked.length === 1 ? '' : 's'}` : 'Ranked by fit to your profile'}
       </h2>
-      <div className="mt-2.5 flex flex-col gap-2">
+      <div className="mt-2.5 grid gap-2 lg:grid-cols-2">
         {ranked.slice(0, limit).map((g) => {
           const member = joined.includes(g.name)
           return (
