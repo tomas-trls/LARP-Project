@@ -1,6 +1,6 @@
 // 04 · Review & edit (step 2 of 6): "Here's what we found." The profile read from the CV,
 // in four cards. Each card has an Edit / Done switch; in edit mode rows open an edit sheet.
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Icon from '../components/Icon.jsx'
 import { LEVELS } from '../components/onboarding/options.js'
@@ -8,7 +8,7 @@ import ReviewSheet from '../components/onboarding/ReviewSheet.jsx'
 import Screen from '../components/Screen.jsx'
 import StepHeader from '../components/StepHeader.jsx'
 import { PrimaryButton } from '../components/ui.jsx'
-import { saveCvProfile } from '../live.js'
+import { saveCvProfile, uploadCv } from '../live.js'
 import { DEFAULT_PROFILE, useProfile } from '../profileStore.jsx'
 
 // Which list in the profile each kind of entry lives in.
@@ -67,23 +67,23 @@ export default function Review() {
   const { file, edu, exp, skills, langs } = profile.cv
   const [editing, setEditing] = useState({}) // which cards are in edit mode, e.g. { edu: true }
   const [sheet, setSheet] = useState(null) // the open edit sheet, or null
-  const [parsing, setParsing] = useState(false) // true while "re-reading" a replaced CV
+  const [parsing, setParsing] = useState(false) // true while the back end reads a replacement CV
   const [newSkill, setNewSkill] = useState('')
-  const timer = useRef(null)
-  useEffect(() => () => clearTimeout(timer.current), [])
+  const fileInput = useRef(null) // the hidden file picker that "Replace" opens
 
   const toggle = (section) => setEditing({ ...editing, [section]: !editing[section] })
   const lists = { edu, exp, lang: langs }
 
-  // "Replace": pretend to read a new CV for 1.4 seconds, then show the example profile again.
-  function replaceCv() {
-    if (parsing) return
+  // "Replace": a new file was chosen. The back end reads it, the same as on the Profile creator screen.
+  // If it cannot be read, fall back to the example profile so the demo never gets stuck.
+  async function replaceCv(e) {
+    const picked = e.target.files?.[0]
+    e.target.value = '' // so picking the same file again still counts as a change
+    if (!picked) return
     setParsing(true)
-    timer.current = setTimeout(() => {
-      const next = file === 'Maya_CV.pdf' ? 'Maya_Whitfield_CV_2026.pdf' : 'Maya_CV.pdf'
-      update('cv', { ...DEFAULT_PROFILE.cv, file: next })
-      setParsing(false)
-    }, 1400)
+    const draft = await uploadCv(picked)
+    setParsing(false)
+    update('cv', draft ?? { ...DEFAULT_PROFILE.cv, file: picked.name })
   }
 
   // Open the sheet for an existing entry (idx) or a new one (idx = null).
@@ -128,9 +128,15 @@ export default function Review() {
           <span className="min-w-0 truncate">
             {parsing ? 'Re-parsing your CV…' : 'Parsed from'} <b>{file}</b>
           </span>
-          <button type="button" onClick={replaceCv} className="ml-auto py-1.5 font-semibold text-acc select-none">
+          <button
+            type="button"
+            onClick={() => fileInput.current.click()}
+            disabled={parsing}
+            className="ml-auto py-1.5 font-semibold text-acc select-none"
+          >
             {parsing ? 'Working…' : 'Replace'}
           </button>
+          <input ref={fileInput} type="file" accept=".pdf,.docx" onChange={replaceCv} className="hidden" />
         </div>
 
         <div className="mt-[18px] flex flex-col gap-3">
