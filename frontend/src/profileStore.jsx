@@ -72,6 +72,8 @@ export const DEFAULT_PROFILE = {
   accepted: [], // pending requests the student accepted
   societiesChanged: false, // true once the student has joined or left a society themselves
   societies: [], // names of joined societies, from src/data/societies.json
+  // Societies screen (design v4): what the student joined, applied for, voted on, renewed or booked
+  societyState: { joined: [], applied: [], votes: {}, renewed: [], tickets: [], tried: false },
   going: [], // ids of events the student said they're going to
   connectionStyle: 'Requests',
 
